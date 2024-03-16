@@ -1,4 +1,19 @@
 {
   "name": "AlbionPropertyHub",
-  "displayName": "AlbionPropertyHub"
+  "displayName": "Albion",
+  "android": {
+    "permissions": [
+      "ACCESS_FINE_LOCATION"
+    ]
+  },
+  "plugins": [
+    [
+      "expo-build-properties",
+      {
+        "ios": {
+          "flipper": true
+        }
+      }
+    ]
+  ]
 }

@@ -1,0 +1,98 @@
+{
+  "project_info": {
+    "project_number": "1080007356916",
+    "project_id": "albion-9bab2",
+    "storage_bucket": "albion-9bab2.appspot.com"
+  },
+  "client": [
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080007356916:android:01e3fe3ede6f93caf189a1",
+        "android_client_info": {
+          "package_name": "com.albion"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080007356916-l0nth7j1lq4t5kg3jhn5c1qkpcnpadi6.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.albion",
+            "certificate_hash": "01ccf9d5d33b7ef965e2c58da981969d7547913c"
+          }
+        },
+        {
+          "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjZmaeD-BeeYBZ7jqO7ZsNHUs5ifCaaBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1080007356916-r2aja2qn46ss827nas7udkfv6di5mrqm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Albion"
+              }
+            }
+          ]
+        }
+      }
+    },
+    {
+      "client_info": {
+        "mobilesdk_app_id": "1:1080007356916:android:db206ca3336ab31cf189a1",
+        "android_client_info": {
+          "package_name": "com.albionpropertyhub"
+        }
+      },
+      "oauth_client": [
+        {
+          "client_id": "1080007356916-1c4a6ic69o7s7kr1j2uqrv3uup31u0cl.apps.googleusercontent.com",
+          "client_type": 1,
+          "android_info": {
+            "package_name": "com.albionpropertyhub",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
+          }
+        },
+        {
+          "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+          "client_type": 3
+        }
+      ],
+      "api_key": [
+        {
+          "current_key": "AIzaSyBjZmaeD-BeeYBZ7jqO7ZsNHUs5ifCaaBQ"
+        }
+      ],
+      "services": {
+        "appinvite_service": {
+          "other_platform_oauth_client": [
+            {
+              "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+              "client_type": 3
+            },
+            {
+              "client_id": "1080007356916-r2aja2qn46ss827nas7udkfv6di5mrqm.apps.googleusercontent.com",
+              "client_type": 2,
+              "ios_info": {
+                "bundle_id": "org.reactjs.native.example.Albion"
+              }
+            }
+          ]
+        }
+      }
+    }
+  ],
+  "configuration_version": "1"
+}
