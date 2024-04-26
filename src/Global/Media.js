@@ -109,8 +109,7 @@ export const Media = {
   otp: 'https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Logo/otp.png',
   SplashLogo:
     'https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Logo/splash.gif',
-
-  update_logo: "https://albion-backend.s3.ap-south-1.amazonaws.com/mainloader.gif",
+  update_logo: "https://albion-backend.s3.ap-south-1.amazonaws.com/main_loader.gif",
 
   /* ****************** Menu ******************************/
   problack:

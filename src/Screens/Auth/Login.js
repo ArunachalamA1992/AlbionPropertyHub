@@ -24,7 +24,7 @@ import {
   GoogleSigninButton,
   statusCodes,
 } from '@react-native-google-signin/google-signin';
-import { useSelector } from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import { useRoute } from '@react-navigation/native';
 import { checkMultiple, requestMultiple, PERMISSIONS } from 'react-native-permissions';
 
@@ -35,6 +35,7 @@ const DismissKeyboard = ({ children }) => (
 );
 
 const LoginScreen = ({ navigation }) => {
+  const dispatch = useDispatch();
   const routeName = useRoute();
   const [number, setNumber] = useState('');
   const [error, setError] = useState(false);
@@ -46,7 +47,7 @@ const LoginScreen = ({ navigation }) => {
       GoogleSignin.configure({
         scopes: ['email', 'profile'],
         webClientId:
-          '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
+          '1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com',
         offlineAccess: false,
         // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
         // offlineAccess: true,
@@ -144,11 +145,42 @@ const LoginScreen = ({ navigation }) => {
     }
   }
 
-  const signIn = async () => {
+  const signIn = async (navigation) => {
     try {
+      const replace = navigation
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
+      if (userInfo) {
+        var data = {
+          email: userInfo?.user?.email,
+        };
+        const updateProfiledata = await fetchData.login_with_gmail(data);
+        console.log(updateProfiledata);
+        if (updateProfiledata.message) {
+          dispatch(setUserData(updateProfiledata?.users));
+
+          setPercentage(percentage);
+          const UserLogin = {
+            ...updateProfiledata?.users,
+          };
+          await AsyncStorage.setItem(
+            'user_data',
+            JSON.stringify(updateProfiledata?.users),
+          );
+          await AsyncStorage.setItem(
+            'action_login_type',
+            JSON.stringify({ login_type: 'properties' }),
+          );
+          dispatch(setLoginType('properties'));
+          if (percentage == 100) {
+            replace('TabNavigator', UserLogin);
+          } else {
+            replace('TabNavigator', UserLogin);
+          }
+        }
+      }
     } catch (error) {
+      console.log(error);
       if (error.code === statusCodes.SIGN_IN_CANCELLED) {
         // user cancelled the login flow
       } else if (error.code === statusCodes.IN_PROGRESS) {
@@ -280,42 +312,42 @@ const LoginScreen = ({ navigation }) => {
               }}
             />
           </View>
-          {/* <Text
-          style={{
-            fontFamily: Poppins.Medium,
-            fontSize: 14,
-            textAlign: 'center',
-            color: Color.black,
-            marginVertical: 20,
-          }}>
-          Or Sign Up With
-        </Text>
-        <View
-          style={{
-            justifyContent: 'center',
-            alignItems: 'center',
-            marginVertical: 10,
-          }}>
-          <Button
-            title={'Login With Google'}
-            titleStyle={{
-              width: '85%',
-              color: Color.cloudyGrey,
+          <Text
+            style={{
+              fontFamily: Poppins.Medium,
               fontSize: 14,
-              fontFamily: Poppins.SemiBold,
-            }}
-            icon={() => (
-              <Image source={Media.googlebg} style={{width: 30, height: 30}} />
-            )}
-            onPress={() => signIn()}
-            buttonStyle={{
+              textAlign: 'center',
+              color: Color.black,
+              marginVertical: 20,
+            }}>
+            (or)
+          </Text>
+          <View
+            style={{
+              justifyContent: 'center',
+              alignItems: 'center',
               marginVertical: 10,
-              backgroundColor: Color.white,
-              borderColor: Color.cloudyGrey,
-              borderWidth: 1,
-            }}
-          />
-        </View> */}
+            }}>
+            <Button
+              title={'Login With Google'}
+              titleStyle={{
+                width: '85%',
+                color: Color.cloudyGrey,
+                fontSize: 14,
+                fontFamily: Poppins.SemiBold,
+              }}
+              icon={() => (
+                <Image source={Media.googlebg} style={{ width: 30, height: 30 }} />
+              )}
+              onPress={() => signIn()}
+              buttonStyle={{
+                marginVertical: 10,
+                backgroundColor: Color.white,
+                borderColor: Color.cloudyGrey,
+                borderWidth: 1,
+              }}
+            />
+          </View>
         </View>
         <View style={styles.RequestView}>
           <Text

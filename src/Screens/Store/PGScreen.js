@@ -1895,14 +1895,14 @@ const PGScreen = ({ route, navigation }) => {
                   <TextInput
                     placeholder="Enter your phone number"
                     placeholderTextColor={Color.cloudyGrey}
-                    value={mobile_number}
-                    editable={false}
+                    value={number}
+                    editable={mobile_number?.length !== 10}
                     keyboardType="phone-pad"
                     maxLength={10}
                     returnKeyType={'done'}
-                    // onChangeText={number => {
-                    //   chkNumber(number);
-                    // }}
+                    onChangeText={number => {
+                      chkNumber(number);
+                    }}
                     style={styles.numberTextBox}
                   />
                 </View>
@@ -1966,7 +1966,7 @@ const styles = StyleSheet.create({
     color: Color.black,
     marginVertical: 10,
     fontSize: 16,
-    // fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold',
   },
 
   searchSection: {

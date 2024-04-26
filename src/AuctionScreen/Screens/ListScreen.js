@@ -27,7 +27,6 @@ import AuctionItemCard from '../Auctioncomponents/AuctionItemCard';
 import { ActivityIndicator } from 'react-native-paper';
 import { useRoute } from '@react-navigation/native';
 import { useSelector } from 'react-redux';
-import { Iconviewcomponent } from '../../Components/Icontag';
 
 const { height } = Dimensions.get('screen');
 
@@ -92,7 +91,6 @@ const ListScreen = ({ navigation, route }) => {
   const getApiData = async () => {
     try {
       var data = dataPayload();
-      // console.log('data', data)
       const getAuction = await fetchData.get_Auction(data);
       setAutionData(getAuction);
       //get State
@@ -204,40 +202,19 @@ const ListScreen = ({ navigation, route }) => {
     }
   };
 
-
-  async function submitClick() {
-    try {
-      setLoadMore(true);
-      var data = dataPayload();
-      const getAuction = await fetchData.get_Auction(data);
-      if (getAuction.length > 0) {
-
-        setAutionData(getAuction);
-        // setLoadMore(false);
-        // await AsyncStorage.setItem('buyData', JSON.stringify(updatedData));
-      } else {
-        setLoadMore(false);
-      }
-
-    } catch (error) {
-      console.error('catch in submit_Click:', error);
-    }
-  }
-
   return (
-    <View style={{ flex: 1, backgroundColor: Color.white }}>
+    <View style={{ flex: 1, backgroundColor: Color.white, alignItems: 'center', }}>
       <View
         style={{
           width: '100%',
           backgroundColor: '#FDF0F5',
-          padding: 10,
+          padding: 10, alignItems: 'center',
+
         }}>
         <View
           style={{
-            width: '100%',
             flexDirection: 'row',
-            justifyContent: 'space-between',
-            alignItems: 'center',
+            alignItems: 'center', paddingVertical: 10
           }}>
           <Dropdown
             style={{
@@ -249,9 +226,9 @@ const ListScreen = ({ navigation, route }) => {
               // paddingHorizontal: 5,
               paddingHorizontal: 10,
               // height: 50,
-              width: '42%',
+              width: '40%',
               height: 45,
-              // marginHorizontal: 10,
+              marginHorizontal: 10,
             }}
             placeholderStyle={{
               fontSize: 12,
@@ -291,9 +268,9 @@ const ListScreen = ({ navigation, route }) => {
               borderWidth: 1,
               paddingHorizontal: 10,
               borderRadius: 5,
-              width: '42%',
+              width: '40%',
               height: 45,
-              // marginHorizontal: 10,
+              marginHorizontal: 10,
             }}
             placeholderStyle={{
               fontSize: 12,
@@ -329,7 +306,7 @@ const ListScreen = ({ navigation, route }) => {
           <TouchableOpacity
             onPress={() => {
               setCalenderVisible(!calenderVisible);
-            }} style={{ padding: 10 }}>
+            }}>
             <MCIcon
               name="sort-calendar-ascending"
               size={30}
@@ -345,11 +322,10 @@ const ListScreen = ({ navigation, route }) => {
               borderWidth: 1,
               paddingHorizontal: 10,
               borderRadius: 5,
-              width: '100%',
+              width: '95%',
               height: 45,
               // marginHorizontal: 10,
-              marginTop: 10,
-              // marginVertical: 10,
+              marginVertical: 10,
             }}
             placeholderStyle={{
               fontSize: 12,
@@ -383,8 +359,7 @@ const ListScreen = ({ navigation, route }) => {
             )}
           />
         )}
-
-        <View style={{ width: '100%', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+        {/* <View style={{ width: '100%', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
           <TextInput
             placeholder="Minimum Price"
             placeholderTextColor={Color.cloudyGrey}
@@ -396,17 +371,16 @@ const ListScreen = ({ navigation, route }) => {
             style={{
               flex: 1,
               color: Color.black,
-              // padding: 10,
-              width: '42%',
+              padding: 10,
+              width: '45%',
               height: 45,
               borderWidth: 1,
               borderColor: Color.cloudyGrey,
               backgroundColor: 'white',
               borderRadius: 5,
             }}
-            maxLength={10}
           />
-          <View style={{ width: 8, height: '100%' }}></View>
+          <View style={{ width: 2, height: '100%' }}></View>
           <TextInput
             placeholder="Maximum Price"
             placeholderTextColor={Color.cloudyGrey}
@@ -419,34 +393,15 @@ const ListScreen = ({ navigation, route }) => {
               flex: 1,
               color: Color.black,
               padding: 10,
-              width: '42%',
+              width: '45%',
               height: 45,
               borderWidth: 1,
               borderColor: Color.cloudyGrey,
               backgroundColor: 'white',
               borderRadius: 5,
             }}
-            maxLength={10}
           />
-          <TouchableOpacity
-            onPress={() => {
-              submitClick()
-            }}
-            style={{ padding: 0 }}>
-            {/* <MCIcon
-              name="sort-calendar-ascending"
-              size={30}
-              color={Color.primary}
-            /> */}
-            <Iconviewcomponent
-              Icontag={'Ionicons'}
-              iconname={'checkmark-done-circle-sharp'}
-              icon_size={40}
-              icon_color={Color.primary}
-            />
-
-          </TouchableOpacity>
-        </View>
+        </View> */}
       </View>
       {calenderVisible && (
         <View
@@ -487,6 +442,8 @@ const ListScreen = ({ navigation, route }) => {
           />
         </View>
       ) : (
+
+
         <FlatList
           data={AutionData}
           keyExtractor={(item, index) => item + index}
@@ -562,7 +519,9 @@ const ListScreen = ({ navigation, route }) => {
             );
           }}
           showsVerticalScrollIndicator={false}
+          style={{ width: '95%', }}
         />
+
       )}
     </View>
   );

@@ -1,5 +1,5 @@
-import {combineReducers} from 'redux';
-import {configureStore} from '@reduxjs/toolkit';
+import { combineReducers } from 'redux';
+import { configureStore } from '@reduxjs/toolkit';
 import PayReducer from './PayModal/PayReducer';
 import PropertyReducer from './property/propertyReducer';
 import UserReducer from './user/UserReducer';

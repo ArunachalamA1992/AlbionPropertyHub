@@ -1,4 +1,4 @@
-package com.albionpropertyhub
+package com.albionNew
 
 import android.app.Application
 import com.facebook.react.PackageList

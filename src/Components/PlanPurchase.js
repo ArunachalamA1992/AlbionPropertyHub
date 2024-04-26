@@ -1,4 +1,4 @@
-import React, { useState, useEffect } from 'react';
+import React, {useState, useEffect, useMemo} from 'react';
 import {
   Text,
   View,
@@ -8,13 +8,15 @@ import {
   Modal,
   BackHandler,
   ScrollView,
+  LayoutAnimation,
+  StyleSheet,
 } from 'react-native';
 import Color from '../Config/Color';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import Icon from 'react-native-vector-icons/Ionicons';
-import { Poppins } from '../Global/FontFamily';
-import { Button } from 'react-native-elements';
+import {Poppins} from '../Global/FontFamily';
+import {Button} from 'react-native-elements';
 import axios from 'axios';
 import {useDispatch, useSelector} from 'react-redux';
 import {setPayCancelVisible, setPaySuccessVisible} from '../Redux';
@@ -23,6 +25,7 @@ import RazorpayCheckout from 'react-native-razorpay';
 import {AgentPlanData, BuyerPlanData, OwnerPlanData} from '../contentJson';
 import Table from './PayTable';
 import fetchData from '../Config/fetchData';
+import common_fn from '../Config/common_fn';
 
 const PlanPurchase = props => {
   const [planData, setPlanData] = useState([]);
@@ -33,9 +36,9 @@ const PlanPurchase = props => {
   const [selectPlan, setSelectPlan] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
   const [changeResponseText, setChangeResponseText] = useState('');
-  var { user_id, username, mobile_number, user_type_id, change_persona, email } =
+  var {user_id, username, mobile_number, user_type_id, change_persona, email} =
     userData;
-
+  const [visible, setVisible] = useState({});
   function selectPlanItem(item, index) {
     try {
       setSelectPlan(item.amount);
@@ -133,14 +136,53 @@ const PlanPurchase = props => {
   // };
 
   useEffect(() => {
-    getApiData();
+    if (planData?.length == 0) {
+      getApiData(user_type_id);
+    }
   }, []);
 
-  const getApiData = async () => {
+  const getApiData = async user_type_id => {
     try {
       const data = `plan_group=2&user_type_id=${user_type_id}`;
-      const plan_data = await fetchData.check_plan(data);
-      setPlanData(plan_data);
+      const plandata = await fetchData.check_plan(data);
+      let specificData = [];
+      if (user_type_id === '1') {
+        specificData = plandata.map(plan_data => {
+          return {
+            plan_id: plan_data.plan_id,
+            plan_name: plan_data.plan_name,
+            duration: plan_data.duration,
+            response_rate: plan_data.response_rate,
+            no_of_listings: plan_data.no_of_listings,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            highlight_in_homepage: plan_data.highlight_in_homepage,
+            verified_tag: plan_data.verified_tag,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            amount: plan_data.amount,
+          };
+        });
+      } else if (user_type_id === '2') {
+        specificData = plandata.map(plan_data => {
+          return {
+            plan_id: plan_data.plan_id,
+            plan_name: plan_data.plan_name,
+            no_of_listings: plan_data.no_of_listings,
+            response_rate: plan_data.response_rate,
+            featured_listing: plan_data.featured_listing,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            urgent_sale: plan_data.urgent_sale,
+            certified_agent: plan_data.certified_agent,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            duration: plan_data.duration,
+            amount: plan_data.amount,
+          };
+        });
+      }
+
+      // Assuming you want to set the specific data somewhere
+      setPlanData(specificData);
     } catch (error) {
       console.log('error', error);
     }
@@ -168,7 +210,6 @@ const PlanPurchase = props => {
             user_id: user_id,
             plan_group: '2',
           };
-          console.log('data', data);
           const placeOrder = await fetchData.verify_pay(data);
           console.log('placeOrder', placeOrder);
           dispatch(setPaySuccessVisible(true));
@@ -195,8 +236,50 @@ const PlanPurchase = props => {
     return () => backHandler.remove();
   }, []);
 
+  const keys = useMemo(() => {
+    if (planData && planData.length > 0) {
+      return Object.keys(planData[0]).filter(
+        key =>
+          key !== 'plan_name' &&
+          key !== 'plan_id' &&
+          key !== 'plan_uid' &&
+          key !== 'plan_group' &&
+          key !== 'amount' &&
+          key !== 'plan_price' &&
+          key !== 'status' &&
+          key !== 'created_at' &&
+          key !== 'updated_at' &&
+          key !== 'get_phone_quota' &&
+          key !== 'user_type_id' &&
+          key !== 'duration' &&
+          key !== 'response_rate' &&
+          key !== 'no_of_listings',
+      );
+    } else {
+      return [];
+    }
+  }, [planData]);
+
+  const renderIcon = (value, key) => {
+    if (
+      key !== 'duration' &&
+      key !== 'response_rate' &&
+      key !== 'no_of_listings'
+    ) {
+      return value == '1' ? '1' : '0';
+    } else {
+      return value;
+    }
+  };
+
+  const clickHistory = index => {
+    setVisible({...visible, [index]: !visible[index]});
+    common_fn.Accordion;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
   return (
-    <Modal transparent visible={props?.planVisible} animationType="slide">
+    <Modal transparent visible={true} animationType="slide">
       <Pressable
         style={{
           flex: 1,
@@ -266,11 +349,11 @@ const PlanPurchase = props => {
               Choose Your Plan
             </Text>
           </View>
-          <Table data={planData} />
+          {/* <Table data={planData} /> */}
           <FlatList
             data={planData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
+            // horizontal
+            // showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               let selecttextbg = 'black';
@@ -289,90 +372,183 @@ const PlanPurchase = props => {
                   ? Color.white
                   : Color.cloudyGrey;
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    selectPlanItem(item, index);
-                  }}
-                  style={{
-                    flexDirection: 'row',
-                    marginVertical: 10,
-                    borderWidth: 1,
-                    borderColor: Color.lightgrey,
-                    flex: 1,
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    backgroundColor:
-                      item?.plan_id == 1 ? Color.lightgrey : selectbg,
-                    borderRadius: 10,
-                    width: 150,
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                  disabled={item?.plan_name == 'Free'}>
-                  <View
+                <View style={{marginVertical: 10}} key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      clickHistory(index);
+                      selectPlanItem(item, index);
+                    }}
                     style={{
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      marginHorizontal: 20,
-                    }}>
+                      flexDirection: 'row',
+                      borderWidth: 1,
+                      borderColor: Color.lightgrey,
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      backgroundColor:
+                        item?.plan_id == 1 ? Color.lightgrey : selectbg,
+                      width: '100%',
+                      paddingVertical: 10,
+                    }}
+                    disabled={item?.plan_name == 'Free'}>
                     <View
                       style={{
-                        flexDirection: 'row',
+                        flex: 1,
                         justifyContent: 'center',
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
+                        marginHorizontal: 20,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontSize: 12,
-                          color: Color.white,
-                          fontFamily: Poppins.SemiBold,
-                          paddingTop: 7,
-                          backgroundColor:
-                            item.plan_name == 'Free'
-                              ? Color.grey
-                              : item.plan_name == 'Basic'
-                              ? Color.lightgrey
-                              : item.plan_name == 'Standard'
-                              ? Color.blue
-                              : item.plan_name == 'Premium'
-                              ? Color.green
-                              : item.plan_name == 'Premium Plus'
-                              ? Color.purple
-                              : Color.sunShade,
-                          borderRadius: 10,
-                          paddingVertical: 5,
-                          paddingHorizontal: 5,
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {item.plan_name}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: Color.white,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            backgroundColor:
+                              item.plan_name == 'Free'
+                                ? Color.grey
+                                : item.plan_name == 'Basic'
+                                ? Color.lightgrey
+                                : item.plan_name == 'Standard'
+                                ? Color.blue
+                                : item.plan_name == 'Premium'
+                                ? Color.green
+                                : item.plan_name == 'Premium Plus'
+                                ? Color.purple
+                                : Color.sunShade,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          {item?.plan_name}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectSubTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            textDecorationLine: 'line-through',
+                          }}>
+                          ₹ {item?.org_price || item?.amount * 2}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          No of Listings - {item?.no_of_listings}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.amount}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          Response rate - {item?.response_rate}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.duration} Days
+                        </Text>
+                      </View>
                     </View>
+                  </TouchableOpacity>
+                  {visible[index] && (
                     <View
                       style={{
-                        marginVertical: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: Color.lightgrey,
+                        padding: 10,
                       }}>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectSubTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          textDecorationLine: 'line-through',
-                        }}>
-                        ₹ {item?.price}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          marginHorizontal: 5,
-                        }}>
-                        ₹ {item.amount}
-                      </Text>
+                      {keys.map((key, index) => {
+                        return (
+                          <View
+                            key={key}
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              marginVertical: 5,
+                            }}>
+                            <Text key={item.plan_name} style={styles.cell}>
+                              {key !== 'duration' &&
+                              key !== 'response_rate' &&
+                              key !== 'no_of_listings' ? (
+                                renderIcon(item[key], key) == '1' ? (
+                                  <Icon
+                                    name="checkmark-circle"
+                                    size={18}
+                                    color={Color.green}
+                                  />
+                                ) : (
+                                  <Icon
+                                    name="close-circle"
+                                    size={18}
+                                    color={Color.red}
+                                  />
+                                )
+                              ) : (
+                                renderIcon(item[key], key)
+                              )}
+                            </Text>
+                            <Text style={styles.headerCell}>
+                              {common_fn.formatText(key)}
+                            </Text>
+                          </View>
+                        );
+                      })}
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  )}
+                </View>
               );
             }}
             showsVerticalScrollIndicator={false}
@@ -385,8 +561,8 @@ const PlanPurchase = props => {
               fontFamily: Poppins.SemiBold,
               color: Color.white,
             }}
-            // disabled={selectPlan?.length == 0}
-            disabled={true}
+            disabled={selectPlan?.length == 0}
+            // disabled={true}
             buttonStyle={{
               marginVertical: 20,
               backgroundColor: Color.primary,
@@ -407,8 +583,9 @@ export const PlanPhonePurchase = props => {
   const dispatch = useDispatch();
   const [selectItem, setSelectItem] = useState({});
   const [selectPlan, setSelectPlan] = useState('');
+  const [visible, setVisible] = useState({});
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id, username, mobile_number, user_type_id, change_persona, email } =
+  var {user_id, username, mobile_number, user_type_id, change_persona, email} =
     userData;
   function selectPlanItem(item, index) {
     try {
@@ -526,14 +703,25 @@ export const PlanPhonePurchase = props => {
   // }, []);
 
   useEffect(() => {
-    getApiData();
+    if (planData?.length == 0) {
+      getApiData(user_type_id);
+    }
   }, []);
 
   const getApiData = async () => {
     try {
-      const data = `plan_group=1&user_type_id=${user_type_id}`;
-      const plan_data = await fetchData.check_plan(data);
-      setPlanData(plan_data);
+      const data = `plan_group=1&user_type_id=1`;
+      const plandata = await fetchData.check_plan(data);
+      const specificData = plandata.map(plan_data => ({
+        plan_id: plan_data.plan_id,
+        plan_name: plan_data.plan_name,
+        duration: plan_data.duration,
+        get_phone_quota: plan_data.get_phone_quota,
+        whatsapp_notification: plan_data.whatsapp_notification,
+        dedicated_support: plan_data.dedicated_support,
+        amount: plan_data.amount,
+      }));
+      setPlanData(specificData);
     } catch (error) {
       console.log('error', error);
     }
@@ -561,7 +749,6 @@ export const PlanPhonePurchase = props => {
             user_id: user_id,
             plan_group: '1',
           };
-          console.log('data', data);
           const placeOrder = await fetchData.verify_pay(data);
           console.log('placeOrder', placeOrder);
           dispatch(setPaySuccessVisible(true));
@@ -572,6 +759,48 @@ export const PlanPhonePurchase = props => {
         dispatch(setPayCancelVisible(true));
         navigation?.replace('TabNavigator', {user_id});
       });
+  };
+
+  const keys = useMemo(() => {
+    if (planData && planData.length > 0) {
+      return Object.keys(planData[0]).filter(
+        key =>
+          key !== 'plan_name' &&
+          key !== 'plan_id' &&
+          key !== 'plan_uid' &&
+          key !== 'plan_group' &&
+          key !== 'amount' &&
+          key !== 'plan_price' &&
+          key !== 'status' &&
+          key !== 'created_at' &&
+          key !== 'updated_at' &&
+          key !== 'get_phone_quota' &&
+          key !== 'user_type_id' &&
+          key !== 'duration' &&
+          key !== 'response_rate' &&
+          key !== 'no_of_listings',
+      );
+    } else {
+      return [];
+    }
+  }, [planData]);
+
+  const renderIcon = (value, key) => {
+    if (
+      key !== 'duration' &&
+      key !== 'response_rate' &&
+      key !== 'no_of_listings'
+    ) {
+      return value == '1' ? '1' : '0';
+    } else {
+      return value;
+    }
+  };
+
+  const clickHistory = index => {
+    setVisible({...visible, [index]: !visible[index]});
+    common_fn.Accordion;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   };
 
   return (
@@ -643,11 +872,11 @@ export const PlanPhonePurchase = props => {
               Choose Your Plan
             </Text>
           </View>
-          <Table data={planData} />
+          {/* <Table data={planData} /> */}
           <FlatList
             data={planData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
+            // horizontal
+            // showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               let selecttextbg = 'black';
@@ -666,90 +895,183 @@ export const PlanPhonePurchase = props => {
                   ? Color.white
                   : Color.cloudyGrey;
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    selectPlanItem(item, index);
-                  }}
-                  style={{
-                    flexDirection: 'row',
-                    marginVertical: 10,
-                    borderWidth: 1,
-                    borderColor: Color.lightgrey,
-                    flex: 1,
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    backgroundColor:
-                      item?.plan_id == 1 ? Color.lightgrey : selectbg,
-                    borderRadius: 10,
-                    width: 150,
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                  disabled={item?.plan_name == 'Free'}>
-                  <View
+                <View style={{marginVertical: 10}} key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      clickHistory(index);
+                      selectPlanItem(item, index);
+                    }}
                     style={{
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      marginHorizontal: 20,
-                    }}>
+                      flexDirection: 'row',
+                      borderWidth: 1,
+                      borderColor: Color.lightgrey,
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      backgroundColor:
+                        item?.plan_id == 1 ? Color.lightgrey : selectbg,
+                      width: '100%',
+                      paddingVertical: 10,
+                    }}
+                    disabled={item?.plan_name == 'Free'}>
                     <View
                       style={{
-                        flexDirection: 'row',
+                        flex: 1,
                         justifyContent: 'center',
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
+                        marginHorizontal: 20,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontSize: 12,
-                          color: Color.white,
-                          fontFamily: Poppins.SemiBold,
-                          paddingTop: 7,
-                          backgroundColor:
-                            item.plan_name == 'Free'
-                              ? Color.grey
-                              : item.plan_name == 'Basic'
-                              ? Color.lightgrey
-                              : item.plan_name == 'Standard'
-                              ? Color.blue
-                              : item.plan_name == 'Premium'
-                              ? Color.green
-                              : item.plan_name == 'Premium Plus'
-                              ? Color.purple
-                              : Color.sunShade,
-                          borderRadius: 10,
-                          paddingVertical: 5,
-                          paddingHorizontal: 5,
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {item.plan_name}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: Color.white,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            backgroundColor:
+                              item.plan_name == 'Free'
+                                ? Color.grey
+                                : item.plan_name == 'Basic'
+                                ? Color.lightgrey
+                                : item.plan_name == 'Standard'
+                                ? Color.blue
+                                : item.plan_name == 'Premium'
+                                ? Color.green
+                                : item.plan_name == 'Premium Plus'
+                                ? Color.purple
+                                : Color.sunShade,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          {item?.plan_name}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectSubTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            textDecorationLine: 'line-through',
+                          }}>
+                          ₹ {item?.org_price || item?.amount * 2}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          No of Listings - {item?.no_of_listings}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.amount}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          Response rate - {item?.response_rate}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.duration} Days
+                        </Text>
+                      </View>
                     </View>
+                  </TouchableOpacity>
+                  {visible[index] && (
                     <View
                       style={{
-                        marginVertical: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: Color.lightgrey,
+                        padding: 10,
                       }}>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectSubTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          textDecorationLine: 'line-through',
-                        }}>
-                        ₹ {item?.price}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          marginHorizontal: 5,
-                        }}>
-                        ₹ {item.amount}
-                      </Text>
+                      {keys.map((key, index) => {
+                        return (
+                          <View
+                            key={key}
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              marginVertical: 5,
+                            }}>
+                            <Text key={item.plan_name} style={styles.cell}>
+                              {key !== 'duration' &&
+                              key !== 'response_rate' &&
+                              key !== 'no_of_listings' ? (
+                                renderIcon(item[key], key) == '1' ? (
+                                  <Icon
+                                    name="checkmark-circle"
+                                    size={18}
+                                    color={Color.green}
+                                  />
+                                ) : (
+                                  <Icon
+                                    name="close-circle"
+                                    size={18}
+                                    color={Color.red}
+                                  />
+                                )
+                              ) : (
+                                renderIcon(item[key], key)
+                              )}
+                            </Text>
+                            <Text style={styles.headerCell}>
+                              {common_fn.formatText(key)}
+                            </Text>
+                          </View>
+                        );
+                      })}
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  )}
+                </View>
               );
             }}
             showsVerticalScrollIndicator={false}
@@ -762,8 +1084,8 @@ export const PlanPhonePurchase = props => {
               fontFamily: Poppins.SemiBold,
               color: Color.white,
             }}
-            // disabled={selectPlan?.length == 0}
-            disabled={true}
+            disabled={selectPlan?.length == 0}
+            // disabled={true}
             buttonStyle={{
               marginVertical: 20,
               backgroundColor: Color.primary,
@@ -781,9 +1103,10 @@ export const AgentPlanPurchase = props => {
   const navigation = useNavigation();
   const dispatch = useDispatch();
   const [selectItem, setSelectItem] = useState({});
+  const [visible, setVisible] = useState({});
   const [selectPlan, setSelectPlan] = useState('');
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id, username, mobile_number, user_type_id, change_persona, email } =
+  var {user_id, username, mobile_number, user_type_id, change_persona, email} =
     userData;
   function selectPlanItem(item, index) {
     try {
@@ -883,14 +1206,52 @@ export const AgentPlanPurchase = props => {
   // };
 
   useEffect(() => {
-    getApiData();
+    if (planData?.length == 0) {
+      getApiData(user_type_id);
+    }
   }, []);
 
-  const getApiData = async () => {
+  const getApiData = async user_type_id => {
     try {
       const data = `plan_group=2&user_type_id=${user_type_id}`;
-      const plan_data = await fetchData.check_plan(data);
-      setPlanData(plan_data);
+      const plandata = await fetchData.check_plan(data);
+      let specificData = [];
+      if (user_type_id === '1') {
+        specificData = plandata.map(plan_data => {
+          return {
+            plan_id: plan_data.plan_id,
+            plan_name: plan_data.plan_name,
+            duration: plan_data.duration,
+            response_rate: plan_data.response_rate,
+            no_of_listings: plan_data.no_of_listings,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            highlight_in_homepage: plan_data.highlight_in_homepage,
+            verified_tag: plan_data.verified_tag,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            amount: plan_data.amount,
+          };
+        });
+      } else if (user_type_id === '2') {
+        specificData = plandata.map(plan_data => {
+          return {
+            plan_name: plan_data.plan_name,
+            no_of_listings: plan_data.no_of_listings,
+            response_rate: plan_data.response_rate,
+            featured_listing: plan_data.featured_listing,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            urgent_sale: plan_data.urgent_sale,
+            certified_agent: plan_data.certified_agent,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            duration: plan_data.duration,
+            amount: plan_data.amount,
+          };
+        });
+      }
+
+      // Assuming you want to set the specific data somewhere
+      setPlanData(specificData);
     } catch (error) {
       console.log('error', error);
     }
@@ -918,7 +1279,6 @@ export const AgentPlanPurchase = props => {
             user_id: user_id,
             plan_group: '2',
           };
-          console.log('data', data);
           const placeOrder = await fetchData.verify_pay(data);
           console.log('placeOrder', placeOrder);
           dispatch(setPaySuccessVisible(true));
@@ -944,6 +1304,48 @@ export const AgentPlanPurchase = props => {
     );
     return () => backHandler.remove();
   }, []);
+
+  const keys = useMemo(() => {
+    if (planData && planData.length > 0) {
+      return Object.keys(planData[0]).filter(
+        key =>
+          key !== 'plan_name' &&
+          key !== 'plan_id' &&
+          key !== 'plan_uid' &&
+          key !== 'plan_group' &&
+          key !== 'amount' &&
+          key !== 'plan_price' &&
+          key !== 'status' &&
+          key !== 'created_at' &&
+          key !== 'updated_at' &&
+          key !== 'get_phone_quota' &&
+          key !== 'user_type_id' &&
+          key !== 'duration' &&
+          key !== 'response_rate' &&
+          key !== 'no_of_listings',
+      );
+    } else {
+      return [];
+    }
+  }, [planData]);
+
+  const renderIcon = (value, key) => {
+    if (
+      key !== 'duration' &&
+      key !== 'response_rate' &&
+      key !== 'no_of_listings'
+    ) {
+      return value == '1' ? '1' : '0';
+    } else {
+      return value;
+    }
+  };
+
+  const clickHistory = index => {
+    setVisible({...visible, [index]: !visible[index]});
+    common_fn.Accordion;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
 
   return (
     <Modal transparent visible={props?.planVisible} animationType="slide">
@@ -1016,11 +1418,11 @@ export const AgentPlanPurchase = props => {
               Choose Your Plan
             </Text>
           </View>
-          <Table data={planData} />
+          {/* <Table data={planData} /> */}
           <FlatList
             data={planData}
-            horizontal
-            showsHorizontalScrollIndicator={false}
+            // horizontal
+            // showsHorizontalScrollIndicator={false}
             keyExtractor={(item, index) => item + index}
             renderItem={({item, index}) => {
               let selecttextbg = 'black';
@@ -1039,90 +1441,183 @@ export const AgentPlanPurchase = props => {
                   ? Color.white
                   : Color.cloudyGrey;
               return (
-                <TouchableOpacity
-                  onPress={() => {
-                    selectPlanItem(item, index);
-                  }}
-                  style={{
-                    flexDirection: 'row',
-                    marginVertical: 10,
-                    borderWidth: 1,
-                    borderColor: Color.lightgrey,
-                    flex: 1,
-                    justifyContent: 'space-between',
-                    alignItems: 'center',
-                    backgroundColor:
-                      item?.plan_id == 1 ? Color.lightgrey : selectbg,
-                    borderRadius: 10,
-                    width: 150,
-                    marginHorizontal: 10,
-                    paddingVertical: 10,
-                  }}
-                  disabled={item?.plan_name == 'Free'}>
-                  <View
+                <View style={{marginVertical: 10}} key={index}>
+                  <TouchableOpacity
+                    onPress={() => {
+                      clickHistory(index);
+                      selectPlanItem(item, index);
+                    }}
                     style={{
-                      justifyContent: 'center',
-                      alignItems: 'flex-start',
-                      marginHorizontal: 20,
-                    }}>
+                      flexDirection: 'row',
+                      borderWidth: 1,
+                      borderColor: Color.lightgrey,
+                      justifyContent: 'space-between',
+                      alignItems: 'center',
+                      backgroundColor:
+                        item?.plan_id == 1 ? Color.lightgrey : selectbg,
+                      width: '100%',
+                      paddingVertical: 10,
+                    }}
+                    disabled={item?.plan_name == 'Free'}>
                     <View
                       style={{
-                        flexDirection: 'row',
+                        flex: 1,
                         justifyContent: 'center',
-                        alignItems: 'center',
+                        alignItems: 'flex-start',
+                        marginHorizontal: 20,
                       }}>
-                      <Text
+                      <View
                         style={{
-                          fontSize: 12,
-                          color: Color.white,
-                          fontFamily: Poppins.SemiBold,
-                          paddingTop: 7,
-                          backgroundColor:
-                            item.plan_name == 'Free'
-                              ? Color.grey
-                              : item.plan_name == 'Basic'
-                              ? Color.lightgrey
-                              : item.plan_name == 'Standard'
-                              ? Color.blue
-                              : item.plan_name == 'Premium'
-                              ? Color.green
-                              : item.plan_name == 'Premium Plus'
-                              ? Color.purple
-                              : Color.sunShade,
-                          borderRadius: 10,
-                          paddingVertical: 5,
-                          paddingHorizontal: 5,
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
                         }}>
-                        {item.plan_name}
-                      </Text>
+                        <Text
+                          style={{
+                            fontSize: 12,
+                            color: Color.white,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            backgroundColor:
+                              item.plan_name == 'Free'
+                                ? Color.grey
+                                : item.plan_name == 'Basic'
+                                ? Color.lightgrey
+                                : item.plan_name == 'Standard'
+                                ? Color.blue
+                                : item.plan_name == 'Premium'
+                                ? Color.green
+                                : item.plan_name == 'Premium Plus'
+                                ? Color.purple
+                                : Color.sunShade,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          {item?.plan_name}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectSubTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            textDecorationLine: 'line-through',
+                          }}>
+                          ₹ {item?.org_price || item?.amount * 2}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          No of Listings - {item?.no_of_listings}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.amount}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          flexDirection: 'row',
+                          justifyContent: 'center',
+                          alignItems: 'center',
+                        }}>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            color: Color.black,
+                            fontFamily: Poppins.SemiBold,
+                            paddingTop: 7,
+                            borderRadius: 10,
+                            paddingVertical: 5,
+                            paddingHorizontal: 5,
+                          }}>
+                          Response rate - {item?.response_rate}
+                        </Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            fontSize: 12,
+                            textAlign: 'right',
+                            color: selectTextColor,
+                            fontFamily: Poppins.SemiBold,
+                            marginHorizontal: 5,
+                          }}>
+                          ₹ {item?.duration} Days
+                        </Text>
+                      </View>
                     </View>
+                  </TouchableOpacity>
+                  {visible[index] && (
                     <View
                       style={{
-                        marginVertical: 10,
-                        flexDirection: 'row',
-                        alignItems: 'center',
+                        borderWidth: 1,
+                        borderColor: Color.lightgrey,
+                        padding: 10,
                       }}>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectSubTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          textDecorationLine: 'line-through',
-                        }}>
-                        ₹ {item?.price}
-                      </Text>
-                      <Text
-                        style={{
-                          fontSize: 12,
-                          color: selectTextColor,
-                          fontFamily: Poppins.SemiBold,
-                          marginHorizontal: 5,
-                        }}>
-                        ₹ {item.amount}
-                      </Text>
+                      {keys.map((key, index) => {
+                        return (
+                          <View
+                            key={key}
+                            style={{
+                              flexDirection: 'row',
+                              alignItems: 'center',
+                              marginVertical: 5,
+                            }}>
+                            <Text key={item.plan_name} style={styles.cell}>
+                              {key !== 'duration' &&
+                              key !== 'response_rate' &&
+                              key !== 'no_of_listings' ? (
+                                renderIcon(item[key], key) == '1' ? (
+                                  <Icon
+                                    name="checkmark-circle"
+                                    size={18}
+                                    color={Color.green}
+                                  />
+                                ) : (
+                                  <Icon
+                                    name="close-circle"
+                                    size={18}
+                                    color={Color.red}
+                                  />
+                                )
+                              ) : (
+                                renderIcon(item[key], key)
+                              )}
+                            </Text>
+                            <Text style={styles.headerCell}>
+                              {common_fn.formatText(key)}
+                            </Text>
+                          </View>
+                        );
+                      })}
                     </View>
-                  </View>
-                </TouchableOpacity>
+                  )}
+                </View>
               );
             }}
             showsVerticalScrollIndicator={false}
@@ -1135,8 +1630,8 @@ export const AgentPlanPurchase = props => {
               fontFamily: Poppins.SemiBold,
               color: Color.white,
             }}
-            // disabled={selectPlan?.length == 0}
-            disabled={true}
+            disabled={selectPlan?.length == 0}
+            // disabled={true}
             buttonStyle={{
               marginVertical: 20,
               backgroundColor: Color.primary,
@@ -1149,3 +1644,44 @@ export const AgentPlanPurchase = props => {
 };
 
 export default PlanPurchase;
+
+const styles = StyleSheet.create({
+  container: {
+    flex: 1,
+    padding: 10,
+  },
+  headerRow: {
+    flexDirection: 'row',
+    borderBottomWidth: 2,
+    borderColor: '#000',
+  },
+  headerCell: {
+    width: 120,
+    textAlign: 'center',
+    paddingVertical: 10,
+    fontWeight: 'bold',
+    color: Color.black,
+  },
+  row: {
+    flexDirection: 'row',
+    alignItems: 'center',
+  },
+  cell: {
+    width: 120,
+    textAlign: 'center',
+    paddingVertical: 10,
+    color: Color.black,
+  },
+  headerText: {
+    color: Color.black,
+    textAlign: 'center',
+  },
+  evenRow: {
+    backgroundColor: '#ffffff',
+    alignItems: 'center',
+  },
+  oddRow: {
+    backgroundColor: '#f7f7f7',
+    alignItems: 'center',
+  },
+});

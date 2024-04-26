@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -23,21 +23,21 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import F5Icon from 'react-native-vector-icons/FontAwesome5';
-import {Button} from 'react-native-elements';
-import {Media} from '../../Global/Media';
-import {Animated} from 'react-native';
+import { Button } from 'react-native-elements';
+import { Media } from '../../Global/Media';
+import { Animated } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {Poppins} from '../../Global/FontFamily';
+import { Poppins } from '../../Global/FontFamily';
 import fetchData from '../../Config/fetchData';
-import {base_image_properties} from '../../Config/base_url';
+import { base_image_properties } from '../../Config/base_url';
 import moment from 'moment';
-import {setPropertySavedFilter, setUserData} from '../../Redux';
-import {useDispatch, useSelector} from 'react-redux';
+import { setPropertySavedFilter, setUserData } from '../../Redux';
+import { useDispatch, useSelector } from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
-import {profileCompletion} from '../../Utils/utils';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {PlanPhonePurchase} from '../../Components/PlanPurchase';
+import { profileCompletion } from '../../Utils/utils';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { PlanPhonePurchase } from '../../Components/PlanPurchase';
 import Share from 'react-native-share';
 import axios from 'axios';
 import SenderModal from '../../Components/SenderModal';
@@ -46,7 +46,7 @@ import BottomLogin from '../../Components/BottomLogin';
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const BuyScreen = ({route, navigation}) => {
+const BuyScreen = ({ route, navigation }) => {
   const [location] = useState(route.params.location);
   const [city_id] = useState(route.params.city_id);
   const [property_action] = useState(route.params.property_action);
@@ -80,7 +80,7 @@ const BuyScreen = ({route, navigation}) => {
   const BounceAnim = useRef(new Animated.Value(0)).current;
   const animatedOpacityValue = useRef(new Animated.Value(0)).current;
   const userData = useSelector(state => state.UserReducer.userData);
-  var {user_id, username, mobile_number, email, get_phone_quota} = userData;
+  var { user_id, username, mobile_number, email, get_phone_quota } = userData;
   const [phoneQuotoVisible, setPhoneQuotoVisible] = useState(false);
   const [get_quota_value, setGet_quota_value] = useState('');
   const [processingProducts, setProcessingProducts] = useState([]);
@@ -154,7 +154,7 @@ const BuyScreen = ({route, navigation}) => {
         tmp = [];
       }
       if (index % addBannerIndex == 0 && index != 0) {
-        arr.push([{type: 'banner'}]);
+        arr.push([{ type: 'banner' }]);
         tmp = [];
       }
       tmp.push(val);
@@ -174,7 +174,7 @@ const BuyScreen = ({route, navigation}) => {
       // }
       if ((i + 1) % 7 === 0) {
         solution.push(buyData[i]);
-        solution.push([{id: j, type: 'banner', data: Banner[j]}]);
+        solution.push([{ id: j, type: 'banner', data: Banner[j] }]);
         j = (j + 1) % Banner.length;
       }
       // else if (solution.length + 1 == 3) {
@@ -267,21 +267,21 @@ const BuyScreen = ({route, navigation}) => {
       id: 1,
       name: 'Budget',
       data: [
-        {id: 1, title: 'Under 50 Lac', value: '0-5000000'},
-        {id: 2, title: '5000000-10000000', value: '5000000-10000000'},
-        {id: 3, title: '10000000-15000000', value: '10000000-15000000'},
-        {id: 4, title: 'Above 1.5 Cr', value: '15000000-200000000'},
+        { id: 1, title: 'Under 50 Lac', value: '0-5000000' },
+        { id: 2, title: '5000000-10000000', value: '5000000-10000000' },
+        { id: 3, title: '10000000-15000000', value: '10000000-15000000' },
+        { id: 4, title: 'Above 1.5 Cr', value: '15000000-200000000' },
       ],
     },
     {
       id: 2,
       name: 'BHK',
       data: [
-        {id: 1, title: '1 BHK', value: '1'},
-        {id: 2, title: '2 BHK', value: '2'},
-        {id: 3, title: '3 BHK', value: '3'},
-        {id: 4, title: '4 BHK', value: '4'},
-        {id: 5, title: '5 BHK', value: '5'},
+        { id: 1, title: '1 BHK', value: '1' },
+        { id: 2, title: '2 BHK', value: '2' },
+        { id: 3, title: '3 BHK', value: '3' },
+        { id: 4, title: '4 BHK', value: '4' },
+        { id: 5, title: '5 BHK', value: '5' },
       ],
     },
     {
@@ -298,18 +298,18 @@ const BuyScreen = ({route, navigation}) => {
   }, [AddFilter, filterBuyData]);
 
   const filterDataPayload = () => {
-    const {locality, bhk, budget} = AddFilter;
+    const { locality, bhk, budget } = AddFilter;
 
     const updatedData = {
-      ...(locality && {locality: encodeURIComponent(locality)}),
-      ...(bhk?.value && {bedroom: encodeURIComponent(bhk?.value)}),
+      ...(locality && { locality: encodeURIComponent(locality) }),
+      ...(bhk?.value && { bedroom: encodeURIComponent(bhk?.value) }),
       ...(budget?.value && {
         max_budget: budget.value.split('-')[1],
         min_budget: budget.value.split('-')[0],
       }),
     };
     const currentData = convertToObj(filterBuyData);
-    const mergedData = {...currentData, ...updatedData};
+    const mergedData = { ...currentData, ...updatedData };
 
     const queryString = convertToStr(mergedData);
     function convertToObj(queryString) {
@@ -338,7 +338,7 @@ const BuyScreen = ({route, navigation}) => {
 
   const dataPayload = () => {
     let params = '';
-    const {budget, bhk, locality} = AddFilter;
+    const { budget, bhk, locality } = AddFilter;
 
     const buyPayload = {
       location,
@@ -446,11 +446,11 @@ const BuyScreen = ({route, navigation}) => {
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-            cancelToken: cancelTokenSource.token,
-          })
+          cancelToken: cancelTokenSource.token,
+        })
         : fetchData.add_to_wishlist(data, {
-            cancelToken: cancelTokenSource.token,
-          });
+          cancelToken: cancelTokenSource.token,
+        });
 
       const response = await apiRequest;
 
@@ -462,7 +462,7 @@ const BuyScreen = ({route, navigation}) => {
         }
         setBuyData(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? {...product, isWishListed: false} : product,
+            product.p_id === id ? { ...product, isWishListed: false } : product,
           ),
         );
       } else if (response?.message === 'Success' && !isWishList) {
@@ -473,7 +473,7 @@ const BuyScreen = ({route, navigation}) => {
         }
         setBuyData(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? {...product, isWishListed: true} : product,
+            product.p_id === id ? { ...product, isWishListed: true } : product,
           ),
         );
       }
@@ -523,7 +523,7 @@ const BuyScreen = ({route, navigation}) => {
               }}>
               Get a Rent Agreement absolutely FREE
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{}}>
                 <View
                   style={{
@@ -575,12 +575,12 @@ const BuyScreen = ({route, navigation}) => {
                 </View>
               </View>
               <Image
-                source={{uri: Media.adBanner}}
-                style={{width: 100, height: 100, resizeMode: 'contain'}}
+                source={{ uri: Media.adBanner }}
+                style={{ width: 100, height: 100, resizeMode: 'contain' }}
               />
             </View>
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
               onPress={() => {
                 navigation.navigate('PackersMovers');
               }}>
@@ -641,7 +641,7 @@ const BuyScreen = ({route, navigation}) => {
               }}>
               Relocating Made Simple
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
                 style={{
                   flex: 1,
@@ -665,12 +665,12 @@ const BuyScreen = ({route, navigation}) => {
                 </Text>
               </View>
               <Image
-                source={{uri: Media.adBanner2}}
-                style={{width: 100, height: 100, resizeMode: 'contain'}}
+                source={{ uri: Media.adBanner2 }}
+                style={{ width: 100, height: 100, resizeMode: 'contain' }}
               />
             </View>
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
               onPress={() => {
                 navigation.navigate('PackersMovers');
               }}>
@@ -907,7 +907,7 @@ const BuyScreen = ({route, navigation}) => {
           {val?.images != undefined && (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('SingleProperty', {p_id: val?.p_id});
+                navigation.navigate('SingleProperty', { p_id: val?.p_id });
               }}
               style={{}}>
               {val?.images?.length > 0 ? (
@@ -924,7 +924,7 @@ const BuyScreen = ({route, navigation}) => {
                 />
               ) : (
                 <Image
-                  source={{uri: Media.noImage}}
+                  source={{ uri: Media.noImage }}
                   style={{
                     width: 150,
                     height: 150,
@@ -1025,7 +1025,7 @@ const BuyScreen = ({route, navigation}) => {
               </View>
             </TouchableOpacity>
           )}
-          <View style={{padding: 5, flex: 1, marginHorizontal: 5}}>
+          <View style={{ padding: 5, flex: 1, marginHorizontal: 5 }}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1053,7 +1053,7 @@ const BuyScreen = ({route, navigation}) => {
                     ? common_fn.formatNumberWithSuffix(val?.expected_price)
                     : val?.expected_price}
                 </Text>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   {parseInt(val?.area?.super_area) != 0 && (
                     <Text
                       style={{
@@ -1181,7 +1181,7 @@ const BuyScreen = ({route, navigation}) => {
                 }
               }
             }}
-            containerStyle={{width: '45%'}}
+            containerStyle={{ width: '45%' }}
           />
           <Button
             // title={val?.plan == 3 ? 'Unlock with Prime' : 'Call Agent'}
@@ -1207,9 +1207,9 @@ const BuyScreen = ({route, navigation}) => {
               // height: 40,
             }}
             onPress={() => {
-              navigation.navigate('SingleProperty', {p_id: val?.p_id});
+              navigation.navigate('SingleProperty', { p_id: val?.p_id });
             }}
-            containerStyle={{width: '45%'}}
+            containerStyle={{ width: '45%' }}
           />
           <Button
             title={''}
@@ -1229,7 +1229,7 @@ const BuyScreen = ({route, navigation}) => {
             onPress={() => {
               onShare(val);
             }}
-            // containerStyle={{width: '10%'}}
+          // containerStyle={{width: '10%'}}
           />
         </View>
         <SenderModal
@@ -1384,7 +1384,7 @@ const BuyScreen = ({route, navigation}) => {
   const phoneNumber = '1234567890';
   const whatsappLink = `https://wa.me/${phoneNumber}`;
   return (
-    <View style={{flex: 1, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, backgroundColor: Color.white }}>
       {filterloading || loading ? (
         <View
           style={{
@@ -1394,8 +1394,8 @@ const BuyScreen = ({route, navigation}) => {
             // height: height,
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
@@ -1434,7 +1434,7 @@ const BuyScreen = ({route, navigation}) => {
                 });
               }}>
               <F6Icon
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
                 color={Color.white}
                 name="sliders"
                 size={20}
@@ -1476,12 +1476,12 @@ const BuyScreen = ({route, navigation}) => {
                           ? AddFilter?.budget?.id == 2 ||
                             AddFilter?.budget?.id == 3
                             ? common_fn.formatedDataforSuffix(
-                                AddFilter?.budget?.title,
-                              )
+                              AddFilter?.budget?.title,
+                            )
                             : AddFilter?.budget?.title
                           : single_item?.name == 'BHK'
-                          ? AddFilter?.bhk?.value
-                          : single_item?.name == 'Popular Locality' &&
+                            ? AddFilter?.bhk?.value
+                            : single_item?.name == 'Popular Locality' &&
                             AddFilter?.locality}
                       </Text>
                       <Text
@@ -1554,144 +1554,144 @@ const BuyScreen = ({route, navigation}) => {
                           }}>
                           {single_item?.name == 'Popular Locality'
                             ? locality &&
-                              Array?.isArray(locality) &&
-                              locality?.map((item, index) => {
-                                return (
-                                  <TouchableOpacity
-                                    key={index}
-                                    style={{
-                                      width: '45%',
-                                      backgroundColor:
-                                        AddFilter?.locality == item
-                                          ? Color.primary
-                                          : Color.white,
-                                      paddingHorizontal: 10,
-                                      paddingVertical: 5,
-                                      margin: 5,
-                                      borderRadius: 50,
-                                      borderWidth: 1,
-                                      borderColor: '#d4d4d4',
-                                      alignItems: 'center',
-                                    }}
-                                    onPress={() => {
-                                      single_item?.name == 'Popular Locality' &&
+                            Array?.isArray(locality) &&
+                            locality?.map((item, index) => {
+                              return (
+                                <TouchableOpacity
+                                  key={index}
+                                  style={{
+                                    width: '45%',
+                                    backgroundColor:
                                       AddFilter?.locality == item
-                                        ? SetAddFilter({
-                                            budget: AddFilter?.budget,
-                                            bhk: AddFilter?.bhk,
-                                            locality: null,
-                                          })
-                                        : SetAddFilter({
-                                            budget: AddFilter?.budget,
-                                            bhk: AddFilter?.bhk,
-                                            locality: item,
-                                          });
-                                      this[RBSheet + single_index].close();
-                                      setFilterLoading(true);
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: 14,
-                                        color:
-                                          AddFilter?.locality == item
-                                            ? Color.white
-                                            : Color.black,
-                                        marginHorizontal: 10,
-                                        fontFamily: Poppins.SemiBold,
-                                      }}>
-                                      {item}
-                                    </Text>
-                                  </TouchableOpacity>
-                                );
-                              })
-                            : single_item?.data?.map((item, index) => {
-                                return (
-                                  <TouchableOpacity
-                                    key={index}
+                                        ? Color.primary
+                                        : Color.white,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 5,
+                                    margin: 5,
+                                    borderRadius: 50,
+                                    borderWidth: 1,
+                                    borderColor: '#d4d4d4',
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => {
+                                    single_item?.name == 'Popular Locality' &&
+                                      AddFilter?.locality == item
+                                      ? SetAddFilter({
+                                        budget: AddFilter?.budget,
+                                        bhk: AddFilter?.bhk,
+                                        locality: null,
+                                      })
+                                      : SetAddFilter({
+                                        budget: AddFilter?.budget,
+                                        bhk: AddFilter?.bhk,
+                                        locality: item,
+                                      });
+                                    this[RBSheet + single_index].close();
+                                    setFilterLoading(true);
+                                  }}>
+                                  <Text
                                     style={{
-                                      width: '45%',
-                                      backgroundColor:
-                                        AddFilter?.budget?.value ==
-                                          item?.value ||
+                                      fontSize: 14,
+                                      color:
+                                        AddFilter?.locality == item
+                                          ? Color.white
+                                          : Color.black,
+                                      marginHorizontal: 10,
+                                      fontFamily: Poppins.SemiBold,
+                                    }}>
+                                    {item}
+                                  </Text>
+                                </TouchableOpacity>
+                              );
+                            })
+                            : single_item?.data?.map((item, index) => {
+                              return (
+                                <TouchableOpacity
+                                  key={index}
+                                  style={{
+                                    width: '45%',
+                                    backgroundColor:
+                                      AddFilter?.budget?.value ==
+                                        item?.value ||
                                         AddFilter?.bhk?.value == item?.value ||
                                         AddFilter?.locality == item?.value
-                                          ? Color.primary
-                                          : Color.white,
-                                      marginVertical: 10,
-                                      borderWidth: 1,
-                                      borderColor: Color.black,
-                                      borderRadius: 50,
-                                      marginHorizontal: 5,
-                                      alignItems: 'center',
-                                      padding: 5,
-                                      justifyContent: 'center',
-                                    }}
-                                    onPress={() => {
-                                      single_item?.name == 'Budget'
-                                        ? item.value == AddFilter?.budget?.value
-                                          ? SetAddFilter({
-                                              budget: null,
-                                              bhk: AddFilter?.bhk,
-                                              locality: AddFilter?.locality,
-                                            })
-                                          : SetAddFilter({
-                                              budget: item,
-                                              bhk: AddFilter?.bhk,
-                                              locality: AddFilter?.locality,
-                                            })
-                                        : single_item?.name == 'BHK'
+                                        ? Color.primary
+                                        : Color.white,
+                                    marginVertical: 10,
+                                    borderWidth: 1,
+                                    borderColor: Color.black,
+                                    borderRadius: 50,
+                                    marginHorizontal: 5,
+                                    alignItems: 'center',
+                                    padding: 5,
+                                    justifyContent: 'center',
+                                  }}
+                                  onPress={() => {
+                                    single_item?.name == 'Budget'
+                                      ? item.value == AddFilter?.budget?.value
+                                        ? SetAddFilter({
+                                          budget: null,
+                                          bhk: AddFilter?.bhk,
+                                          locality: AddFilter?.locality,
+                                        })
+                                        : SetAddFilter({
+                                          budget: item,
+                                          bhk: AddFilter?.bhk,
+                                          locality: AddFilter?.locality,
+                                        })
+                                      : single_item?.name == 'BHK'
                                         ? item.value == AddFilter?.bhk?.value
                                           ? SetAddFilter({
-                                              budget: AddFilter?.budget,
-                                              bhk: null,
-                                              locality: AddFilter?.locality,
-                                            })
+                                            budget: AddFilter?.budget,
+                                            bhk: null,
+                                            locality: AddFilter?.locality,
+                                          })
                                           : SetAddFilter({
-                                              budget: AddFilter?.budget,
-                                              bhk: item,
-                                              locality: AddFilter?.locality,
-                                            })
+                                            budget: AddFilter?.budget,
+                                            bhk: item,
+                                            locality: AddFilter?.locality,
+                                          })
                                         : single_item?.name ==
-                                            'Popular Locality' &&
+                                          'Popular Locality' &&
                                           item.value == AddFilter?.locality
-                                        ? SetAddFilter({
+                                          ? SetAddFilter({
                                             budget: AddFilter?.budget,
                                             bhk: AddFilter?.bhk,
                                             locality: null,
                                           })
-                                        : SetAddFilter({
+                                          : SetAddFilter({
                                             budget: AddFilter?.budget,
                                             bhk: AddFilter?.bhk,
                                             locality: item,
                                           });
-                                      this[RBSheet + single_index].close();
-                                      setFilterLoading(true);
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: 14,
-                                        color:
-                                          AddFilter?.budget?.value ==
-                                            item?.value ||
+                                    this[RBSheet + single_index].close();
+                                    setFilterLoading(true);
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: 14,
+                                      color:
+                                        AddFilter?.budget?.value ==
+                                          item?.value ||
                                           AddFilter?.bhk?.value ==
-                                            item?.value ||
+                                          item?.value ||
                                           AddFilter?.locality == item?.value
-                                            ? Color.white
-                                            : Color.black,
-                                        marginHorizontal: 10,
-                                        fontFamily: Poppins.SemiBold,
-                                      }}>
-                                      {single_item?.name == 'Budget'
-                                        ? item?.id == 2 || item?.id == 3
-                                          ? common_fn.formatedDataforSuffix(
-                                              item?.title,
-                                            )
-                                          : item?.title
-                                        : item?.title}
-                                    </Text>
-                                  </TouchableOpacity>
-                                );
-                              })}
+                                          ? Color.white
+                                          : Color.black,
+                                      marginHorizontal: 10,
+                                      fontFamily: Poppins.SemiBold,
+                                    }}>
+                                    {single_item?.name == 'Budget'
+                                      ? item?.id == 2 || item?.id == 3
+                                        ? common_fn.formatedDataforSuffix(
+                                          item?.title,
+                                        )
+                                        : item?.title
+                                      : item?.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              );
+                            })}
                         </View>
                       </ScrollView>
                     </RBSheet>
@@ -1723,20 +1723,20 @@ const BuyScreen = ({route, navigation}) => {
             // contentContainerStyle={{flexGrow: 1, paddingBottom: 60}}
             keyExtractor={(item, index) => item + index}
             onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: animatedOpacityValue}}}],
-              {useNativeDriver: false},
+              [{ nativeEvent: { contentOffset: { y: animatedOpacityValue } } }],
+              { useNativeDriver: false },
             )}
-            contentContainerStyle={{paddingHorizontal: 5}}
-            renderItem={({item, index}) => renderItem(item, index)}
+            contentContainerStyle={{ paddingHorizontal: 5 }}
+            renderItem={({ item, index }) => renderItem(item, index)}
             onEndReached={() => {
               loadMoreData();
             }}
             onEndReachedThreshold={3}
             ListFooterComponent={() => {
               return (
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   {loadMore && countFilter > 10 && (
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 12,
@@ -1980,21 +1980,21 @@ const BuyScreen = ({route, navigation}) => {
                   <TextInput
                     placeholder="Enter your phone number"
                     placeholderTextColor={Color.cloudyGrey}
-                    value={mobile_number}
-                    editable={false}
+                    value={number}
+                    editable={mobile_number?.length !== 10}
                     keyboardType="phone-pad"
                     maxLength={10}
                     returnKeyType={'done'}
-                    // onChangeText={number => {
-                    //   chkNumber(number);
-                    // }}
+                    onChangeText={number => {
+                      chkNumber(number);
+                    }}
                     style={styles.numberTextBox}
                   />
                 </View>
               </View>
               <Button
                 title={'Submit'}
-                buttonStyle={{backgroundColor: Color.primary}}
+                buttonStyle={{ backgroundColor: Color.primary }}
                 onPress={() => {
                   updateProfile();
                 }}
@@ -2054,7 +2054,7 @@ const styles = StyleSheet.create({
     color: Color.black,
     marginVertical: 10,
     fontSize: 16,
-    // fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold',
   },
 
   searchSection: {

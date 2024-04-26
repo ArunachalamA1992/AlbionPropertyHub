@@ -97,7 +97,7 @@ const SplashScreen = ({ navigation }) => {
   useEffect(() => {
     if (loading) {
       const SplashLoad = setTimeout(() => {
-        // checkForUpdates();
+        // // checkForUpdates();
         getUserData();
         getData();
       }, 3000);
@@ -152,12 +152,11 @@ const SplashScreen = ({ navigation }) => {
     // <View style={{ flex: 1, width: scr_width, height: scr_height }}>
     <View
       style={{
-        width: scr_width,
-        height: scr_height, justifyContent: 'center', alignItems: 'center'
+        width: scr_width, justifyContent: 'center', alignItems: 'center'
       }}>
       {!loading && <NetworkState setNetInfo={setNetInfo} />}
       <Image
-        source={{ uri: Media.update_logo }}
+        source={{ uri: "https://albion-backend.s3.ap-south-1.amazonaws.com/mainloader.gif" }}
         style={{ width: scr_width, height: scr_height }}
       />
       <RBSheet

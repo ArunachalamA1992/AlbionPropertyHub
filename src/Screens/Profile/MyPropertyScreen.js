@@ -1,4 +1,4 @@
-import React, {useEffect, useState, memo, useCallback} from 'react';
+import React, { useEffect, useState, memo, useCallback } from 'react';
 import {
   View,
   Text,
@@ -19,14 +19,14 @@ import FIcon from 'react-native-vector-icons/FontAwesome';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import AIcon from 'react-native-vector-icons/AntDesign';
-import {base_image_properties} from '../../Config/base_url';
-import {Media} from '../../Global/Media';
-import {Poppins} from '../../Global/FontFamily';
-import {Button} from 'react-native-elements';
+import { base_image_properties } from '../../Config/base_url';
+import { Media } from '../../Global/Media';
+import { Poppins } from '../../Global/FontFamily';
+import { Button } from 'react-native-elements';
 import fetchData from '../../Config/fetchData';
-import {useSelector} from 'react-redux';
-import {SafeAreaView} from 'react-native';
-import {SceneMap, TabBar, TabView} from 'react-native-tab-view';
+import { useSelector } from 'react-redux';
+import { SafeAreaView } from 'react-native';
+import { SceneMap, TabBar, TabView } from 'react-native-tab-view';
 import common_fn from '../../Config/common_fn';
 import moment from 'moment';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
@@ -34,7 +34,7 @@ import Share from 'react-native-share';
 
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
-const PropertyStatus = React.memo(({item}) => {
+const PropertyStatus = React.memo(({ item }) => {
   switch (item) {
     case '1':
       return (
@@ -149,7 +149,7 @@ const PropertyStatus = React.memo(({item}) => {
   }
 });
 
-const MyContactedList = React.memo(({navigation, user_id, contacted}) => {
+const MyContactedList = React.memo(({ navigation, user_id, contacted }) => {
   const [dataFetched, setDataFetched] = useState(false);
 
   const onShare = async item => {
@@ -171,239 +171,252 @@ const MyContactedList = React.memo(({navigation, user_id, contacted}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         data={contacted}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           // console.log('item', JSON.stringify(item))
           return (
-            <TouchableOpacity
-              key={index}
-              style={{
-                padding: 10,
-                shadowColor: Color.black,
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                backgroundColor: Color.white,
-                shadowOpacity: 0.22,
-                shadowRadius: 2.22,
-                elevation: 3,
-                marginVertical: 10,
-                borderRadius: 0,
-              }}
-              onPress={() => {
-                navigation.navigate('SingleProperty', {
-                  p_id: item?.p_id,
-                });
-              }}>
-              <View style={styles.orderBoxView}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor:
-                        item?.property?.property_action === 'sell'
-                          ? Color.primary
-                          : Color.cloudyGrey,
-                      width: 80,
-                      height: 30,
-                      justifyContent: 'center',
-                      borderRadius: 5,
-                      marginHorizontal: 10,
-                    }}>
-                    <Text
-                      style={{
-                        color: Color.white,
-                        fontSize: 14,
-                        fontFamily: Poppins.SemiBold,
-                        paddingHorizontal: 5,
-                        marginHorizontal: 10,
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}>
-                      {item?.property?.property_action}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor:
-                        item?.property?.property_action === 'sell'
-                          ? Color.primary
-                          : Color.cloudyGrey,
-                      width: 80,
-                      height: 30,
-                      justifyContent: 'center',
-                      borderRadius: 5,
-                    }}>
-                    <Text
-                      style={{
-                        color: Color.white,
-                        fontSize: 14,
-                        fontFamily: Poppins.SemiBold,
-                        paddingHorizontal: 5,
-                        marginHorizontal: 10,
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}>
-                      {item?.property?.property_type?.pt_name}
-                    </Text>
-                  </View>
-                </View>
-                <View
+            <>
+              {item?.property === null ? (
+                <View />
+              ) : (
+                <TouchableOpacity
+                  key={index}
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    padding: 10,
+                    shadowColor: Color.black,
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    backgroundColor: Color.white,
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+                    elevation: 3,
                     marginVertical: 10,
+                    borderRadius: 0,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('SingleProperty', {
+                      p_id: item?.p_id,
+                    });
                   }}>
-                  <Text
-                    style={{
-                      flex: 1,
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    Id : {item?.property?.p_id}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    Date :{' '}
-                    {moment(item?.property?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>User Name :</Text>
-                  <Text
-                    style={{
-                      flex: 1,
-                      color: Color.black,
-                      fontSize: 16,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    {item?.property?.seller_details?.username}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Interested IN :</Text>
-                  <View style={{padding: 5, flex: 1, marginHorizontal: 5}}>
-                    <Text style={styles.orderDateText} numberOfLines={2}>
-                      {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Price :</Text>
-                  <Text style={styles.totalText}>
-                    ₹
-                    {item?.property_type?.pt_name == 'PG'
-                      ? common_fn.getMinToMaxPrice(
-                          item?.property?.room_category,
-                        )
-                      : item?.property?.expected_price?.length >= 5
-                      ? common_fn.formatNumberWithSuffix(
-                          item?.property?.expected_price,
-                        )
-                      : item?.property?.expected_price}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Mobile Number :</Text>
-                  <Text
-                    style={{
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    {
-                      item?.property?.seller_details?.mobile_number
-                      // ?.substring(0, 5)
-                      // .concat('*****')
-                    }
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                    marginVertical: 5,
-                  }}>
-                  {/* <View
+                  <View style={styles.orderBoxView}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          backgroundColor:
+                            item?.property?.property_action === 'sell'
+                              ? Color.primary
+                              : Color.cloudyGrey,
+                          width: 80,
+                          height: 30,
+                          justifyContent: 'center',
+                          borderRadius: 5,
+
+                        }}>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 14,
+                            fontFamily: Poppins.SemiBold,
+                            paddingHorizontal: 5,
+                            marginHorizontal: 10,
+                            textAlign: 'center',
+                            textTransform: 'capitalize',
+                          }}>
+                          {item?.property?.property_action}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          backgroundColor:
+                            item?.property?.property_action === 'sell'
+                              ? Color.primary
+                              : Color.cloudyGrey,
+                          width: 80,
+                          height: 30,
+                          justifyContent: 'center',
+                          borderRadius: 5, marginHorizontal: 10,
+                        }}>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 14,
+                            fontFamily: Poppins.SemiBold,
+                            paddingHorizontal: 5,
+                            marginHorizontal: 10,
+                            textAlign: 'center',
+                            textTransform: 'capitalize',
+                          }}>
+                          {item?.property?.property_type?.pt_name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
                       style={{
-                        flex: 1,
-                        borderWidth: 1,
-                        borderColor: Color.lightgrey,
-                        height: 40,
-                        padding: 5,
-                        borderRadius: 5,
+                        width: '100%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginVertical: 10,
                       }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text
+                          style={{
+                            color: Color.cloudyGrey,
+                            fontSize: 13,
+                            fontFamily: Poppins.Medium, textAlign: 'left'
+                          }}>
+                          Id
+                        </Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', textAlign: 'left', paddingVertical: 5
+                          }}>{item?.property?.p_id}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text
+                          style={{
+                            color: Color.cloudyGrey,
+                            fontSize: 13,
+                            fontFamily: Poppins.Medium, textAlign: 'right'
+                          }}>Date</Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', textAlign: 'right', paddingVertical: 5
+                          }}>
+                          {moment(item?.property?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>User Name :</Text>
                       <Text
                         style={{
+                          flex: 1,
                           color: Color.black,
-                          fontSize: 14,
-                          fontFamily: Poppins.Medium,
-                          paddingTop: 2,
+                          fontSize: 16, textAlign: 'right',
+                          fontFamily: Poppins.Medium, fontWeight: '800'
                         }}>
-                        Lead Status
+                        {item?.property?.seller_details?.username}
                       </Text>
-                    </View> */}
-                  <Button
-                    title={'Call'}
-                    titleStyle={{
-                      color: Color.white,
-                      marginHorizontal: 5,
-                      fontFamily: Poppins.SemiBold,
-                      fontSize: 14,
-                    }}
-                    buttonStyle={{
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                      marginHorizontal: 5,
-                    }}
-                    icon={() => (
-                      <Icon
-                        name="call"
-                        size={18}
-                        style={{color: Color.white}}
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>
+                        Interested IN :
+                      </Text>
+                      <View style={{ padding: 5, flex: 1, }}>
+                        <Text style={styles.orderDateText} numberOfLines={2}>
+                          {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text style={styles.orderHeaderText}>Price</Text>
+                        <Text style={[styles.totalText, { paddingVertical: 3 }]}>
+                          ₹
+                          {item?.property_type?.pt_name == 'PG'
+                            ? common_fn.getMinToMaxPrice(
+                              item?.property?.room_category,
+                            )
+                            : item?.property?.expected_price?.length >= 5
+                              ? common_fn.formatNumberWithSuffix(
+                                item?.property?.expected_price,
+                              )
+                              : item?.property?.expected_price}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text style={styles.orderHeaderText}>
+                          Mobile Number
+                        </Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', paddingVertical: 3
+                          }}>
+                          {
+                            item?.property?.seller_details?.mobile_number
+                            // ?.substring(0, 5)
+                            // .concat('*****')
+                          }
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        marginVertical: 5,
+                      }}>
+                      <Button
+                        title={'Call'}
+                        titleStyle={{
+                          color: Color.white,
+                          marginHorizontal: 5,
+                          fontFamily: Poppins.SemiBold,
+                          fontSize: 14,
+                        }}
+                        buttonStyle={{
+                          backgroundColor: Color.primary,
+                          borderRadius: 5,
+                          marginHorizontal: 5,
+                        }}
+                        icon={() => (
+                          <Icon
+                            name="call"
+                            size={18}
+                            style={{ color: Color.white }}
+                          />
+                        )}
+                        containerStyle={{ flex: 1 }}
+                        onPress={() => {
+                          RNImmediatePhoneCall.immediatePhoneCall(
+                            item?.user?.mobile_number,
+                          );
+                        }}
                       />
-                    )}
-                    containerStyle={{flex: 1}}
-                    onPress={() => {
-                      RNImmediatePhoneCall.immediatePhoneCall(
-                        item?.user?.mobile_number,
-                      );
-                    }}
-                  />
-                  <Button
-                    title={''}
-                    titleStyle={{
-                      color: Color.white,
-                      marginHorizontal: 5,
-                      fontSize: 14,
-                    }}
-                    icon={() => (
-                      <Icon name="share-social" size={25} color={Color.white} />
-                    )}
-                    buttonStyle={{
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                      marginHorizontal: 5,
-                    }}
-                    onPress={() => {
-                      onShare(item);
-                    }}
-                    // containerStyle={{width: '10%'}}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
+                      <Button
+                        title={''}
+                        titleStyle={{
+                          color: Color.white,
+                          marginHorizontal: 5,
+                          fontSize: 14,
+                        }}
+                        icon={() => (
+                          <Icon
+                            name="share-social"
+                            size={25}
+                            color={Color.white}
+                          />
+                        )}
+                        buttonStyle={{
+                          backgroundColor: Color.primary,
+                          borderRadius: 5,
+                          marginHorizontal: 5,
+                        }}
+                        onPress={() => {
+                          onShare(item);
+                        }}
+                      // containerStyle={{width: '10%'}}
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            </>
           );
         }}
         ListEmptyComponent={() => {
@@ -415,14 +428,9 @@ const MyContactedList = React.memo(({navigation, user_id, contacted}) => {
                 justifyContent: 'center',
                 height: HEIGHT / 1.5,
               }}>
-              {/* <MCIcon
-              name="clipboard-text-search-outline"
-              size={40}
-              color={Color.primary}
-            /> */}
               <Image
-                source={{uri: Media.noProperty}}
-                style={{width: 150, height: 100}}
+                source={{ uri: Media.noProperty }}
+                style={{ width: 150, height: 100 }}
               />
               <Text
                 style={{
@@ -445,7 +453,7 @@ const MyContactedList = React.memo(({navigation, user_id, contacted}) => {
   );
 });
 
-const MyResponseProperty = ({navigation, user_id, ResponseList}) => {
+const MyResponseProperty = ({ navigation, user_id, ResponseList }) => {
   const [loading, setLoading] = useState(false);
   const [dataFetched, setDataFetched] = useState(false);
 
@@ -468,170 +476,178 @@ const MyResponseProperty = ({navigation, user_id, ResponseList}) => {
   };
 
   return (
-    <SafeAreaView style={{flex: 1}}>
+    <SafeAreaView style={{ flex: 1 }}>
       <FlatList
         data={ResponseList}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           return (
-            <TouchableOpacity
-              key={index}
-              style={{
-                padding: 10,
-                shadowColor: Color.black,
-                shadowOffset: {
-                  width: 0,
-                  height: 1,
-                },
-                backgroundColor: Color.white,
-                shadowOpacity: 0.22,
-                shadowRadius: 2.22,
-                elevation: 3,
-                marginVertical: 10,
-                borderRadius: 0,
-              }}
-              onPress={() => {
-                navigation.navigate('SingleProperty', {
-                  p_id: item?.p_id,
-                });
-              }}>
-              <View style={styles.orderBoxView}>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor:
-                        item?.property?.property_action === 'sell'
-                          ? Color.primary
-                          : Color.cloudyGrey,
-                      width: 80,
-                      height: 30,
-                      justifyContent: 'center',
-                      borderRadius: 5,
-                      marginHorizontal: 10,
-                    }}>
-                    <Text
-                      style={{
-                        color: Color.white,
-                        fontSize: 14,
-                        fontFamily: Poppins.SemiBold,
-                        paddingHorizontal: 5,
-                        marginHorizontal: 10,
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}>
-                      {item?.property?.property_action}
-                    </Text>
-                  </View>
-                  <View
-                    style={{
-                      alignItems: 'center',
-                      backgroundColor:
-                        item?.property?.property_action === 'sell'
-                          ? Color.primary
-                          : Color.cloudyGrey,
-                      width: 80,
-                      height: 30,
-                      justifyContent: 'center',
-                      borderRadius: 5,
-                    }}>
-                    <Text
-                      style={{
-                        color: Color.white,
-                        fontSize: 14,
-                        fontFamily: Poppins.SemiBold,
-                        paddingHorizontal: 5,
-                        marginHorizontal: 10,
-                        textAlign: 'center',
-                        textTransform: 'capitalize',
-                      }}>
-                      {item?.property?.property_type?.pt_name}
-                    </Text>
-                  </View>
-                </View>
-                <View
+            <>
+              {item?.user === null ? (
+                <View />
+              ) : (
+                <TouchableOpacity
+                  key={index}
                   style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
+                    padding: 10,
+                    shadowColor: Color.black,
+                    shadowOffset: {
+                      width: 0,
+                      height: 1,
+                    },
+                    backgroundColor: Color.white,
+                    shadowOpacity: 0.22,
+                    shadowRadius: 2.22,
+                    elevation: 3,
                     marginVertical: 10,
+                    borderRadius: 0,
+                  }}
+                  onPress={() => {
+                    navigation.navigate('SingleProperty', {
+                      p_id: item?.p_id,
+                    });
                   }}>
-                  <Text
-                    style={{
-                      flex: 1,
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    Id : {item?.property?.p_id}
-                  </Text>
-                  <Text
-                    style={{
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    Date :{' '}
-                    {moment(item?.property?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>User Name : </Text>
-                  <Text
-                    style={{
-                      flex: 1,
-                      color: Color.black,
-                      fontSize: 16,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    {item?.property?.seller_details?.username}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Interested IN :</Text>
-                  <View style={{padding: 5, flex: 1, marginHorizontal: 5}}>
-                    <Text style={styles.orderDateText} numberOfLines={2}>
-                      {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
-                    </Text>
-                  </View>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Price :</Text>
-                  <Text style={styles.totalText}>
-                    ₹
-                    {item?.property?.property_type?.pt_name == 'PG'
-                      ? common_fn.getMinToMaxPrice(
-                          item?.property?.room_category,
-                        )
-                      : item?.property?.expected_price?.length >= 5
-                      ? common_fn.formatNumberWithSuffix(
-                          item?.property?.expected_price,
-                        )
-                      : item?.property?.expected_price}
-                  </Text>
-                </View>
-                <View style={styles.orderDataView}>
-                  <Text style={styles.orderHeaderText}>Mobile Number :</Text>
-                  <Text
-                    style={{
-                      color: Color.black,
-                      fontSize: 14,
-                      fontFamily: Poppins.Medium,
-                    }}>
-                    {
-                      item?.property?.seller_details?.mobile_number
-                      // ?.substring(0, 5)
-                      // .concat('*****')
-                    }
-                  </Text>
-                </View>
-                <View
-                  style={{
-                    flexDirection: 'row',
-                    alignItems: 'center',
-                    justifyContent: 'space-evenly',
-                    marginVertical: 5,
-                  }}>
-                  {/* <View
+                  <View style={styles.orderBoxView}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          backgroundColor:
+                            item?.property?.property_action === 'sell'
+                              ? Color.primary
+                              : Color.cloudyGrey,
+                          width: 80,
+                          height: 30,
+                          justifyContent: 'center',
+                          borderRadius: 5,
+                          marginHorizontal: 10,
+                        }}>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 14,
+                            fontFamily: Poppins.SemiBold,
+                            paddingHorizontal: 5,
+                            marginHorizontal: 10,
+                            textAlign: 'center',
+                            textTransform: 'capitalize',
+                          }}>
+                          {item?.property?.property_action}
+                        </Text>
+                      </View>
+                      <View
+                        style={{
+                          alignItems: 'center',
+                          backgroundColor:
+                            item?.property?.property_action === 'sell'
+                              ? Color.primary
+                              : Color.cloudyGrey,
+                          width: 80,
+                          height: 30,
+                          justifyContent: 'center',
+                          borderRadius: 5,
+                        }}>
+                        <Text
+                          style={{
+                            color: Color.white,
+                            fontSize: 14,
+                            fontFamily: Poppins.SemiBold,
+                            paddingHorizontal: 5,
+                            marginHorizontal: 10,
+                            textAlign: 'center',
+                            textTransform: 'capitalize',
+                          }}>
+                          {item?.property?.property_type?.pt_name}
+                        </Text>
+                      </View>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        marginVertical: 10,
+                      }}>
+                      <Text
+                        style={{
+                          flex: 1,
+                          color: Color.black,
+                          fontSize: 14,
+                          fontFamily: Poppins.Medium,
+                        }}>
+                        Id : {item?.p_id}
+                      </Text>
+                      <Text
+                        style={{
+                          color: Color.black,
+                          fontSize: 14,
+                          fontFamily: Poppins.Medium,
+                        }}>
+                        Date :{' '}
+                        {moment(item?.user?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
+                      </Text>
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>User Name : </Text>
+                      <Text
+                        style={{
+                          flex: 1,
+                          color: Color.black,
+                          fontSize: 16,
+                          fontFamily: Poppins.Medium,
+                        }}>
+                        {item?.user?.username}
+                      </Text>
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>
+                        Interested IN :
+                      </Text>
+                      <View style={{ padding: 5, flex: 1, marginHorizontal: 5 }}>
+                        <Text style={styles.orderDateText} numberOfLines={2}>
+                          {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
+                        </Text>
+                      </View>
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>Price :</Text>
+                      <Text style={styles.totalText}>
+                        ₹
+                        {item?.property?.property_type?.pt_name == 'PG'
+                          ? common_fn.getMinToMaxPrice(
+                            item?.property?.room_category,
+                          )
+                          : item?.property?.expected_price?.length >= 5
+                            ? common_fn.formatNumberWithSuffix(
+                              item?.property?.expected_price,
+                            )
+                            : item?.property?.expected_price}
+                      </Text>
+                    </View>
+                    <View style={styles.orderDataView}>
+                      <Text style={styles.orderHeaderText}>
+                        Mobile Number :
+                      </Text>
+                      <Text
+                        style={{
+                          color: Color.black,
+                          fontSize: 14,
+                          fontFamily: Poppins.Medium,
+                        }}>
+                        {
+                          item?.user?.mobile_number
+                          // ?.substring(0, 5)
+                          // .concat('*****')
+                        }
+                      </Text>
+                    </View>
+                    <View
+                      style={{
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                        justifyContent: 'space-evenly',
+                        marginVertical: 5,
+                      }}>
+                      {/* <View
                       style={{
                         flex: 1,
                         borderWidth: 1,
@@ -650,56 +666,62 @@ const MyResponseProperty = ({navigation, user_id, ResponseList}) => {
                         Lead Status
                       </Text>
                     </View> */}
-                  <Button
-                    title={'Call'}
-                    titleStyle={{
-                      color: Color.white,
-                      marginHorizontal: 5,
-                      fontFamily: Poppins.SemiBold,
-                      fontSize: 14,
-                    }}
-                    buttonStyle={{
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                      marginHorizontal: 5,
-                    }}
-                    icon={() => (
-                      <Icon
-                        name="call"
-                        size={18}
-                        style={{color: Color.white}}
+                      <Button
+                        title={'Call'}
+                        titleStyle={{
+                          color: Color.white,
+                          marginHorizontal: 5,
+                          fontFamily: Poppins.SemiBold,
+                          fontSize: 14,
+                        }}
+                        buttonStyle={{
+                          backgroundColor: Color.primary,
+                          borderRadius: 5,
+                          marginHorizontal: 5,
+                        }}
+                        icon={() => (
+                          <Icon
+                            name="call"
+                            size={18}
+                            style={{ color: Color.white }}
+                          />
+                        )}
+                        containerStyle={{ flex: 1 }}
+                        onPress={() => {
+                          RNImmediatePhoneCall.immediatePhoneCall(
+                            item?.user?.mobile_number,
+                          );
+                        }}
                       />
-                    )}
-                    containerStyle={{flex: 1}}
-                    onPress={() => {
-                      RNImmediatePhoneCall.immediatePhoneCall(
-                        item?.user?.mobile_number,
-                      );
-                    }}
-                  />
-                  <Button
-                    title={''}
-                    titleStyle={{
-                      color: Color.white,
-                      marginHorizontal: 5,
-                      fontSize: 14,
-                    }}
-                    icon={() => (
-                      <Icon name="share-social" size={25} color={Color.white} />
-                    )}
-                    buttonStyle={{
-                      backgroundColor: Color.primary,
-                      borderRadius: 5,
-                      marginHorizontal: 5,
-                    }}
-                    onPress={() => {
-                      onShare(item);
-                    }}
-                    // containerStyle={{width: '10%'}}
-                  />
-                </View>
-              </View>
-            </TouchableOpacity>
+                      <Button
+                        title={''}
+                        titleStyle={{
+                          color: Color.white,
+                          marginHorizontal: 5,
+                          fontSize: 14,
+                        }}
+                        icon={() => (
+                          <Icon
+                            name="share-social"
+                            size={25}
+                            color={Color.white}
+                          />
+                        )}
+                        buttonStyle={{
+                          backgroundColor: Color.primary,
+                          borderRadius: 5,
+                          marginHorizontal: 5,
+                        }}
+                        onPress={() => {
+                          onShare(item);
+                        }}
+                      // containerStyle={{width: '10%'}}
+                      />
+                    </View>
+                  </View>
+                </TouchableOpacity>
+              )}
+            </>
           );
         }}
         ListEmptyComponent={() => {
@@ -717,8 +739,8 @@ const MyResponseProperty = ({navigation, user_id, ResponseList}) => {
               color={Color.primary}
             /> */}
               <Image
-                source={{uri: Media.noProperty}}
-                style={{width: 150, height: 100}}
+                source={{ uri: Media.noProperty }}
+                style={{ width: 150, height: 100 }}
               />
               <Text
                 style={{
@@ -794,10 +816,10 @@ const PostedProperty = ({
     let k = 0;
     for (let i = 0; i < myProperties.length; i++) {
       if ((solution.length + 1) / 7 == 0) {
-        solution.push([{id: j, type: 'banner', data: Banner[j]}]);
+        solution.push([{ id: j, type: 'banner', data: Banner[j] }]);
         j++;
       } else if (solution.length + 1 == 2) {
-        solution.push([{id: k, type: 'Albion Prime', data: AlbionPrime[k]}]);
+        solution.push([{ id: k, type: 'Albion Prime', data: AlbionPrime[k] }]);
         solution.push(myProperties[i]);
         k++;
       } else {
@@ -808,7 +830,7 @@ const PostedProperty = ({
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, backgroundColor: Color.white }}>
       {loading ? (
         <View
           style={{
@@ -818,8 +840,8 @@ const PostedProperty = ({
             // height: height,
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
@@ -827,7 +849,7 @@ const PostedProperty = ({
           data={final}
           showsVerticalScrollIndicator={false}
           keyExtractor={(item, index) => index.toString()}
-          renderItem={({item, index}) => {
+          renderItem={({ item, index }) => {
             if (item[0]?.type == 'Albion Prime') {
               var text = 'Albion Prime';
               var colorText = text.split(' ').map((word, i) => (
@@ -877,7 +899,7 @@ const PostedProperty = ({
                         padding: 10,
                       }}>
                       <ImageBackground
-                        source={{uri: Media.background}}
+                        source={{ uri: Media.background }}
                         resizeMode="contain"
                         style={{
                           height: 100,
@@ -965,7 +987,7 @@ const PostedProperty = ({
                       flexDirection: 'row',
                       alignItems: 'center',
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <Text
                         style={{
                           fontFamily: Poppins.Medium,
@@ -1004,7 +1026,7 @@ const PostedProperty = ({
                           navigation.navigate('UpgradeTab');
                         }}>
                         <Image
-                          source={{uri: Media.prime}}
+                          source={{ uri: Media.prime }}
                           style={{
                             width: 25,
                             height: 25,
@@ -1077,7 +1099,7 @@ const PostedProperty = ({
                   marginVertical: 5,
                 }}
                 onPress={() => {
-                  navigation.navigate('SingleProperty', {p_id: item?.p_id});
+                  navigation.navigate('SingleProperty', { p_id: item?.p_id });
                 }}>
                 {item?.images != undefined && (
                   <View style={{}}>
@@ -1087,7 +1109,7 @@ const PostedProperty = ({
                         alignItems: 'center',
                       }}>
                       {item?.images?.length > 0 &&
-                      item?.images?.[0]?.image_url !== '' ? (
+                        item?.images?.[0]?.image_url !== '' ? (
                         <Image
                           source={{
                             uri: item?.images[0]?.image_url,
@@ -1101,7 +1123,7 @@ const PostedProperty = ({
                         />
                       ) : (
                         <Image
-                          source={{uri: Media.noImage}}
+                          source={{ uri: Media.noImage }}
                           style={{
                             width: 150,
                             height: 150,
@@ -1197,12 +1219,12 @@ const PostedProperty = ({
                           {item?.property?.property_type?.pt_name == 'PG'
                             ? item?.property?.property_type?.pt_name
                             : item?.property?.property_type?.pt_name ==
-                                'Flat' ||
+                              'Flat' ||
                               item?.property?.property_type?.pt_name ==
-                                'Villa' ||
+                              'Villa' ||
                               item?.property?.property_type?.pt_name == 'House'
-                            ? `${bedroomValue} BHK, ${item?.property?.property_type?.pt_name}`
-                            : `${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}, ${item?.property?.property_type?.pt_name}`}
+                              ? `${bedroomValue} BHK, ${item?.property?.property_type?.pt_name}`
+                              : `${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}, ${item?.property?.property_type?.pt_name}`}
                         </Text>
                       ) : (
                         <Text
@@ -1228,10 +1250,10 @@ const PostedProperty = ({
                         {item?.property_type?.pt_name == 'PG'
                           ? common_fn.getMinToMaxPrice(item?.room_category)
                           : item?.expected_price?.length >= 5
-                          ? common_fn.formatNumberWithSuffix(
+                            ? common_fn.formatNumberWithSuffix(
                               item?.expected_price,
                             )
-                          : item?.expected_price}
+                            : item?.expected_price}
                       </Text>
                     </View>
                     <View
@@ -1251,8 +1273,8 @@ const PostedProperty = ({
                         {item?.property?.seller_details?.user_type_id == '1'
                           ? 'Buyer'
                           : item?.property?.seller_details?.user_type_id == '2'
-                          ? 'Agent'
-                          : 'Builder'}{' '}
+                            ? 'Agent'
+                            : 'Builder'}{' '}
                         | {resultDate}
                       </Text>
                       {item?.property_type?.pt_name != 'PG' && (
@@ -1384,8 +1406,8 @@ const PostedProperty = ({
                 color={Color.primary}
               /> */}
                 <Image
-                  source={{uri: Media.noProperty}}
-                  style={{width: 150, height: 100}}
+                  source={{ uri: Media.noProperty }}
+                  style={{ width: 150, height: 100 }}
                 />
                 <Text
                   style={{
@@ -1438,12 +1460,12 @@ const StatusProperty = ({
   };
 
   return (
-    <View style={{flex: 1, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, backgroundColor: Color.white }}>
       <FlatList
         data={statusProperties}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
-        renderItem={({item, index}) => {
+        renderItem={({ item, index }) => {
           if (item[0]?.type == 'Albion Prime') {
             var text = 'Albion Prime';
             var colorText = text.split(' ').map((word, i) => (
@@ -1492,7 +1514,7 @@ const StatusProperty = ({
                     padding: 10,
                   }}>
                   <ImageBackground
-                    source={{uri: Media.background}}
+                    source={{ uri: Media.background }}
                     resizeMode="contain"
                     style={{
                       height: 100,
@@ -1579,7 +1601,7 @@ const StatusProperty = ({
                     flexDirection: 'row',
                     alignItems: 'center',
                   }}>
-                  <View style={{flex: 1}}>
+                  <View style={{ flex: 1 }}>
                     <Text
                       style={{
                         fontFamily: Poppins.Medium,
@@ -1617,7 +1639,7 @@ const StatusProperty = ({
                       navigation.navigate('UpgradeTab');
                     }}>
                     <Image
-                      source={{uri: Media.prime}}
+                      source={{ uri: Media.prime }}
                       style={{
                         width: 25,
                         height: 25,
@@ -1689,7 +1711,7 @@ const StatusProperty = ({
                 marginVertical: 5,
               }}
               onPress={() => {
-                navigation.navigate('SingleProperty', {p_id: item?.p_id});
+                navigation.navigate('SingleProperty', { p_id: item?.p_id });
               }}>
               {item?.images != undefined && (
                 <View style={{}}>
@@ -1699,7 +1721,7 @@ const StatusProperty = ({
                       alignItems: 'center',
                     }}>
                     {item?.images?.length > 0 &&
-                    item?.images?.[0]?.image_url !== '' ? (
+                      item?.images?.[0]?.image_url !== '' ? (
                       <Image
                         source={{
                           uri: item?.images[0]?.image_url,
@@ -1713,7 +1735,7 @@ const StatusProperty = ({
                       />
                     ) : (
                       <Image
-                        source={{uri: Media.noImage}}
+                        source={{ uri: Media.noImage }}
                         style={{
                           width: 150,
                           height: 150,
@@ -1811,8 +1833,8 @@ const StatusProperty = ({
                           : item?.property?.property_type?.pt_name == 'Flat' ||
                             item?.property?.property_type?.pt_name == 'Villa' ||
                             item?.property?.property_type?.pt_name == 'House'
-                          ? `${bedroomValue} BHK, ${item?.property?.property_type?.pt_name}`
-                          : `${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}, ${item?.property?.property_type?.pt_name}`}
+                            ? `${bedroomValue} BHK, ${item?.property?.property_type?.pt_name}`
+                            : `${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}, ${item?.property?.property_type?.pt_name}`}
                       </Text>
                     ) : (
                       <Text
@@ -1838,8 +1860,8 @@ const StatusProperty = ({
                       {item?.property_type?.pt_name == 'PG'
                         ? common_fn.getMinToMaxPrice(item?.room_category)
                         : item?.expected_price?.length >= 5
-                        ? common_fn.formatNumberWithSuffix(item?.expected_price)
-                        : item?.expected_price}
+                          ? common_fn.formatNumberWithSuffix(item?.expected_price)
+                          : item?.expected_price}
                     </Text>
                   </View>
                   <View
@@ -1859,8 +1881,8 @@ const StatusProperty = ({
                       {item?.property?.seller_details?.user_type_id == '1'
                         ? 'Buyer'
                         : item?.property?.seller_details?.user_type_id == '2'
-                        ? 'Agent'
-                        : 'Builder'}{' '}
+                          ? 'Agent'
+                          : 'Builder'}{' '}
                       | {resultDate}
                     </Text>
                     {item?.property_type?.pt_name != 'PG' && (
@@ -1986,8 +2008,8 @@ const StatusProperty = ({
                 color={Color.primary}
               /> */}
               <Image
-                source={{uri: Media.noProperty}}
-                style={{width: 150, height: 100}}
+                source={{ uri: Media.noProperty }}
+                style={{ width: 150, height: 100 }}
               />
               <Text
                 style={{
@@ -2010,7 +2032,7 @@ const StatusProperty = ({
   );
 };
 
-const MyPropertyScreen = ({navigation}) => {
+const MyPropertyScreen = ({ navigation }) => {
   const [index, setIndex] = useState(0);
   const [contacted, setContacted] = useState([]);
   const [myProperties, setMyproperties] = useState([]);
@@ -2025,12 +2047,12 @@ const MyPropertyScreen = ({navigation}) => {
   const layout = useWindowDimensions();
   const [cardHeight, setCardHeight] = useState(undefined);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {user_id} = userData;
+  var { user_id } = userData;
   const [routes] = useState([
-    {key: 'MyContactedList', title: 'My Contact'},
-    {key: 'MyResponseProperty', title: 'My Response'},
-    {key: 'PostedProperty', title: 'My Post'},
-    {key: 'StatusProperty', title: 'Status'},
+    { key: 'MyContactedList', title: 'My Contact' },
+    { key: 'MyResponseProperty', title: 'My Response' },
+    { key: 'PostedProperty', title: 'My Post' },
+    { key: 'StatusProperty', title: 'Status' },
   ]);
 
   useEffect(() => {
@@ -2046,6 +2068,7 @@ const MyPropertyScreen = ({navigation}) => {
             break;
           case 1:
             const response = await fetchData.Contacted(`seller_id=${user_id}`);
+            // console.log("My Response ------------ :", JSON.stringify(response));
             setResponseList(response);
             break;
           case 2:
@@ -2073,7 +2096,7 @@ const MyPropertyScreen = ({navigation}) => {
     fetchAPI();
   }, [index, user_id]);
 
-  const renderScene = ({route}) => {
+  const renderScene = ({ route }) => {
     switch (route.title) {
       case 'My Contact':
         return (
@@ -2156,7 +2179,7 @@ const MyPropertyScreen = ({navigation}) => {
   };
 
   const [deleteReasonData] = useState([
-    {id: 1, title: 'Already Sold Via Albion', value: 'Already Sold Via Albion'},
+    { id: 1, title: 'Already Sold Via Albion', value: 'Already Sold Via Albion' },
     {
       id: 2,
       title: 'Already Sold Via Other Broker',
@@ -2167,7 +2190,7 @@ const MyPropertyScreen = ({navigation}) => {
       title: 'Not Intreated In listing',
       value: 'Not Intreated In listing',
     },
-    {id: 4, title: 'Other', value: 'Other'},
+    { id: 4, title: 'Other', value: 'Other' },
   ]);
 
   // const propertiesList = async index => {
@@ -2194,7 +2217,7 @@ const MyPropertyScreen = ({navigation}) => {
   // }, []);
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
       {loading ? (
         <View
           style={{
@@ -2203,22 +2226,22 @@ const MyPropertyScreen = ({navigation}) => {
             justifyContent: 'center',
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
-        <View style={{flex: 1, backgroundColor: Color.white}}>
+        <View style={{ flex: 1, backgroundColor: Color.white }}>
           <TabView
-            navigationState={{index, routes}}
+            navigationState={{ index, routes }}
             renderScene={renderScene}
             onIndexChange={setIndex}
-            initialLayout={{width: layout.width}}
+            initialLayout={{ width: layout.width }}
             renderTabBar={props => {
               return (
                 <TabBar
                   {...props}
-                  style={{backgroundColor: Color.white, height: 60}}
+                  style={{ backgroundColor: Color.white, height: 60 }}
                   labelStyle={{
                     color: Color.primary,
                     fontSize: 12,
@@ -2228,16 +2251,16 @@ const MyPropertyScreen = ({navigation}) => {
                     alignItems: 'center',
                     textAlign: 'center',
                   }}
-                  indicatorStyle={{backgroundColor: Color.primary}}
+                  indicatorStyle={{ backgroundColor: Color.primary }}
                   inactiveColor={Color.cloudyGrey}
                 />
               );
             }}
           />
           <Modal visible={deletePropVisible?.visible} transparent={true}>
-            <View style={{flex: 1, backgroundColor: Color.transparantBlack}}>
+            <View style={{ flex: 1, backgroundColor: Color.transparantBlack }}>
               <Pressable
-                style={{flex: 1}}
+                style={{ flex: 1 }}
                 onPress={() => {
                   setDeletePropVisible({
                     id: '',
@@ -2328,7 +2351,7 @@ const MyPropertyScreen = ({navigation}) => {
                       });
                       setDeleteReason({});
                     }}
-                    containerStyle={{width: '45%'}}
+                    containerStyle={{ width: '45%' }}
                   />
                   <Button
                     title={'Delete'}
@@ -2358,7 +2381,7 @@ const MyPropertyScreen = ({navigation}) => {
                         }
                       }
                     }}
-                    containerStyle={{width: '45%'}}
+                    containerStyle={{ width: '45%' }}
                   />
                 </View>
               </View>
@@ -2383,7 +2406,7 @@ const styles = StyleSheet.create({
     justifyContent: 'center',
     height: '100%',
   },
-  imageEmpty: {width: 150, height: 150},
+  imageEmpty: { width: 150, height: 150 },
   orderSingleView: {
     backgroundColor: Color.white,
     shadowColor: Color.black,
@@ -2404,7 +2427,7 @@ const styles = StyleSheet.create({
     alignItems: 'flex-start',
     justifyContent: 'flex-start',
   },
-  orderBoxView: {marginHorizontal: 10, flex: 1},
+  orderBoxView: { marginHorizontal: 10, flex: 1 },
   historyView: {
     flexDirection: 'row',
     justifyContent: 'flex-end',
@@ -2416,12 +2439,12 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Poppins.SemiBold,
   },
-  orderIdView: {flexDirection: 'row', alignItems: 'center'},
+  orderIdView: { flexDirection: 'row', alignItems: 'center' },
   orderHeaderText: {
     flex: 1,
-    fontSize: 14,
-    fontFamily: Poppins.Medium,
-    color: Color.black,
+    fontSize: 13,
+    fontFamily: Poppins.Light,
+    color: Color.cloudyGrey,
   },
   orderValueText: {
     // flex: 1,
@@ -2432,12 +2455,12 @@ const styles = StyleSheet.create({
   orderDateText: {
     color: Color.black,
     fontSize: 12,
-    fontFamily: Poppins.Medium,
-    textTransform: 'capitalize',
+    fontFamily: Poppins.Medium, textAlign: 'right',
+    textTransform: 'capitalize', fontWeight: '800'
   },
   totalText: {
     color: Color.red,
-    fontSize: 16,
+    fontSize: 16, fontWeight: '800',
     fontFamily: Poppins.SemiBold,
   },
   emptyOrderPage: {

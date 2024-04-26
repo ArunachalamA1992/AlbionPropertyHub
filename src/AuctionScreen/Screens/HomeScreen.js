@@ -1,4 +1,4 @@
-import React, { useEffect, useState, useRef } from 'react';
+import React, {useEffect, useState, useRef} from 'react';
 import {
   View,
   Text,
@@ -15,39 +15,39 @@ import FIcon from 'react-native-vector-icons/FontAwesome';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import OIcon from 'react-native-vector-icons/Octicons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
-import { Poppins } from '../../Global/FontFamily';
+import {Poppins} from '../../Global/FontFamily';
 import fetchData from '../../Config/fetchData';
-import { Image } from 'react-native';
-import { Media } from '../../Global/Media';
+import {Image} from 'react-native';
+import {Media} from '../../Global/Media';
 import {
   base_albionbankauctions_url,
   base_auction_image_url,
   base_blogs_properties,
 } from '../../Config/base_url';
 import moment from 'moment';
-import { Categories } from './Content';
-import { setActionUserData } from '../../Redux';
-import { useDispatch, useSelector } from 'react-redux';
+import {Categories} from './Content';
+import {setActionUserData} from '../../Redux';
+import {useDispatch, useSelector} from 'react-redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import AuctionItemCard from '../Auctioncomponents/AuctionItemCard';
-import { scr_height } from '../../Utils/Dimensions';
+import {scr_height} from '../../Utils/Dimensions';
 import AuctionEnableLogin from '../Auctioncomponents/AuctionEnableLogin';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
 
-const { height, width } = Dimensions.get('screen');
+const {height, width} = Dimensions.get('screen');
 
-const AutionHomeScreen = ({ navigation }) => {
+const AutionHomeScreen = ({navigation}) => {
   const [LatestNews, setLatestNews] = useState([]);
   const [loading, setLoading] = useState(false);
   const [loginVisible, setLoginVisible] = useState(false);
   const [Banner, setBanner] = useState({});
   const [Section] = useState([
-    { id: 1, title: 'Categories', data: ['Categories'] },
-    { id: 2, title: 'Banners', data: ['Banners'] },
-    { id: 3, title: 'Top Banks', data: ['Top Banks'] },
-    { id: 4, title: 'Popular Auctions', data: ['Popular Auctions'] },
-    { id: 5, title: 'Albion Auctions', data: ['Albion Auctions'] },
-    { id: 6, title: 'Latest News', data: ['Latest News'] },
+    {id: 1, title: 'Categories', data: ['Categories']},
+    {id: 2, title: 'Banners', data: ['Banners']},
+    {id: 3, title: 'Top Banks', data: ['Top Banks']},
+    {id: 4, title: 'Popular Auctions', data: ['Popular Auctions']},
+    {id: 5, title: 'Albion Auctions', data: ['Albion Auctions']},
+    {id: 6, title: 'Latest News', data: ['Latest News']},
   ]);
   const dispatch = useDispatch();
   const [AuctionData, setAuctionData] = useState([]);
@@ -64,7 +64,6 @@ const AutionHomeScreen = ({ navigation }) => {
 
       //Top Banner
       const getBanner = await fetchData.Auction_get_banners({});
-      console.log("Banner -------------- : ", JSON.stringify(getBanner));
       setBanner(getBanner);
 
       //Blogs
@@ -77,13 +76,13 @@ const AutionHomeScreen = ({ navigation }) => {
   const Auction_userData = useSelector(
     state => state.UserReducer.auctionUserData,
   );
-  var { id, name, email, phone_number, state, district } = Auction_userData;
+  var {id, name, email, phone_number, state, district} = Auction_userData;
   const animated = useRef(new Animated.Value(0)).current;
   // const tabBarHeight = useBottomTabBarHeight()
 
   useEffect(() => {
     if (id == undefined ||
-      (Auction_userData?.length > 0 && Auction_userData == undefined)) {
+        (Auction_userData?.length > 0 && Auction_userData == undefined)) {
       Animated.timing(animated, {
         toValue: 1,
         duration: 1000,
@@ -130,12 +129,12 @@ const AutionHomeScreen = ({ navigation }) => {
   useEffect(() => {
     setLoginVisible(
       id == undefined ||
-      (Auction_userData?.length > 0 && Auction_userData == undefined),
+        (Auction_userData?.length > 0 && Auction_userData == undefined),
     );
   }, [Auction_userData]);
 
   return (
-    <View style={{ flex: 1, backgroundColor: Color.white }}>
+    <View style={{flex: 1, backgroundColor: Color.white}}>
       {loading ? (
         <View
           style={{
@@ -144,8 +143,8 @@ const AutionHomeScreen = ({ navigation }) => {
             height: height,
           }}>
           <Image
-            source={{ uri: Media.loader }}
-            style={{ width: 80, height: 80, resizeMode: 'contain' }}
+            source={{uri: Media.loader}}
+            style={{width: 80, height: 80, resizeMode: 'contain'}}
           />
         </View>
       ) : (
@@ -181,7 +180,7 @@ const AutionHomeScreen = ({ navigation }) => {
                 navigation.navigate('AuctionSearchScreen');
               }}>
               <Icon
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
                 color={Color.primary}
                 name="search"
                 size={20}
@@ -204,14 +203,14 @@ const AutionHomeScreen = ({ navigation }) => {
             keyExtractor={(item, index) => item + index}
             showsVerticalScrollIndicator={false}
             scrollEventThrottle={1}
-            contentContainerStyle={{ padding: 10, flexGrow: 1 }}
+            contentContainerStyle={{padding: 10, flexGrow: 1}}
             nestedScrollEnabled
             initialNumToRender={5}
-            renderItem={({ item, index }) => {
+            renderItem={({item, index}) => {
               switch (item) {
                 case 'Categories':
                   return (
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={{marginVertical: 10}}>
                       <FlatList
                         data={Categories?.slice(0, 9)}
                         keyExtractor={(item, index) => item + index}
@@ -225,7 +224,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                 marginHorizontal: 10,
                                 justifyContent: 'center',
                               }}>
-                              <View style={{ flex: 1 }}>
+                              <View style={{flex: 1}}>
                                 <Text
                                   style={{
                                     fontSize: 16,
@@ -260,7 +259,7 @@ const AutionHomeScreen = ({ navigation }) => {
                             </View>
                           );
                         }}
-                        renderItem={({ item, index }) => {
+                        renderItem={({item, index}) => {
                           return (
                             <View
                               style={{
@@ -299,7 +298,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                     padding: 10,
                                   }}>
                                   <Image
-                                    source={{ uri: item.image }}
+                                    source={{uri: item.image}}
                                     style={{
                                       borderRadius: 10,
                                       height: 30,
@@ -328,41 +327,35 @@ const AutionHomeScreen = ({ navigation }) => {
                   );
                 case 'Banners':
                   return (
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={{marginVertical: 10}}>
                       <FlatList
                         data={dataArray}
                         horizontal
                         keyExtractor={(item, index) => item + index}
                         showsHorizontalScrollIndicator={false}
-                        renderItem={({ item, index }) => {
+                        renderItem={({item, index}) => {
                           const imageURL =
                             base_albionbankauctions_url + item.image;
                           return (
-                            <View key={index} style={{ marginHorizontal: 10 }}>
-                              <TouchableOpacity onPress={() => navigation.navigate('ListScreen', {
-                                property_sub_category: "",
-                                event_bank: '',
-                              })}>
-                                <Image
-                                  source={{ uri: imageURL }}
-                                  style={{
-                                    height: 150,
-                                    width: 300,
-                                    borderRadius: 5,
-                                    resizeMode: 'contain',
-                                  }}
-                                />
-                              </TouchableOpacity>
+                            <View key={index} style={{marginHorizontal: 10}}>
+                              <Image
+                                source={{uri: imageURL}}
+                                style={{
+                                  height: 150,
+                                  width: 300,
+                                  borderRadius: 5,
+                                  resizeMode: 'contain',
+                                }}
+                              />
                             </View>
                           );
-                        }
-                        }
+                        }}
                       />
                     </View>
                   );
                 case 'Top Banks':
                   return (
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={{marginVertical: 10}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -370,7 +363,7 @@ const AutionHomeScreen = ({ navigation }) => {
                           marginVertical: 10,
                           marginHorizontal: 10,
                         }}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex: 1}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -407,7 +400,7 @@ const AutionHomeScreen = ({ navigation }) => {
                         horizontal
                         keyExtractor={(item, index) => item + index}
                         showsHorizontalScrollIndicator={false}
-                        renderItem={({ item, index }) => {
+                        renderItem={({item, index}) => {
                           return (
                             <TouchableOpacity
                               onPress={() => {
@@ -460,7 +453,7 @@ const AutionHomeScreen = ({ navigation }) => {
                   );
                 case 'Popular Auctions':
                   return (
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={{marginVertical: 10}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -468,7 +461,7 @@ const AutionHomeScreen = ({ navigation }) => {
                           marginVertical: 10,
                           marginHorizontal: 10,
                         }}>
-                        <View style={{ flex: 1 }}>
+                        <View style={{flex: 1}}>
                           <Text
                             style={{
                               fontSize: 16,
@@ -482,7 +475,7 @@ const AutionHomeScreen = ({ navigation }) => {
                       <FlatList
                         data={AuctionData?.slice(0, 3)}
                         keyExtractor={(item, index) => item + index}
-                        renderItem={({ item, index }) => {
+                        renderItem={({item, index}) => {
                           return (
                             <AuctionItemCard
                               navigation={navigation}
@@ -501,7 +494,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                 width: '100%',
                               }}>
                               <Image
-                                source={{ uri: Media.noProperty }}
+                                source={{uri: Media.noProperty}}
                                 style={{
                                   width: 100,
                                   height: 80,
@@ -529,10 +522,10 @@ const AutionHomeScreen = ({ navigation }) => {
                   );
                 case 'Albion Auctions':
                   return (
-                    <View style={{ marginVertical: 10 }}>
+                    <View style={{marginVertical: 10}}>
                       <View style={{}}>
                         <Image
-                          source={{ uri: Media.ActionVehicleBanner }}
+                          source={{uri: Media.ActionVehicleBanner}}
                           style={{
                             width: '100%',
                             height: 180,
@@ -557,7 +550,7 @@ const AutionHomeScreen = ({ navigation }) => {
                               marginVertical: 10,
                               marginHorizontal: 10,
                             }}>
-                            <View style={{ flex: 1 }}>
+                            <View style={{flex: 1}}>
                               <View
                                 style={{
                                   flexDirection: 'row',
@@ -621,7 +614,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                   justifyContent: 'center',
                                 }}>
                                 <Image
-                                  source={{ uri: Media.sbisub }}
+                                  source={{uri: Media.sbisub}}
                                   style={{
                                     width: 30,
                                     height: 30,
@@ -644,7 +637,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                   justifyContent: 'center',
                                 }}>
                                 <Image
-                                  source={{ uri: Media.icicisub }}
+                                  source={{uri: Media.icicisub}}
                                   style={{
                                     width: 30,
                                     height: 30,
@@ -667,7 +660,7 @@ const AutionHomeScreen = ({ navigation }) => {
                                   justifyContent: 'center',
                                 }}>
                                 <Image
-                                  source={{ uri: Media.unionsub }}
+                                  source={{uri: Media.unionsub}}
                                   style={{
                                     width: 30,
                                     height: 30,
@@ -683,7 +676,7 @@ const AutionHomeScreen = ({ navigation }) => {
                   );
                 // case 'Latest News':
                 //   return (
-                //     <View style={{ marginVertical: 10, }}>
+                //     <View style={{ marginVertical: 10,}}>
                 //       <View
                 //         style={{
                 //           flexDirection: 'row',

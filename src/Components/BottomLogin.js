@@ -34,6 +34,8 @@ import { KeyboardAvoidingView } from 'react-native';
 import { Media } from '../Global/Media';
 import { scr_width } from '../Utils/Dimensions';
 import { Iconviewcomponent } from './Icontag';
+import { getHash, removeListener, startOtpListener } from 'react-native-otp-verify'
+
 import {
   GoogleSignin,
   GoogleSigninButton,
@@ -66,12 +68,43 @@ const BottomLogin = ({ login, setLogin }) => {
   const dispatch = useDispatch();
   const [percentage, setPercentage] = useState(0);
 
+  const [otp, setOtp] = useState("")
+
   const chkNumber = number => {
     setNumber(number);
     if (number.length == 10) {
       Keyboard.dismiss();
     }
   };
+
+  useEffect(() => {
+    try {
+      GoogleSignin.configure({
+        scopes: ['email', 'profile'],
+        webClientId:
+          '1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com',
+        offlineAccess: false,
+        // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
+        // offlineAccess: true,
+        // hostedDomain: '',
+        // forceConsentPrompt: true,
+      });
+    } catch (error) {
+      console.log('error ----------- : ', error);
+    }
+  }, []);
+
+  useEffect(() => {
+    getHash().then(hash => {
+      console.log("Hash ================ :-----------------------", hash)
+    }).catch("error  ----------", console.log);
+
+    startOtpListener(message => {
+      const otp = /(\d{4})/g.exec(message)[1];
+      setOTPCode(otp);
+    });
+    return () => removeListener();
+  }, []);
 
   useEffect(() => {
     DeviceInfo.getUniqueId().then(uniqueId => {
@@ -111,71 +144,7 @@ const BottomLogin = ({ login, setLogin }) => {
       }
     }
   };
-  useEffect(() => {
-    try {
-      GoogleSignin.configure({
-        scopes: ['email', 'profile'],
-        webClientId:
-          '1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com',
-        offlineAccess: false,
-        // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
-        // offlineAccess: true,
-        // hostedDomain: '',
-        // forceConsentPrompt: true,
-      });
-    } catch (error) {
-      console.log('error ----------- : ', error);
-    }
-  }, []);
 
-  const signIn = async (navigation) => {
-    try {
-      const replace = navigation
-      await GoogleSignin.hasPlayServices();
-      const userInfo = await GoogleSignin.signIn();
-      if (userInfo) {
-        var data = {
-          email: userInfo?.user?.email,
-        };
-        const updateProfiledata = await fetchData.login_with_gmail(data);
-        console.log(updateProfiledata);
-        if (updateProfiledata.message) {
-          dispatch(setUserData(updateProfiledata?.users));
-
-          setPercentage(percentage);
-          const UserLogin = {
-            ...updateProfiledata?.users,
-          };
-          await AsyncStorage.setItem(
-            'user_data',
-            JSON.stringify(updateProfiledata?.users),
-          );
-          await AsyncStorage.setItem(
-            'action_login_type',
-            JSON.stringify({ login_type: 'properties' }),
-          );
-          dispatch(setLoginType('properties'));
-          if (percentage == 100) {
-            replace('TabNavigator', UserLogin);
-          } else {
-            replace('TabNavigator', UserLogin);
-          }
-          locationTrack();
-        }
-      }
-    } catch (error) {
-      console.log(error);
-      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
-        // user cancelled the login flow
-      } else if (error.code === statusCodes.IN_PROGRESS) {
-        // operation (e.g. sign in) is in progress already
-      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
-        // play services not available or outdated
-      } else {
-        // some other error happened
-      }
-    }
-  };
   useEffect(() => {
     const interval = setInterval(() => {
       if (seconds > 0) {
@@ -267,19 +236,6 @@ const BottomLogin = ({ login, setLogin }) => {
     }
   };
 
-  async function locationTrack() {
-    try {
-      const result = await requestPermissionTransparency();
-      if (result === RESULTS.GRANTED) {
-        await firebase.analytics().setAnalyticsCollectionEnabled(true);
-      } else {
-        await firebase.analytics().setAnalyticsCollectionEnabled(false);
-      }
-    } catch (error) {
-      console.log('catch in location_Track :', error);
-    }
-  }
-
   const VerifyOTP = async navigation => {
     setLoading(true);
     var { replace } = navigation;
@@ -315,7 +271,8 @@ const BottomLogin = ({ login, setLogin }) => {
         } else {
           replace('TabNavigator', UserLogin);
         }
-        locationTrack();
+        setLogin(false)
+        // locationTrack();
         if (Platform.OS === 'android') {
           common_fn.showToast(`Welcome to Albion ${VerifyOTP?.data?.username}`);
         } else {
@@ -350,13 +307,63 @@ const BottomLogin = ({ login, setLogin }) => {
       setVisible(false);
     }
   };
+
+  const signIn = async (navigation) => {
+    try {
+      const replace = navigation
+      await GoogleSignin.hasPlayServices();
+      const userInfo = await GoogleSignin.signIn();
+      if (userInfo) {
+        var data = {
+          email: userInfo?.user?.email,
+        };
+        const updateProfiledata = await fetchData.login_with_gmail(data);
+        if (updateProfiledata.message) {
+          dispatch(setUserData(updateProfiledata?.users));
+
+          setPercentage(percentage);
+          const UserLogin = {
+            ...updateProfiledata?.users,
+          };
+          await AsyncStorage.setItem(
+            'user_data',
+            JSON.stringify(updateProfiledata?.users),
+          );
+          await AsyncStorage.setItem(
+            'action_login_type',
+            JSON.stringify({ login_type: 'properties' }),
+          );
+          dispatch(setLoginType('properties'));
+          if (percentage == 100) {
+            replace('TabNavigator', UserLogin);
+          } else {
+            replace('TabNavigator', UserLogin);
+          }
+          // locationTrack();
+        }
+      }
+    } catch (error) {
+      console.log(error);
+      if (error.code === statusCodes.SIGN_IN_CANCELLED) {
+        // user cancelled the login flow
+      } else if (error.code === statusCodes.IN_PROGRESS) {
+        // operation (e.g. sign in) is in progress already
+      } else if (error.code === statusCodes.PLAY_SERVICES_NOT_AVAILABLE) {
+        // play services not available or outdated
+      } else {
+        // some other error happened
+      }
+    }
+  };
+
+
   return (
     <KeyboardAvoidingView
       style={{ flex: 1 }}
       behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}>
       {/* <DismissKeyboard> */}
-      <View style={{ flex: 1, backgroundColor: 'red' }}>
+      <View style={{ flex: 1 }}>
         {otpVisible === true ? (
           <Modal
             transparent={true}
@@ -421,6 +428,8 @@ const BottomLogin = ({ login, setLogin }) => {
                       setIsPinReady={setIsPinReady}
                       chkOTPError={chkOTPError}
                     />
+
+                    {/* <TextInput placeholder='Enter otp' onChangeText={text => { setOtp() }} value={otp} /> */}
                   </View>
                   {seconds > 0 || minutes > 0 ? (
                     <View style={styles.noReceivecodeView}>
@@ -447,7 +456,6 @@ const BottomLogin = ({ login, setLogin }) => {
                     }}
                     onPress={() => {
                       VerifyOTP(navigation);
-                      // checkPermmissions()
                     }}
                     loading={loading}
                   />
@@ -542,8 +550,9 @@ const BottomLogin = ({ login, setLogin }) => {
                     color: Color.black,
                     marginVertical: 20,
                   }}>
-                  Or Sign Up With
-                </Text><View
+                  (or)
+                </Text>
+                <View
                   style={{
                     justifyContent: 'center',
                     alignItems: 'center',
@@ -569,6 +578,7 @@ const BottomLogin = ({ login, setLogin }) => {
                     }}
                   />
                 </View>
+
               </View>
             </View>
           </Modal>

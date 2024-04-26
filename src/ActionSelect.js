@@ -91,7 +91,7 @@ const ActionSelect = ({ navigation }) => {
                   navigation.navigate('TabNavigator');
                   dispatch(setLoginType('properties'));
                 } else {
-                  navigation.navigate('ActionHome');
+                  navigation.navigate('ActionLogin');
                   dispatch(setLoginType('Auction'));
                 }
               }}

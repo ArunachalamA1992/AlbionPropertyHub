@@ -13,7 +13,7 @@ import {
 const initialState = {
   userData: {},
   auctionUserData: {},
-  AutoFilter: "",
+  AutoFilter: '',
   filterLocation: {
     city: '',
     landmark: '',
@@ -61,13 +61,13 @@ const UserReducer = (state = initialState, action) => {
         auctionUserData: action.payload,
       };
     case SET_FILTER_LOCATION:
-      storeCartData({
-        ...state,
-        filterLocation: {
-          city: action.payload.city,
-          landmark: action.payload.landmark,
-        },
-      });
+      // storeCartData({
+      //   ...state,
+      //   filterLocation: {
+      //     city: action.payload.city,
+      //     landmark: action.payload.landmark,
+      //   },
+      // });
       return {
         ...state,
         filterLocation: {
@@ -104,14 +104,12 @@ const UserReducer = (state = initialState, action) => {
         editUserVisible: action.payload,
       };
     case SET_ASYNC_CART:
-      var {userData, auctionUserData, AutoFilter, filterLocation} =
-        action.payload;
+      var {userData, auctionUserData, AutoFilter} = action.payload;
       return {
         ...state,
         userData,
         auctionUserData,
         AutoFilter,
-        filterLocation,
       };
     default:
       return state;

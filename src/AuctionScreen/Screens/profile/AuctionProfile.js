@@ -242,7 +242,7 @@ const AuctionProfile = ({ navigation }) => {
           />
         </TouchableOpacity>
 
-        <Divider style={{ height: 1, marginVertical: 10 }} />
+        {/* <Divider style={{ height: 1, marginVertical: 10 }} /> */}
 
         {id == undefined ||
           (Auction_userData?.length > 0 && Auction_userData == undefined) ? (

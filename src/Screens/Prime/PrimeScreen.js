@@ -1,4 +1,10 @@
-import React, {useState, useRef, useEffect, useLayoutEffect} from 'react';
+import React, {
+  useState,
+  useRef,
+  useEffect,
+  useLayoutEffect,
+  useMemo,
+} from 'react';
 import {
   StyleSheet,
   Text,
@@ -11,30 +17,32 @@ import {
   TouchableOpacity,
   Alert,
   Platform,
+  ScrollView,
+  LayoutAnimation,
 } from 'react-native';
-import {scr_height, scr_width} from '../../Utils/Dimensions';
-import {primarycolor} from '../../Utils/Colors';
-import {useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import { scr_height, scr_width } from '../../Utils/Dimensions';
+import { primarycolor } from '../../Utils/Colors';
+import { useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
-import {Button} from 'react-native-elements';
+import { Button } from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {Media} from '../../Global/Media';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Media } from '../../Global/Media';
 import Color from '../../Config/Color';
 import common_fn from '../../Config/common_fn';
 import axios from 'axios';
-import {Poppins} from '../../Global/FontFamily';
-import {setPayCancelVisible, setPaySuccessVisible} from '../../Redux';
-import {AgentPlanData, BuilderPlanData, OwnerPlanData} from '../../contentJson';
+import { Poppins } from '../../Global/FontFamily';
+import { setPayCancelVisible, setPaySuccessVisible } from '../../Redux';
+import { AgentPlanData, BuilderPlanData, OwnerPlanData } from '../../contentJson';
 // import PhonePePaymentSDK from 'react-native-phonepe-pg';
 // import RNUpiPayment from 'react-native-upi-payment';
 import RazorpayCheckout from 'react-native-razorpay';
 import Table from '../../Components/PayTable';
 import fetchData from '../../Config/fetchData';
 
-const PrimeScreen = ({navigation}) => {
+const PrimeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [netInfo_State, setNetinfo] = useState(true);
   const [selectItem, setSelectItem] = useState({});
@@ -44,15 +52,16 @@ const PrimeScreen = ({navigation}) => {
   const [purchaseVisible, setPurchaseVisible] = useState(false);
   const [isPhonePeInstalled, setPhonePeInstalled] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {user_id, username, mobile_number, user_type_id, change_persona, email} =
+  var { user_id, username, mobile_number, user_type_id, change_persona, email } =
     userData;
+  const [visible, setVisible] = useState({});
   const headerOpacity = animatedOpacityValue.interpolate({
     inputRange: [0, 40],
     outputRange: [0, 1],
     extrapolate: 'clamp',
     useNativeDriver: false,
   });
-  const [planData, setPlanData] = useState([]);
+  const [planData, setPlanData] = useState(null);
 
   useEffect(() => {
     try {
@@ -135,8 +144,8 @@ const PrimeScreen = ({navigation}) => {
     useState('PRODUCTION');
 
   const [environements, setEnvironment] = useState([
-    {label: 'SANDBOX', value: 'SANDBOX'},
-    {label: 'PRODUCTION', value: 'PRODUCTION'},
+    { label: 'SANDBOX', value: 'SANDBOX' },
+    { label: 'PRODUCTION', value: 'PRODUCTION' },
   ]);
 
   const [packageName, setPackageName] = useState('');
@@ -256,7 +265,7 @@ const PrimeScreen = ({navigation}) => {
         .then(result => {
           const redirectUrl = result?.redirect_url;
           if (redirectUrl) {
-            navigation.navigate('PayView', {uri: redirectUrl});
+            navigation.navigate('PayView', { uri: redirectUrl });
           } else {
             console.log('Error: Redirect URL is undefined or null');
           }
@@ -268,18 +277,56 @@ const PrimeScreen = ({navigation}) => {
   };
 
   useEffect(() => {
-    getApiData();
+    if (planData?.length == 0 || planData == null) {
+      getApiData(user_type_id);
+    }
   }, []);
 
-  const getApiData = async () => {
+  const getApiData = async user_type_id => {
     try {
       const data = `plan_group=2&user_type_id=${user_type_id}`;
-      const plan_data = await fetchData.check_plan(data);
-      setPlanData(plan_data);
+      const plandata = await fetchData.check_plan(data);
+      let specificData = [];
+      if (user_type_id === '1') {
+        specificData = plandata.map((plan_data, index) => {
+          return {
+            plan_id: plan_data.plan_id,
+            plan_name: plan_data.plan_name,
+            duration: plan_data.duration,
+            response_rate: plan_data.response_rate,
+            no_of_listings: plan_data.no_of_listings,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            highlight_in_homepage: plan_data.highlight_in_homepage,
+            verified_tag: plan_data.verified_tag,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            amount: plan_data.amount,
+          };
+        });
+      } else if (user_type_id === '2') {
+        specificData = plandata.map(plan_data => {
+          return {
+            plan_id: plan_data.plan_id,
+            plan_name: plan_data.plan_name,
+            no_of_listings: plan_data.no_of_listings,
+            response_rate: plan_data.response_rate,
+            featured_listing: plan_data.featured_listing,
+            whatsapp_notification: plan_data.whatsapp_notification,
+            urgent_sale: plan_data.urgent_sale,
+            certified_agent: plan_data.certified_agent,
+            relationship_manager: plan_data.relationship_manager,
+            dedicated_support: plan_data.dedicated_support,
+            duration: plan_data.duration,
+            amount: plan_data.amount,
+          };
+        });
+      }
+      setPlanData(specificData);
     } catch (error) {
       console.log('error', error);
     }
   };
+
   const paymentDetails = async () => {
     const paymentData = {
       user_id: user_id,
@@ -302,16 +349,14 @@ const PrimeScreen = ({navigation}) => {
             user_id: user_id,
             plan_group: '2',
           };
-          console.log('data', data)
           const placeOrder = await fetchData.verify_pay(data);
-          console.log('placeOrder', placeOrder);
           dispatch(setPaySuccessVisible(true));
-          navigation?.replace('TabNavigator', {user_id});
+          navigation?.replace('TabNavigator', { user_id });
         },
       )
       .catch(error => {
         dispatch(setPayCancelVisible(true));
-        navigation?.replace('TabNavigator', {user_id});
+        navigation?.replace('TabNavigator', { user_id });
       });
   };
 
@@ -354,6 +399,47 @@ const PrimeScreen = ({navigation}) => {
       console.log('catch in selectPlan_Item :', error);
     }
   }
+  const clickHistory = index => {
+    setVisible({ ...visible, [index]: !visible[index] });
+    common_fn.Accordion;
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+  };
+
+  const renderIcon = (value, key) => {
+    if (
+      key !== 'duration' &&
+      key !== 'response_rate' &&
+      key !== 'no_of_listings'
+    ) {
+      return value == '1' ? '1' : '0';
+    } else {
+      return value;
+    }
+  };
+
+  const keys = useMemo(() => {
+    if (planData && planData.length > 0) {
+      return Object.keys(planData[0]).filter(
+        key =>
+          key !== 'plan_name' &&
+          key !== 'plan_id' &&
+          key !== 'plan_uid' &&
+          key !== 'plan_group' &&
+          key !== 'amount' &&
+          key !== 'plan_price' &&
+          key !== 'status' &&
+          key !== 'created_at' &&
+          key !== 'updated_at' &&
+          key !== 'get_phone_quota' &&
+          key !== 'user_type_id' &&
+          key !== 'duration' &&
+          key !== 'response_rate' &&
+          key !== 'no_of_listings',
+      );
+    } else {
+      return [];
+    }
+  }, [planData]);
 
   function renderPlanItem(item, index) {
     try {
@@ -368,91 +454,186 @@ const PrimeScreen = ({navigation}) => {
         selectItem?.plan_id === item?.plan_id ? Color.white : Color.cloudyGrey;
       let selectSubTextColor =
         selectItem?.plan_id === item?.plan_id ? Color.white : Color.cloudyGrey;
+
       return (
-        <TouchableOpacity
-          onPress={() => {
-            selectPlanItem(item, index);
-            setPurchaseVisible(true);
-          }}
-          style={{
-            flexDirection: 'row',
-            marginVertical: 10,
-            borderWidth: 1,
-            borderColor: Color.lightgrey,
-            flex: 1,
-            justifyContent: 'space-between',
-            alignItems: 'center',
-            backgroundColor: item?.plan_id == 1 ? Color.lightgrey : selectbg,
-            borderRadius: 10,
-            width: 150,
-            marginHorizontal: 10,
-            paddingVertical: 10,
-          }}
-          disabled={item?.plan_name == 'Free'}>
-          <View
+        <View style={{ marginVertical: 10 }} key={index}>
+          <TouchableOpacity
+            onPress={() => {
+              clickHistory(index);
+              selectPlanItem(item, index);
+              setPurchaseVisible(true);
+            }}
             style={{
-              justifyContent: 'center',
-              alignItems: 'flex-start',
-              marginHorizontal: 20,
-            }}>
+              flexDirection: 'row',
+              borderWidth: 1,
+              borderColor: Color.lightgrey,
+              justifyContent: 'space-between',
+              alignItems: 'center',
+              backgroundColor: item?.plan_id == 1 ? Color.lightgrey : selectbg,
+              width: '100%',
+              paddingVertical: 10,
+            }}
+            disabled={item?.plan_name == 'Free'}>
             <View
               style={{
-                flexDirection: 'row',
+                flex: 1,
                 justifyContent: 'center',
-                alignItems: 'center',
+                alignItems: 'flex-start',
+                marginHorizontal: 20,
               }}>
-              <Text
+              <View
                 style={{
-                  fontSize: 12,
-                  color: Color.white,
-                  fontFamily: Poppins.SemiBold,
-                  paddingTop: 7,
-                  backgroundColor:
-                    item.plan_name == 'Free'
-                      ? Color.grey
-                      : item.plan_name == 'Basic'
-                      ? Color.lightgrey
-                      : item.plan_name == 'Standard'
-                      ? Color.blue
-                      : item.plan_name == 'Premium'
-                      ? Color.green
-                      : item.plan_name == 'Premium Plus'
-                      ? Color.purple
-                      : Color.sunShade,
-                  borderRadius: 10,
-                  paddingVertical: 5,
-                  paddingHorizontal: 5,
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
                 }}>
-                {item.plan_name}
-              </Text>
+                <Text
+                  style={{
+                    fontSize: 12,
+                    color: Color.white,
+                    fontFamily: Poppins.SemiBold,
+                    // paddingTop: 5, 
+                    padding: 10,
+                    backgroundColor:
+                      item.plan_name == 'Free'
+                        ? Color.grey
+                        : item.plan_name == 'Basic'
+                          ? Color.limeGreen
+                          : item.plan_name == 'Standard'
+                            ? Color.blue
+                            : item.plan_name == 'Premium'
+                              ? Color.green
+                              : item.plan_name == 'Premium Plus'
+                                ? Color.purple
+                                : Color.sunShade,
+                    borderRadius: 10,
+                    paddingVertical: 5,
+                    paddingHorizontal: 15,
+                  }}>
+                  {item?.plan_name}
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 12,
+                    textAlign: 'right',
+                    color: selectSubTextColor,
+                    fontFamily: Poppins.SemiBold,
+                    textDecorationLine: 'line-through',
+                  }}>
+                  ₹ {item?.org_price || item?.amount * 2}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 12,
+                    color: selectTextColor,
+                    fontFamily: Poppins.SemiBold,
+                    paddingTop: 7,
+                    borderRadius: 10,
+                    paddingVertical: 5,
+                    paddingHorizontal: 5,
+                  }}>
+                  No of Listings - {item?.no_of_listings}
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 12,
+                    textAlign: 'right',
+                    color: selectTextColor,
+                    fontFamily: Poppins.SemiBold,
+                    marginHorizontal: 5,
+                  }}>
+                  ₹ {item?.amount}
+                </Text>
+              </View>
+              <View
+                style={{
+                  flexDirection: 'row',
+                  justifyContent: 'center',
+                  alignItems: 'center',
+                }}>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 12,
+                    color: selectTextColor,
+                    fontFamily: Poppins.SemiBold,
+                    paddingTop: 7,
+                    borderRadius: 10,
+                    paddingVertical: 5,
+                    paddingHorizontal: 5,
+                  }}>
+                  Response rate - {item?.response_rate}
+                </Text>
+                <Text
+                  style={{
+                    flex: 1,
+                    fontSize: 12,
+                    textAlign: 'right',
+                    color: selectTextColor,
+                    fontFamily: Poppins.SemiBold,
+                    marginHorizontal: 5,
+                  }}>
+                  ₹ {item?.duration} Days
+                </Text>
+              </View>
             </View>
+          </TouchableOpacity>
+          {visible[index] && (
             <View
               style={{
-                marginVertical: 10,
-                flexDirection: 'row',
-                alignItems: 'center',
+                borderWidth: 1,
+                borderColor: Color.lightgrey,
+                padding: 10,
               }}>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: selectSubTextColor,
-                  fontFamily: Poppins.SemiBold,
-                  textDecorationLine: 'line-through',
-                }}>
-                ₹ {item?.price}
-              </Text>
-              <Text
-                style={{
-                  fontSize: 12,
-                  color: selectTextColor,
-                  fontFamily: Poppins.SemiBold,
-                  marginHorizontal: 5,
-                }}>
-                ₹ {item.amount}
-              </Text>
+              {keys.map((key, index) => {
+                return (
+                  <View
+                    key={key}
+                    style={{
+                      flexDirection: 'row',
+                      alignItems: 'center',
+                      marginVertical: 10,
+                    }}>
+                    <Text key={item.plan_name} style={styles.cell}>
+                      {key !== 'duration' &&
+                        key !== 'response_rate' &&
+                        key !== 'no_of_listings' ? (
+                        renderIcon(item[key], key) == '1' ? (
+                          <Icon
+                            name="checkmark-circle"
+                            size={18}
+                            color={Color.green}
+                          />
+                        ) : (
+                          <Icon
+                            name="close-circle"
+                            size={18}
+                            color={Color.red}
+                          />
+                        )
+                      ) : (
+                        renderIcon(item[key], key)
+                      )}
+                    </Text>
+                    <Text style={[styles.headerCell, { paddingHorizontal: 10 }]}>
+                      {common_fn.formatText(key)}
+                    </Text>
+                  </View>
+                );
+              })}
             </View>
-          </View>
-        </TouchableOpacity>
+          )}
+        </View>
       );
     } catch (error) {
       console.log('catch in renderPlanItem : ', error);
@@ -462,7 +643,7 @@ const PrimeScreen = ({navigation}) => {
   function renderHeaderItem() {
     try {
       return (
-        <View style={{width: '95%'}}>
+        <View style={{ width: '95%' }}>
           <View
             style={{
               paddingHorizontal: 10,
@@ -535,7 +716,7 @@ const PrimeScreen = ({navigation}) => {
               </Text>
             </View>
           </View>
-          <Table data={planData} />
+          {/* {planData && <Table data={planData} />} */}
         </View>
       );
     } catch (error) {
@@ -546,27 +727,28 @@ const PrimeScreen = ({navigation}) => {
   function renderFooterItem() {
     try {
       return (
-        <View style={{width: '100%', alignItems: 'center'}}>
-          <View style={{width: '100%', paddingVertical: 10}}>
+        <View style={{ width: '100%', alignItems: 'center' }}>
+          <View style={{ width: '100%', paddingVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
                 fontFamily: Poppins.SemiBold,
                 color: 'black',
-                paddingHorizontal: 10,
+                fontWeight: '800',
+                paddingHorizontal: 10, letterSpacing: 0.5
               }}>
               How it works
             </Text>
 
-            <View style={{paddingHorizontal: 10, paddingVertical: 0}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
               <Text
                 style={{
                   fontSize: 14,
-                  color: 'black',
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5
                 }}>
                 1. Become an Albion Prime Member & explore owner posted
                 properties
@@ -574,7 +756,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: 'black',
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -585,7 +767,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: 'black',
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -596,23 +778,26 @@ const PrimeScreen = ({navigation}) => {
             </View>
           </View>
 
-          <View style={{width: '100%', paddingVertical: 10}}>
+          <View style={{ width: '100%', paddingVertical: 10 }}>
             <Text
               style={{
                 fontSize: 16,
                 fontFamily: Poppins.SemiBold,
                 color: 'black',
-                paddingHorizontal: 10,
+                fontWeight: '800',
+                paddingHorizontal: 10, letterSpacing: 0.5
               }}>
               Frequently Asked Questions?
             </Text>
 
-            <View style={{paddingHorizontal: 10, paddingVertical: 0}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'black',
+                  fontSize: 15,
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
+                  textAlign: 'justify',
+                  letterSpacing: 0.5,
                   fontFamily: Poppins.SemiBold,
                 }}>
                 1. What is Albion Prime?
@@ -620,7 +805,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: '#333',
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -633,18 +818,20 @@ const PrimeScreen = ({navigation}) => {
 
               <Text
                 style={{
-                  fontSize: 14,
-                  color: '#000',
+                  fontSize: 15,
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
+                  textAlign: 'justify',
+                  letterSpacing: 0.5,
                   fontFamily: Poppins.SemiBold,
-                  padding: 3,
                 }}>
                 Key benefits of this Membership includes:
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -653,9 +840,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -664,9 +851,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -675,9 +862,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -686,9 +873,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -697,12 +884,14 @@ const PrimeScreen = ({navigation}) => {
               </Text>
             </View>
 
-            <View style={{paddingHorizontal: 10, paddingVertical: 0}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'black',
+                  fontSize: 15,
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
+                  textAlign: 'justify',
+                  letterSpacing: 0.5,
                   fontFamily: Poppins.SemiBold,
                 }}>
                 2. How to avail Albion Prime benefits?
@@ -710,7 +899,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: '#333',
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -722,9 +911,9 @@ const PrimeScreen = ({navigation}) => {
 
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -734,9 +923,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -746,9 +935,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -758,9 +947,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -769,9 +958,9 @@ const PrimeScreen = ({navigation}) => {
               </Text>
               <Text
                 style={{
-                  fontSize: 13,
-                  color: '#666',
-                  padding: 2,
+                  fontSize: 14,
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
+                  padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
                   fontFamily: Poppins.Regular,
@@ -781,12 +970,14 @@ const PrimeScreen = ({navigation}) => {
               </Text>
             </View>
 
-            <View style={{paddingHorizontal: 10, paddingVertical: 0}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'black',
+                  fontSize: 15,
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
+                  textAlign: 'justify',
+                  letterSpacing: 0.5,
                   fontFamily: Poppins.SemiBold,
                 }}>
                 3. How does the On-call Assistant help?
@@ -794,7 +985,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: '#666',
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -806,12 +997,14 @@ const PrimeScreen = ({navigation}) => {
               </Text>
             </View>
 
-            <View style={{paddingHorizontal: 10, paddingVertical: 0}}>
+            <View style={{ paddingHorizontal: 10, paddingVertical: 0 }}>
               <Text
                 style={{
-                  fontSize: 14,
-                  color: 'black',
+                  fontSize: 15,
+                  color: Color.lightBlack, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
+                  textAlign: 'justify',
+                  letterSpacing: 0.5,
                   fontFamily: Poppins.SemiBold,
                 }}>
                 4. What if i can not find the right property evern after taking
@@ -820,7 +1013,7 @@ const PrimeScreen = ({navigation}) => {
               <Text
                 style={{
                   fontSize: 14,
-                  color: '#666',
+                  color: Color.cloudyGrey, lineHeight: 22, letterSpacing: 0.5,
                   padding: 5,
                   textAlign: 'justify',
                   letterSpacing: 0.5,
@@ -980,19 +1173,20 @@ const PrimeScreen = ({navigation}) => {
   });
   return (
     <View style={styles.container}>
-      <FlatList
-        data={planData}
-        numColumns={2}
-        keyExtractor={(item, index) => item + index}
-        ListHeaderComponent={() => renderHeaderItem()}
-        renderItem={({item, index}) => renderPlanItem(item, index)}
-        ListFooterComponent={() => renderFooterItem()}
-        showsVerticalScrollIndicator={false}
-        onScroll={Animated.event(
-          [{nativeEvent: {contentOffset: {y: scrollY}}}],
-          {useNativeDriver: false},
-        )}
-      />
+      <ScrollView showsVerticalScrollIndicator={false}>
+        {renderHeaderItem()}
+        <FlatList
+          data={planData}
+          keyExtractor={(item, index) => item + index}
+          renderItem={({ item, index }) => renderPlanItem(item, index)}
+          ListFooterComponent={() => renderFooterItem()}
+          showsVerticalScrollIndicator={false}
+          onScroll={Animated.event(
+            [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+            { useNativeDriver: false },
+          )}
+        />
+      </ScrollView>
       <View
         style={{
           alignItems: 'center',

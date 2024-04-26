@@ -88,12 +88,13 @@ const DismissKeyboard = ({ children }) => (
 //   const login = async (navigation) => {
 //     try {
 //       var data = {
-//         username: emailNumber,
-//         password: Password,
+//         username: "8428084814",
+//         password: "suhail@123",
 //       };
 //       if (emailNumber?.trimStart().trimEnd() && Password != '') {
 //         const Auction_login = await fetchData.Auction_login(data);
-//         console.log(Auction_login)
+//         // console.log("Login ============= ", Auction_login)
+
 //         if (Auction_login?.isLoggedin == true) {
 //           dispatch(setActionUserData(Auction_login?.user));
 //           dispatch(setLoginType('Auction'));
@@ -177,13 +178,14 @@ const DismissKeyboard = ({ children }) => (
 //           </Text>
 //           <View style={styles.NumberBoxConatiner}>
 //             <TextInput
-//               placeholder="Email/Mobile Number"
+//               placeholder="Enter your Mobile Number"
 //               placeholderTextColor={Color.cloudyGrey}
 //               value={emailNumber}
 //               onChangeText={value => {
 //                 setEmailNumber(value);
-//                 chkNumberError(value);
+//                 // chkNumberError(value);
 //               }}
+//               maxLength={10}
 //               style={styles.numberTextBox}
 //             />
 //           </View>
@@ -201,7 +203,7 @@ const DismissKeyboard = ({ children }) => (
 //           </Text>
 //           <View style={styles.NumberBoxConatiner}>
 //             <TextInput
-//               placeholder="Enter Password"
+//               placeholder="Enter your Password"
 //               placeholderTextColor={Color.cloudyGrey}
 //               value={Password}
 //               onChangeText={value => {
@@ -279,8 +281,7 @@ const LoginScreen = ({ navigation }) => {
     try {
       GoogleSignin.configure({
         scopes: ['email', 'profile'],
-        webClientId:
-          '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
+        webClientId: '1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com',
         offlineAccess: false,
         // webClientId: '1080007356916-6amrf74qvgd060rprqqeegs06s168dn1.apps.googleusercontent.com',
         // offlineAccess: true,

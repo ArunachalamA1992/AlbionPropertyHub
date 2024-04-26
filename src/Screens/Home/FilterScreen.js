@@ -2116,7 +2116,7 @@ const FilterData = ({
                     ],
                     {cancelable: false},
                   );
-                } else if (city == '') {
+                } else if (city == '' || city == null) {
                   Alert.alert(
                     '',
                     'Choose Your Location',
@@ -3458,7 +3458,7 @@ const FilterData = ({
                     ],
                     {cancelable: false},
                   );
-                } else if (city == '') {
+                } else if (city == ''|| city == null) {
                   Alert.alert(
                     '',
                     'Choose Your Location',
@@ -4178,7 +4178,7 @@ const FilterData = ({
               title={`Search`}
               buttonStyle={{backgroundColor: Color.primary, height: 40}}
               onPress={() => {
-                if (city == '') {
+                if (city == ''|| city == null) {
                   Alert.alert(
                     '',
                     'Choose Your Location',
@@ -5072,7 +5072,7 @@ const FilterScreen = ({navigation, route}) => {
                                   selectedItem?.id == item?.id
                                     ? Color.primary
                                     : Color.filterColor,
-                                width: width / 3.5,
+                                width: width / 3,
                                 // width: 100,
                                 alignItems: 'center',
                                 justifyContent: 'center',

@@ -136,6 +136,7 @@ const AdvanceSearch = ({ navigation, route }) => {
             setDistrict(get_district);
             //get District
             const getBankDetails = await fetchData.get_banks({});
+            console.log("Bank List ------------ : ",JSON.stringify(getBankDetails));
             setBankDetails(getBankDetails);
         } catch (error) {
             console.log('error', error);
@@ -209,7 +210,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                 style={{
                     width: '100%',
                     backgroundColor: '#FDF0F5',
-                    padding: 10,
+                    padding: 10, alignItems: 'center',
                 }}>
                 <View
                     style={{
@@ -226,7 +227,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                             // paddingHorizontal: 5,
                             paddingHorizontal: 10,
                             // height: 50,
-                            width: '40%',
+                            width: '43%',
                             height: 45,
                             marginHorizontal: 10,
                         }}
@@ -373,7 +374,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                         borderWidth: 1,
                         paddingHorizontal: 10,
                         borderRadius: 5,
-                        width: '100%',
+                        width: '95%',
                         height: 45,
                         // marginHorizontal: 10,
                         marginVertical: 10,
@@ -409,7 +410,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                         />
                     )}
                 />
-                <View style={{ width: '100%', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ width: '95%', marginVertical: 10, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TextInput
                         placeholder="Minimum Price"
                         placeholderTextColor={Color.cloudyGrey}
@@ -430,7 +431,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                             borderRadius: 5,
                         }}
                     />
-                    <View style={{ width: 2, height: '100%' }}></View>
+                    <View style={{ width: 4, height: '100%' }}></View>
                     <TextInput
                         placeholder="Maximum Price"
                         placeholderTextColor={Color.cloudyGrey}
@@ -452,7 +453,7 @@ const AdvanceSearch = ({ navigation, route }) => {
                         }}
                     />
                 </View>
-                <View style={{ width: '100%', marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
+                <View style={{ width: '95%', marginVertical: 5, flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center' }}>
                     <TouchableOpacity
                         onPress={() => {
                             AuctionApiData()

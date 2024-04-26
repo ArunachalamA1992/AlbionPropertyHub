@@ -8,15 +8,15 @@ import {
 } from './propertyActionTypes';
 
 const initialState = {
-  propertyLocation: {
-    city: '',
-    landmark: '',
-  },
   AuctionSort: {},
   propertyData: [],
   filterSaved: {
     buySaved: { AddFilter: {}, filterBuyData: {}, filterBoolean: false },
     rentSaved: { AddFilter: {}, filterBuyData: {}, filterBoolean: false },
+  },
+  propertyLocation: {
+    city: '',
+    landmark: '',
   },
 };
 
@@ -76,10 +76,9 @@ const PropertyReducer = (state = initialState, action) => {
         },
       };
     case SET_PROPERTY_ASYNC_CART:
-      var { propertyLocation, propertyData, filterSaved } = action.payload;
+      var {propertyData, filterSaved } = action.payload;
       return {
         ...state,
-        propertyLocation,
         propertyData,
         filterSaved,
       };

@@ -1,49 +1,42 @@
 {
   "project_info": {
-    "project_number": "1080007356916",
-    "project_id": "albion-9bab2",
-    "storage_bucket": "albion-9bab2.appspot.com"
+    "project_number": "1071623549220",
+    "project_id": "albionnew-85878",
+    "storage_bucket": "albionnew-85878.appspot.com"
   },
   "client": [
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1080007356916:android:01e3fe3ede6f93caf189a1",
+        "mobilesdk_app_id": "1:1071623549220:android:0fcf0c23d592a9f7a383b1",
         "android_client_info": {
-          "package_name": "com.albion"
+          "package_name": "com.albionNew"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1080007356916-l0nth7j1lq4t5kg3jhn5c1qkpcnpadi6.apps.googleusercontent.com",
+          "client_id": "1071623549220-austpio6qose4imsupf1dqfggc3ja1p8.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.albion",
-            "certificate_hash": "01ccf9d5d33b7ef965e2c58da981969d7547913c"
+            "package_name": "com.albionNew",
+            "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+          "client_id": "1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjZmaeD-BeeYBZ7jqO7ZsNHUs5ifCaaBQ"
+          "current_key": "AIzaSyBlurOTyksoInErW3rk6RvWMikcd-tKhoc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+              "client_id": "1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1080007356916-r2aja2qn46ss827nas7udkfv6di5mrqm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.reactjs.native.example.Albion"
-              }
             }
           ]
         }
@@ -51,43 +44,36 @@
     },
     {
       "client_info": {
-        "mobilesdk_app_id": "1:1080007356916:android:db206ca3336ab31cf189a1",
+        "mobilesdk_app_id": "1:1071623549220:android:3304aa06fe9ec9a6a383b1",
         "android_client_info": {
-          "package_name": "com.albionpropertyhub"
+          "package_name": "com.albionproperty"
         }
       },
       "oauth_client": [
         {
-          "client_id": "1080007356916-1c4a6ic69o7s7kr1j2uqrv3uup31u0cl.apps.googleusercontent.com",
+          "client_id": "1071623549220-tnn8c7e6um8ba83h439c49lo7dj3uknv.apps.googleusercontent.com",
           "client_type": 1,
           "android_info": {
-            "package_name": "com.albionpropertyhub",
+            "package_name": "com.albionproperty",
             "certificate_hash": "5e8f16062ea3cd2c4a0d547876baa6f38cabf625"
           }
         },
         {
-          "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+          "client_id": "1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com",
           "client_type": 3
         }
       ],
       "api_key": [
         {
-          "current_key": "AIzaSyBjZmaeD-BeeYBZ7jqO7ZsNHUs5ifCaaBQ"
+          "current_key": "AIzaSyBlurOTyksoInErW3rk6RvWMikcd-tKhoc"
         }
       ],
       "services": {
         "appinvite_service": {
           "other_platform_oauth_client": [
             {
-              "client_id": "1080007356916-14nvjnacjo8s151il1a44jpkqrvv0hve.apps.googleusercontent.com",
+              "client_id": "1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com",
               "client_type": 3
-            },
-            {
-              "client_id": "1080007356916-r2aja2qn46ss827nas7udkfv6di5mrqm.apps.googleusercontent.com",
-              "client_type": 2,
-              "ios_info": {
-                "bundle_id": "org.reactjs.native.example.Albion"
-              }
             }
           ]
         }

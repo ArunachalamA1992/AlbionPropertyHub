@@ -1,4 +1,4 @@
-import React, {useState, useRef, useEffect, useCallback} from 'react';
+import React, { useState, useRef, useEffect, useCallback } from 'react';
 import {
   View,
   Text,
@@ -17,15 +17,15 @@ import {
   BackHandler,
   Platform,
 } from 'react-native';
-import {Media} from '../../Global/Media';
+import { Media } from '../../Global/Media';
 import Color from '../../Config/Color';
 import Icon from 'react-native-vector-icons/Ionicons';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import OIcon from 'react-native-vector-icons/Octicons';
-import {Button, Divider} from 'react-native-elements';
-import {Poppins} from '../../Global/FontFamily';
-import {useSelector} from 'react-redux';
+import { Button, Divider } from 'react-native-elements';
+import { Poppins } from '../../Global/FontFamily';
+import { useSelector } from 'react-redux';
 import common_fn from '../../Config/common_fn';
 import SimilarAuction from './SimilarAuction';
 import moment from 'moment';
@@ -36,12 +36,12 @@ import {
 import fetchData from '../../Config/fetchData';
 import RNFetchBlob from 'rn-fetch-blob';
 import ImageView from '../Auctioncomponents/imageView';
-import {useRoute} from '@react-navigation/native';
+import { useRoute } from '@react-navigation/native';
 import AuctionBottomLogin from '../Auctioncomponents/AuctionBottomLogin';
 
-var {width, height} = Dimensions.get('screen');
+var { width, height } = Dimensions.get('screen');
 
-const ActionSingleProperty = ({navigation, route}) => {
+const ActionSingleProperty = ({ navigation, route }) => {
   const routeName = useRoute();
   const [item] = useState(route.params.item);
   const [showMoreButton, setShowMoreButton] = useState(false);
@@ -62,7 +62,7 @@ const ActionSingleProperty = ({navigation, route}) => {
   const Auction_userData = useSelector(
     state => state.UserReducer.auctionUserData,
   );
-  var {id, name, phone_number, email} = Auction_userData;
+  var { id, name, phone_number, email } = Auction_userData;
 
   const toggleTextShown = () => {
     setDiscriptiontextShown(!discriptiontextShown);
@@ -237,7 +237,7 @@ const ActionSingleProperty = ({navigation, route}) => {
     try {
       let date = new Date();
       let image_URL = base_albionbankauctions_url + item?.nit_document;
-      const {config, fs} = RNFetchBlob;
+      const { config, fs } = RNFetchBlob;
       let DownloadDir = fs.dirs.DownloadDir;
       let options = {
         fileCache: true,
@@ -271,10 +271,10 @@ const ActionSingleProperty = ({navigation, route}) => {
 
   const propertyImagesArray = Object.entries(propertyImages)
     .filter(([key, value]) => value !== null)
-    .map(([key, value]) => ({index: key, image_url: value}));
+    .map(([key, value]) => ({ index: key, image_url: value }));
 
   return (
-    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
+    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
       {loading ? (
         <View
           style={{
@@ -283,8 +283,8 @@ const ActionSingleProperty = ({navigation, route}) => {
             height: height,
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
@@ -293,7 +293,7 @@ const ActionSingleProperty = ({navigation, route}) => {
             nestedScrollEnabled={true}
             showsVerticalScrollIndicator={false}
             onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: scrollY}}}],
+              [{ nativeEvent: { contentOffset: { y: scrollY } } }],
               {
                 useNativeDriver: false,
               },
@@ -334,7 +334,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                       name="share-outline"
                       size={20}
                       color={Color.black}
-                      // style={styles.icon}
+                    // style={styles.icon}
                     />
                   </TouchableOpacity>
                   <TouchableOpacity
@@ -350,12 +350,12 @@ const ActionSingleProperty = ({navigation, route}) => {
                     }}
                     onPress={() => {
                       id == undefined ||
-                      (Auction_userData?.length > 0 &&
-                        Auction_userData == undefined)
+                        (Auction_userData?.length > 0 &&
+                          Auction_userData == undefined)
                         ? setLoginEnable(true)
                         : check_interest
-                        ? removeInterestfn()
-                        : setInterestVisible(true);
+                          ? removeInterestfn()
+                          : setInterestVisible(true);
                     }}>
                     <Icon
                       name={check_interest ? 'heart' : 'heart-outline'}
@@ -372,20 +372,20 @@ const ActionSingleProperty = ({navigation, route}) => {
                 borderBottomLeftRadius: 20,
                 borderBottomRightRadius: 20,
               }}>
-              {/* {propertyImagesArray?.length > 0 || loading ? (
+              {propertyImagesArray?.length > 0 || loading ? (
                 <ImageView images={propertyImagesArray} />
               ) : (
                 <Image
-                  source={Media.noImage}
-                  style={{width: '100%', height: 250, resizeMode: 'contain'}}
+                  source={{ uri: Media.noImage }}
+                  style={{ width: '100%', height: 250, resizeMode: 'contain' }}
                 />
-              )} */}
-              <Image
+              )}
+              {/* <Image
                 source={{uri: base_auction_image_url + item?.bank_logo}}
                 style={{width: '100%', height: 250, resizeMode: 'contain'}}
-              />
+              /> */}
             </View>
-            <View style={{padding: 10}}>
+            <View style={{ padding: 10 }}>
               <View
                 style={{
                   flex: 1,
@@ -414,8 +414,8 @@ const ActionSingleProperty = ({navigation, route}) => {
                     }}
                   />
                 )}
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
-                  <View style={{flex: 1}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{ flex: 1 }}>
                     <Text
                       style={{
                         flex: 1,
@@ -437,7 +437,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                       <Icon
                         name={'location'}
                         size={18}
-                        style={{color: Color.primary}}
+                        style={{ color: Color.primary }}
                       />
                       <Text
                         style={{
@@ -465,12 +465,12 @@ const ActionSingleProperty = ({navigation, route}) => {
                     }}
                     onPress={() => {
                       id == undefined ||
-                      (Auction_userData?.length > 0 &&
-                        Auction_userData == undefined)
+                        (Auction_userData?.length > 0 &&
+                          Auction_userData == undefined)
                         ? setLoginEnable(true)
                         : check_interest
-                        ? removeInterestfn()
-                        : setInterestVisible(true);
+                          ? removeInterestfn()
+                          : setInterestVisible(true);
                     }}
                   />
                 </View>
@@ -496,7 +496,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                       marginVertical: 20,
                       marginHorizontal: 20,
                     }}>
-                    <View style={{flex: 1}}>
+                    <View style={{ flex: 1 }}>
                       <Text
                         style={{
                           flex: 1,
@@ -509,8 +509,8 @@ const ActionSingleProperty = ({navigation, route}) => {
                         ₹
                         {item?.reserve_price?.length >= 5
                           ? common_fn.formatNumberWithSuffix(
-                              item?.reserve_price,
-                            )
+                            item?.reserve_price,
+                          )
                           : item?.reserve_price}
                       </Text>
                       <Text
@@ -530,7 +530,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                         marginHorizontal: 10,
                       }}
                     />
-                    <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 18,
@@ -560,7 +560,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                         marginHorizontal: 10,
                       }}
                     />
-                    <View style={{flex: 1, alignItems: 'center'}}>
+                    <View style={{ flex: 1, alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 18,
@@ -581,7 +581,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                     </View>
                   </View>
 
-                  <Divider style={{height: 1}} />
+                  <Divider style={{ height: 1 }} />
                   <View
                     style={{
                       width: '100%',
@@ -644,7 +644,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                     </View>
                   </View>
                 </View>
-                <View style={{alignItems: 'flex-start', marginVertical: 10}}>
+                <View style={{ alignItems: 'flex-start', marginVertical: 10 }}>
                   <Text
                     style={{
                       color: 'black',
@@ -666,8 +666,8 @@ const ActionSingleProperty = ({navigation, route}) => {
                     numberOfLines={numLines}>
                     {!discriptiontextShown
                       ? item?.property_description
-                          .substring(0, 120)
-                          .concat('...')
+                        .substring(0, 120)
+                        .concat('...')
                       : item?.property_description}{' '}
                     {showMoreButton || numLines > 2 ? (
                       <Text
@@ -682,7 +682,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                     ) : null}
                   </Text>
                 </View>
-                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                   <View
                     style={{
                       flex: 1,
@@ -715,10 +715,10 @@ const ActionSingleProperty = ({navigation, route}) => {
                     backgroundColor: '#F2F2F250',
                   }}>
                   <Image
-                    source={{uri: base_auction_image_url + item?.bank_logo}}
-                    style={{width: 50, height: 50, resizeMode: 'contain'}}
+                    source={{ uri: base_auction_image_url + item?.bank_logo }}
+                    style={{ width: 50, height: 50, resizeMode: 'contain' }}
                   />
-                  <View style={{marginHorizontal: 10, flex: 1}}>
+                  <View style={{ marginHorizontal: 10, flex: 1 }}>
                     <Text
                       style={{
                         color: Color.black,
@@ -740,7 +740,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                     </Text>
                   </View>
                 </View>
-                <View style={{marginVertical: 10}}>
+                <View style={{ marginVertical: 10 }}>
                   <Text
                     style={{
                       color: Color.black,
@@ -755,10 +755,10 @@ const ActionSingleProperty = ({navigation, route}) => {
                       alignItems: 'center',
                     }}>
                     <Image
-                      source={{uri: Media.Userpng}}
-                      style={{width: 80, height: 80, resizeMode: 'contain'}}
+                      source={{ uri: Media.Userpng }}
+                      style={{ width: 80, height: 80, resizeMode: 'contain' }}
                     />
-                    <View style={{marginHorizontal: 10}}>
+                    <View style={{ marginHorizontal: 10 }}>
                       <Text
                         style={{
                           color: Color.black,
@@ -779,7 +779,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                     </View>
                   </View>
                 </View>
-                <View style={{marginVertical: 10}}>
+                <View style={{ marginVertical: 10 }}>
                   <Text
                     style={{
                       color: Color.black,
@@ -799,7 +799,7 @@ const ActionSingleProperty = ({navigation, route}) => {
                         }}
                         key={index}>
                         <FIcon name="check" size={16} color={Color.green} />
-                        <View style={{marginHorizontal: 10}}>
+                        <View style={{ marginHorizontal: 10 }}>
                           <Text
                             style={{
                               color: Color.black,
@@ -827,7 +827,7 @@ const ActionSingleProperty = ({navigation, route}) => {
           </ScrollView>
           <Modal transparent visible={InterestVisible} animationType="slide">
             <Pressable
-              style={{flex: 1, backgroundColor: Color.transparantBlack}}
+              style={{ flex: 1, backgroundColor: Color.transparantBlack }}
               onPress={() => {
                 setInterestVisible(false);
               }}
@@ -884,10 +884,10 @@ const ActionSingleProperty = ({navigation, route}) => {
                     source={{
                       uri: base_auction_image_url + item?.bank_logo,
                     }}
-                    style={{width: 80, height: 80, resizeMode: 'contain'}}
+                    style={{ width: 80, height: 80, resizeMode: 'contain' }}
                   />
                 </View>
-                <View style={{marginHorizontal: 10, flex: 1}}>
+                <View style={{ marginHorizontal: 10, flex: 1 }}>
                   <Text
                     style={{
                       color: Color.cloudyGrey,

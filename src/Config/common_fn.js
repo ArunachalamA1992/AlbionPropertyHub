@@ -11,13 +11,22 @@ import Geolocation from 'react-native-geolocation-service';
 // import XLSX from 'xlsx';
 import RNFetchBlob from 'rn-fetch-blob';
 import RNHTMLtoPDF from 'react-native-html-to-pdf';
-import { Media } from '../Global/Media';
+import {Media} from '../Global/Media';
 
 const common_fn = {
   showToast: msg => {
     if (Platform.OS === 'android') {
       ToastAndroid.show(msg, ToastAndroid.SHORT);
     }
+  },
+  Accordion: () => {
+    if (Platform.OS === 'android') {
+      UIManager.setLayoutAnimationEnabledExperimental(true);
+      LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
+    }
+  },
+  AccordionAnimation: () => {
+    LayoutAnimation.configureNext(LayoutAnimation.Presets.easeInEaseOut);
   },
   formatNumberWithCommas: number => {
     // return number.toString().replace(/\B(?=(\d{2})+(?!\d))/g, ',');
@@ -30,10 +39,10 @@ const common_fn = {
       var myHeaders = new Headers();
       myHeaders.append('Authorization', authorization);
       myHeaders.append('Content-Type', 'multipart/form-data;');
-      var { uri } = image;
+      var {uri} = image;
 
       let formdata = new FormData();
-      formdata.append('file', { uri, type: 'image/jpeg' });
+      formdata.append('file', {uri, type: 'image/jpeg'});
       let requestOptions = {
         method: 'POST',
         headers: myHeaders,
@@ -125,7 +134,7 @@ const common_fn = {
     return str.charAt(0).toUpperCase() + str.slice(1);
   },
   fnCapital: str => {
-    return str.charAt(0).toUpperCase() + str.substring(1)
+    return str.charAt(0).toUpperCase() + str.substring(1);
   },
   generateCustomID: customIDCounter => {
     customIDCounter.counter = (customIDCounter.counter || 1) % 10;
@@ -172,7 +181,7 @@ const common_fn = {
     }
   },
   formatedDataforSuffix: amount => {
-    const [start, end] = amount?.split('-')
+    const [start, end] = amount?.split('-');
     const formattedStart = common_fn.formatNumberWithSuffix(start);
     const formattedEnd = common_fn.formatNumberWithSuffix(end);
     return `${formattedStart} - ${formattedEnd}`;
@@ -443,13 +452,16 @@ const common_fn = {
   // },
   convertObjectToHtml: propertyData => {
     if (!propertyData || propertyData.length === 0) {
-      console.error("Property data is undefined or empty.");
-      return "";
+      console.error('Property data is undefined or empty.');
+      return '';
     }
 
     const htmlArray = propertyData.map(data => {
       const imagesHtml = data.images
-        .map(image => `<img src="${image?.image_url}" alt="albionImages" style="width:300px;height:200px"/>`)
+        .map(
+          image =>
+            `<img src="${image?.image_url}" alt="albionImages" style="width:300px;height:200px"/>`,
+        )
         .join('');
       const featuresHtml = data.features
         .map(feature => `<li>${feature.title}: ${feature.value}</li>`)
@@ -497,12 +509,20 @@ const common_fn = {
                         <td>${data?.expected_price}</td>
                     </tr>
                     <tr>
-                        <td><strong>Total ${data?.area?.super_area_unit}:</strong></td>
-                        <td>${data?.area?.super_area} ${data?.area?.super_area_unit}</td>
+                        <td><strong>Total ${
+                          data?.area?.super_area_unit
+                        }:</strong></td>
+                        <td>${data?.area?.super_area} ${
+        data?.area?.super_area_unit
+      }</td>
                     </tr>
                     <tr>
-                        <td><strong>Per ${data?.area?.super_area_unit}:</strong></td>
-                        <td>${common_fn.formatNumberWithSuffix(data?.expected_price / data?.area?.super_area)}</td>
+                        <td><strong>Per ${
+                          data?.area?.super_area_unit
+                        }:</strong></td>
+                        <td>${common_fn.formatNumberWithSuffix(
+                          data?.expected_price / data?.area?.super_area,
+                        )}</td>
                     </tr>
                 </table>
                 <h3>Property Description:</h3>
@@ -614,9 +634,11 @@ const common_fn = {
       console.log('PDF copied successfully.');
 
       if (Platform.OS === 'android') {
-        common_fn.showToast('The file is now downloaded to your storage device.');
+        common_fn.showToast(
+          'The file is now downloaded to your storage device.',
+        );
       } else {
-        alert("The file is now downloaded to your storage device.")
+        alert('The file is now downloaded to your storage device.');
       }
 
       return pdfPath;
@@ -646,7 +668,7 @@ const common_fn = {
     const foundObject = data.find(item => item.title.includes(value));
     return foundObject ? foundObject.value : null;
   },
-  getMinToMaxPrice: (data) => {
+  getMinToMaxPrice: data => {
     if (data?.length >= 1) {
       if (data.length === 1) {
         const singlePrice = data[0]?.price_per_bed;
@@ -662,12 +684,13 @@ const common_fn = {
             highest_price = item?.price_per_bed;
           }
         });
-        return `${common_fn.formatNumberWithSuffix(lowest_price)} - ${common_fn.formatNumberWithSuffix(highest_price)}`;
+        return `${common_fn.formatNumberWithSuffix(
+          lowest_price,
+        )} - ${common_fn.formatNumberWithSuffix(highest_price)}`;
       }
     } else {
       return '';
     }
-  }
-
+  },
 };
 export default common_fn;

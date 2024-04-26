@@ -80,6 +80,7 @@ import { setAuctionSort } from './Redux';
 import { Divider } from 'react-native-elements';
 import { Modal } from 'react-native';
 import { Text } from 'react-native';
+import RegisterScreen from './Screens/Auth/RegisterScreen';
 
 const Stack = createStackNavigator();
 const Drawer = createDrawerNavigator();
@@ -237,6 +238,26 @@ const MainApp = () => {
           name="Auth"
           component={Auth}
           options={{ headerShown: false }}
+        />
+         <Stack.Screen
+          name="Register"
+          component={RegisterScreen}
+          options={{ headerShown: false }}
+          // options={({ navigation, route }) => ({
+          //   headerTitle: 'Register',
+          //   headerTitleStyle: { color: Color.white },
+          //   headerStyle: { backgroundColor: Color.primary },
+          //   headerLeft: () => (
+          //     <View style={{ marginHorizontal: 10 }}>
+          //       <Icon
+          //         name="arrow-back"
+          //         size={30}
+          //         color={Color.white}
+          //         onPress={() => navigation.goBack()}
+          //       />
+          //     </View>
+          //   ),
+          // })}
         />
         <Stack.Screen
           name="Welcome"

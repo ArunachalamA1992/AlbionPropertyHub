@@ -18,7 +18,7 @@ export default class SocialLogin extends Component {
   }
   componentDidMount() {
     GoogleSignin.configure({
-      webClientId: '384868949123-28hdf1l98t3r2os6c8j74fj0hbsh14hp.apps.googleusercontent.com',
+      webClientId: '1071623549220-vgptladnqlmd7uamrbit97mi6tnta037.apps.googleusercontent.com',
       offlineAccess: true,
       hostedDomain: '',
       forceConsentPrompt: true,

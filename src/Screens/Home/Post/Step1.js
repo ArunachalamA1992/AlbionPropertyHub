@@ -10,6 +10,7 @@ import {
   Pressable,
   Platform,
   Alert,
+  Keyboard,
 } from 'react-native';
 import {Text, View} from 'react-native';
 import Color from '../../../Config/Color';
@@ -1987,7 +1988,12 @@ const PostStep1Screen = ({}) => {
     setVisibleData(newVisibleData);
     setShowLoadMore(newVisibleData?.length < propertyType?.length);
   };
-
+  const chkNumber = number => {
+    setNumber(number);
+    if (number.length == 10) {
+      Keyboard.dismiss();
+    }
+  };
   //Buy
   const [postError, setPostError] = useState(false);
   const [kindError, setKindError] = useState(false);
@@ -2267,7 +2273,7 @@ const PostStep1Screen = ({}) => {
 
   const Datalabels = isPlotSelected || isRentPlotSelected ? Plotlabels : labels;
 
-  const [planVisible, setPlanVisible] = useState(true);
+  const [planVisible, setPlanVisible] = useState(false);
 
   function handleBackButtonClick() {
     if (routeName.name == 'step1') {
@@ -2293,8 +2299,9 @@ const PostStep1Screen = ({}) => {
   // }, [planVisible]);
 
   useEffect(() => {
+    console.log('post_quota_value', post_quota_value, post_quota_value == 0);
     setPlanVisible(post_quota_value === 0);
-  }, [post_quota_value]);
+  }, [post_quota_value, planVisible]);
 
   return (
     <View style={styles.container}>
@@ -2730,14 +2737,14 @@ const PostStep1Screen = ({}) => {
               <TextInput
                 placeholder="Enter your phone number"
                 placeholderTextColor={Color.cloudyGrey}
-                value={mobile_number}
-                editable={false}
+                value={number}
+                editable={mobile_number?.length !== 10}
                 keyboardType="phone-pad"
                 maxLength={10}
                 returnKeyType={'done'}
-                // onChangeText={number => {
-                //   chkNumber(number);
-                // }}
+                onChangeText={number => {
+                  chkNumber(number);
+                }}
                 style={styles.numberTextBox}
               />
             </View>
@@ -2809,7 +2816,7 @@ const styles = StyleSheet.create({
     color: Color.black,
     marginVertical: 10,
     fontSize: 16,
-    // fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold',
   },
   stepIndicator: {
     marginBottom: 10,

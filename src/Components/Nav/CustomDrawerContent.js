@@ -2261,7 +2261,9 @@ const CustomDrawerContent = props => {
             <View
               style={{
                 backgroundColor:
-                  itemSelected === 'AuctionContact' ? primarycolor : Color.white,
+                  itemSelected === 'AuctionContact'
+                    ? primarycolor
+                    : Color.white,
                 marginVertical: 5,
               }}>
               <TouchableOpacity
@@ -2293,7 +2295,9 @@ const CustomDrawerContent = props => {
                     width: 150,
                     marginLeft: 10,
                     color:
-                      itemSelected === 'AuctionContact' ? Color.white : Color.black,
+                      itemSelected === 'AuctionContact'
+                        ? Color.white
+                        : Color.black,
                     fontWeight:
                       itemSelected === 'AuctionContact' ? 'bold' : 'normal',
                   }}>

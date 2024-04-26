@@ -29,5 +29,6 @@ export default {
   almond: '#F0E3CD',
   lightYellow: '#FFC72C',
   darkBlue: '#19398C',
-  purple: '#A020F0'
+  purple: '#A020F0',
+  limeGreen: '#80c615'
 };

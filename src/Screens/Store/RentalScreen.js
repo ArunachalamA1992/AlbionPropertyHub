@@ -1,4 +1,4 @@
-import React, {useCallback, useEffect, useRef, useState} from 'react';
+import React, { useCallback, useEffect, useRef, useState } from 'react';
 import {
   Text,
   View,
@@ -21,21 +21,21 @@ import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import F5Icon from 'react-native-vector-icons/FontAwesome5';
-import {Button} from 'react-native-elements';
-import {Media} from '../../Global/Media';
-import {Animated} from 'react-native';
+import { Button } from 'react-native-elements';
+import { Media } from '../../Global/Media';
+import { Animated } from 'react-native';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import {Poppins} from '../../Global/FontFamily';
+import { Poppins } from '../../Global/FontFamily';
 import fetchData from '../../Config/fetchData';
-import {base_image_properties} from '../../Config/base_url';
+import { base_image_properties } from '../../Config/base_url';
 import moment from 'moment';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import common_fn from '../../Config/common_fn';
-import {setUserData} from '../../Redux';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {profileCompletion} from '../../Utils/utils';
-import {PlanPhonePurchase} from '../../Components/PlanPurchase';
+import { setUserData } from '../../Redux';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { profileCompletion } from '../../Utils/utils';
+import { PlanPhonePurchase } from '../../Components/PlanPurchase';
 import Share from 'react-native-share';
 import axios from 'axios';
 import SenderModal from '../../Components/SenderModal';
@@ -44,7 +44,7 @@ import BottomLogin from '../../Components/BottomLogin';
 const WIDTH = Dimensions.get('screen').width;
 const HEIGHT = Dimensions.get('screen').height;
 
-const RentalScreen = ({route, navigation}) => {
+const RentalScreen = ({ route, navigation }) => {
   const [location] = useState(route.params.location);
   const [city_id] = useState(route.params.city_id);
   const [property_action] = useState(route.params.property_action);
@@ -81,7 +81,7 @@ const RentalScreen = ({route, navigation}) => {
   const [endReached, setEndReached] = useState(false);
   const [EmailContactVisible, setEmailContactVisible] = useState(false);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {user_id, username, mobile_number, email, get_phone_quota} = userData;
+  var { user_id, username, mobile_number, email, get_phone_quota } = userData;
   const [get_quota_value, setGet_quota_value] = useState('');
   const [Username, setUsername] = useState(username);
   const [number, setNumber] = useState(mobile_number);
@@ -145,7 +145,7 @@ const RentalScreen = ({route, navigation}) => {
         tmp = [];
       }
       if (index % addBannerIndex == 0 && index != 0) {
-        arr.push([{type: 'banner'}]);
+        arr.push([{ type: 'banner' }]);
         tmp = [];
       }
       tmp.push(val);
@@ -161,7 +161,7 @@ const RentalScreen = ({route, navigation}) => {
     for (let i = 0; i < rentData.length; i++) {
       if ((i + 1) % 7 === 0) {
         solution.push(rentData[i]);
-        solution.push([{id: j, type: 'banner', data: Banner[j]}]);
+        solution.push([{ id: j, type: 'banner', data: Banner[j] }]);
         j = (j + 1) % Banner.length;
       }
       // else if (solution.length + 1 == 3) {
@@ -227,32 +227,32 @@ const RentalScreen = ({route, navigation}) => {
       id: 1,
       name: 'Budget',
       data: [
-        {id: 1, title: '1000-50000', value: '1000-50000'},
-        {id: 2, title: '50000-100000', value: '50000-100000'},
-        {id: 3, title: '100000-500000', value: '100000-500000'},
-        {id: 4, title: '500000-1000000', value: '500000-1000000'},
+        { id: 1, title: '1000-50000', value: '1000-50000' },
+        { id: 2, title: '50000-100000', value: '50000-100000' },
+        { id: 3, title: '100000-500000', value: '100000-500000' },
+        { id: 4, title: '500000-1000000', value: '500000-1000000' },
       ],
     },
     {
       id: 2,
       name: 'BHK',
       data: [
-        {id: 1, title: '1 BHK', value: '1'},
-        {id: 2, title: '2 BHK', value: '2'},
-        {id: 3, title: '3 BHK', value: '3'},
-        {id: 4, title: '4 BHK', value: '4'},
-        {id: 5, title: '5 BHK', value: '5'},
+        { id: 1, title: '1 BHK', value: '1' },
+        { id: 2, title: '2 BHK', value: '2' },
+        { id: 3, title: '3 BHK', value: '3' },
+        { id: 4, title: '4 BHK', value: '4' },
+        { id: 5, title: '5 BHK', value: '5' },
       ],
     },
     {
       id: 3,
       name: 'Popular Locality',
       data: [
-        {id: 1, title: 'ramanathapuram', value: 'ramanathapuram'},
-        {id: 2, title: 'ondiputhur', value: 'ondiputhur'},
-        {id: 3, title: 'sai baba colony', value: 'sai baba colony'},
-        {id: 4, title: 'singanallur', value: 'singanallur'},
-        {id: 5, title: 'pallakad', value: 'pallakad'},
+        { id: 1, title: 'ramanathapuram', value: 'ramanathapuram' },
+        { id: 2, title: 'ondiputhur', value: 'ondiputhur' },
+        { id: 3, title: 'sai baba colony', value: 'sai baba colony' },
+        { id: 4, title: 'singanallur', value: 'singanallur' },
+        { id: 5, title: 'pallakad', value: 'pallakad' },
       ],
     },
   ]);
@@ -266,18 +266,18 @@ const RentalScreen = ({route, navigation}) => {
   }, [AddFilter, filterRentData]);
 
   const filterDataPayload = () => {
-    const {locality, bhk, budget} = AddFilter;
+    const { locality, bhk, budget } = AddFilter;
 
     const updatedData = {
-      ...(locality && {locality: encodeURIComponent(locality)}),
-      ...(bhk?.value && {bedroom: encodeURIComponent(bhk?.value)}),
+      ...(locality && { locality: encodeURIComponent(locality) }),
+      ...(bhk?.value && { bedroom: encodeURIComponent(bhk?.value) }),
       ...(budget?.value && {
         max_budget: budget.value.split('-')[1],
         min_budget: budget.value.split('-')[0],
       }),
     };
     const currentData = convertToObj(filterRentData);
-    const mergedData = {...currentData, ...updatedData};
+    const mergedData = { ...currentData, ...updatedData };
 
     const queryString = convertToStr(mergedData);
     function convertToObj(queryString) {
@@ -305,7 +305,7 @@ const RentalScreen = ({route, navigation}) => {
 
   const dataPayload = () => {
     let params = '';
-    const {budget, bhk, locality} = AddFilter;
+    const { budget, bhk, locality } = AddFilter;
 
     const buyPayload = {
       location,
@@ -435,11 +435,11 @@ const RentalScreen = ({route, navigation}) => {
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-            cancelToken: cancelTokenSource.token,
-          })
+          cancelToken: cancelTokenSource.token,
+        })
         : fetchData.add_to_wishlist(data, {
-            cancelToken: cancelTokenSource.token,
-          });
+          cancelToken: cancelTokenSource.token,
+        });
 
       const response = await apiRequest;
 
@@ -451,7 +451,7 @@ const RentalScreen = ({route, navigation}) => {
         }
         setRentData(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? {...product, isWishListed: false} : product,
+            product.p_id === id ? { ...product, isWishListed: false } : product,
           ),
         );
       } else if (response?.message === 'Success' && !isWishList) {
@@ -462,7 +462,7 @@ const RentalScreen = ({route, navigation}) => {
         }
         setRentData(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? {...product, isWishListed: true} : product,
+            product.p_id === id ? { ...product, isWishListed: true } : product,
           ),
         );
       }
@@ -570,7 +570,7 @@ const RentalScreen = ({route, navigation}) => {
               }}>
               Get a Rent Agreement absolutely FREE
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View style={{}}>
                 <View
                   style={{
@@ -623,11 +623,11 @@ const RentalScreen = ({route, navigation}) => {
               </View>
               <Image
                 source={Media.adBanner}
-                style={{width: 100, height: 100, resizeMode: 'contain'}}
+                style={{ width: 100, height: 100, resizeMode: 'contain' }}
               />
             </View>
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
               onPress={() => {
                 navigation.navigate('PackersMovers');
               }}>
@@ -688,7 +688,7 @@ const RentalScreen = ({route, navigation}) => {
               }}>
               Relocating Made Simple
             </Text>
-            <View style={{flexDirection: 'row', alignItems: 'center'}}>
+            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
               <View
                 style={{
                   flex: 1,
@@ -712,12 +712,12 @@ const RentalScreen = ({route, navigation}) => {
                 </Text>
               </View>
               <Image
-                source={{uri: Media.adBanner2}}
-                style={{width: 100, height: 100, resizeMode: 'contain'}}
+                source={{ uri: Media.adBanner2 }}
+                style={{ width: 100, height: 100, resizeMode: 'contain' }}
               />
             </View>
             <TouchableOpacity
-              style={{flexDirection: 'row', alignItems: 'center'}}
+              style={{ flexDirection: 'row', alignItems: 'center' }}
               onPress={() => {
                 navigation.navigate('PackersMovers');
               }}>
@@ -962,7 +962,7 @@ const RentalScreen = ({route, navigation}) => {
           {val?.images != undefined && (
             <TouchableOpacity
               onPress={() => {
-                navigation.navigate('SingleProperty', {p_id: val?.p_id});
+                navigation.navigate('SingleProperty', { p_id: val?.p_id });
               }}
               style={{}}>
               {val?.images?.length > 0 ? (
@@ -979,7 +979,7 @@ const RentalScreen = ({route, navigation}) => {
                 />
               ) : (
                 <Image
-                  source={{uri: Media.noImage}}
+                  source={{ uri: Media.noImage }}
                   style={{
                     width: 150,
                     height: 180,
@@ -1076,7 +1076,7 @@ const RentalScreen = ({route, navigation}) => {
               </View>
             </TouchableOpacity>
           )}
-          <View style={{padding: 5, flex: 1, marginHorizontal: 5}}>
+          <View style={{ padding: 5, flex: 1, marginHorizontal: 5 }}>
             <View>
               <Text
                 style={{
@@ -1087,7 +1087,7 @@ const RentalScreen = ({route, navigation}) => {
                 }}>
                 RENT
               </Text>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   style={{
                     fontSize: 18,
@@ -1260,7 +1260,7 @@ const RentalScreen = ({route, navigation}) => {
                 }
               }
             }}
-            containerStyle={{width: '45%'}}
+            containerStyle={{ width: '45%' }}
           />
           <Button
             title={'View Details'}
@@ -1278,9 +1278,9 @@ const RentalScreen = ({route, navigation}) => {
               // height: 40,
             }}
             onPress={() => {
-              navigation.navigate('SingleProperty', {p_id: val?.p_id});
+              navigation.navigate('SingleProperty', { p_id: val?.p_id });
             }}
-            containerStyle={{width: '45%'}}
+            containerStyle={{ width: '45%' }}
           />
           <Button
             title={''}
@@ -1300,7 +1300,7 @@ const RentalScreen = ({route, navigation}) => {
             onPress={() => {
               onShare(val);
             }}
-            // containerStyle={{width: '10%'}}
+          // containerStyle={{width: '10%'}}
           />
         </View>
         <SenderModal
@@ -1361,7 +1361,7 @@ const RentalScreen = ({route, navigation}) => {
   }, [EmailContactVisible]);
   // const newData = modifyData(rentData);
   return (
-    <View style={{flex: 1, backgroundColor: Color.white}}>
+    <View style={{ flex: 1, backgroundColor: Color.white }}>
       {filterloading || loading ? (
         <View
           style={{
@@ -1371,8 +1371,8 @@ const RentalScreen = ({route, navigation}) => {
             // height: height,
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
@@ -1403,11 +1403,11 @@ const RentalScreen = ({route, navigation}) => {
               }}
               onPress={() => {
                 navigation.navigate('Filter', {
-                  selectItem: {id: 2, title: 'Rent', value: 'rent'},
+                  selectItem: { id: 2, title: 'Rent', value: 'rent' },
                 });
               }}>
               <F6Icon
-                style={{width: 20, height: 20}}
+                style={{ width: 20, height: 20 }}
                 color={Color.white}
                 name="sliders"
                 size={20}
@@ -1448,8 +1448,8 @@ const RentalScreen = ({route, navigation}) => {
                         {single_item?.name == 'Budget'
                           ? AddFilter?.budget?.value
                           : single_item?.name == 'BHK'
-                          ? AddFilter?.bhk?.value
-                          : single_item?.name == 'Popular Locality' &&
+                            ? AddFilter?.bhk?.value
+                            : single_item?.name == 'Popular Locality' &&
                             AddFilter?.locality}
                       </Text>
                       <Text
@@ -1522,142 +1522,142 @@ const RentalScreen = ({route, navigation}) => {
                           }}>
                           {single_item?.name == 'Popular Locality'
                             ? locality &&
-                              Array?.isArray(locality) &&
-                              locality?.map((item, index) => {
-                                return (
-                                  <TouchableOpacity
-                                    key={index}
-                                    style={{
-                                      width: '45%',
-                                      backgroundColor:
-                                        AddFilter?.locality == item
-                                          ? Color.primary
-                                          : Color.white,
-                                      paddingHorizontal: 10,
-                                      paddingVertical: 5,
-                                      margin: 5,
-                                      borderRadius: 50,
-                                      borderWidth: 1,
-                                      borderColor: '#d4d4d4',
-                                      alignItems: 'center',
-                                    }}
-                                    onPress={() => {
-                                      single_item?.name == 'Popular Locality' &&
+                            Array?.isArray(locality) &&
+                            locality?.map((item, index) => {
+                              return (
+                                <TouchableOpacity
+                                  key={index}
+                                  style={{
+                                    width: '45%',
+                                    backgroundColor:
                                       AddFilter?.locality == item
-                                        ? SetAddFilter({
-                                            budget: AddFilter?.budget,
-                                            bhk: AddFilter?.bhk,
-                                            locality: null,
-                                          })
-                                        : SetAddFilter({
-                                            budget: AddFilter?.budget,
-                                            bhk: AddFilter?.bhk,
-                                            locality: item,
-                                          });
-                                      this[RBSheet + single_index].close();
-                                      setFilterLoading(true);
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: 14,
-                                        color:
-                                          AddFilter?.locality == item
-                                            ? Color.white
-                                            : Color.black,
-                                        marginHorizontal: 10,
-                                        fontFamily: Poppins.SemiBold,
-                                      }}>
-                                      {item}
-                                    </Text>
-                                  </TouchableOpacity>
-                                );
-                              })
-                            : single_item?.data?.map((item, index) => {
-                                return (
-                                  <TouchableOpacity
-                                    key={index}
+                                        ? Color.primary
+                                        : Color.white,
+                                    paddingHorizontal: 10,
+                                    paddingVertical: 5,
+                                    margin: 5,
+                                    borderRadius: 50,
+                                    borderWidth: 1,
+                                    borderColor: '#d4d4d4',
+                                    alignItems: 'center',
+                                  }}
+                                  onPress={() => {
+                                    single_item?.name == 'Popular Locality' &&
+                                      AddFilter?.locality == item
+                                      ? SetAddFilter({
+                                        budget: AddFilter?.budget,
+                                        bhk: AddFilter?.bhk,
+                                        locality: null,
+                                      })
+                                      : SetAddFilter({
+                                        budget: AddFilter?.budget,
+                                        bhk: AddFilter?.bhk,
+                                        locality: item,
+                                      });
+                                    this[RBSheet + single_index].close();
+                                    setFilterLoading(true);
+                                  }}>
+                                  <Text
                                     style={{
-                                      width: '45%',
-                                      backgroundColor:
-                                        AddFilter?.budget?.value ==
-                                          item?.value ||
+                                      fontSize: 14,
+                                      color:
+                                        AddFilter?.locality == item
+                                          ? Color.white
+                                          : Color.black,
+                                      marginHorizontal: 10,
+                                      fontFamily: Poppins.SemiBold,
+                                    }}>
+                                    {item}
+                                  </Text>
+                                </TouchableOpacity>
+                              );
+                            })
+                            : single_item?.data?.map((item, index) => {
+                              return (
+                                <TouchableOpacity
+                                  key={index}
+                                  style={{
+                                    width: '45%',
+                                    backgroundColor:
+                                      AddFilter?.budget?.value ==
+                                        item?.value ||
                                         AddFilter?.bhk?.value == item?.value ||
                                         AddFilter?.locality == item?.value
-                                          ? Color.primary
-                                          : Color.white,
-                                      marginVertical: 10,
-                                      borderWidth: 1,
-                                      borderColor: Color.black,
-                                      borderRadius: 50,
-                                      marginHorizontal: 5,
-                                      alignItems: 'center',
-                                      padding: 5,
-                                      justifyContent: 'center',
-                                    }}
-                                    onPress={() => {
-                                      single_item?.name == 'Budget'
-                                        ? item.value == AddFilter?.budget?.value
-                                          ? SetAddFilter({
-                                              budget: null,
-                                              bhk: AddFilter?.bhk,
-                                              locality: AddFilter?.locality,
-                                            })
-                                          : SetAddFilter({
-                                              budget: item,
-                                              bhk: AddFilter?.bhk,
-                                              locality: AddFilter?.locality,
-                                            })
-                                        : single_item?.name == 'BHK'
+                                        ? Color.primary
+                                        : Color.white,
+                                    marginVertical: 10,
+                                    borderWidth: 1,
+                                    borderColor: Color.black,
+                                    borderRadius: 50,
+                                    marginHorizontal: 5,
+                                    alignItems: 'center',
+                                    padding: 5,
+                                    justifyContent: 'center',
+                                  }}
+                                  onPress={() => {
+                                    single_item?.name == 'Budget'
+                                      ? item.value == AddFilter?.budget?.value
+                                        ? SetAddFilter({
+                                          budget: null,
+                                          bhk: AddFilter?.bhk,
+                                          locality: AddFilter?.locality,
+                                        })
+                                        : SetAddFilter({
+                                          budget: item,
+                                          bhk: AddFilter?.bhk,
+                                          locality: AddFilter?.locality,
+                                        })
+                                      : single_item?.name == 'BHK'
                                         ? item.value == AddFilter?.bhk?.value
                                           ? SetAddFilter({
-                                              budget: AddFilter?.budget,
-                                              bhk: null,
-                                              locality: AddFilter?.locality,
-                                            })
+                                            budget: AddFilter?.budget,
+                                            bhk: null,
+                                            locality: AddFilter?.locality,
+                                          })
                                           : SetAddFilter({
-                                              budget: AddFilter?.budget,
-                                              bhk: item,
-                                              locality: AddFilter?.locality,
-                                            })
+                                            budget: AddFilter?.budget,
+                                            bhk: item,
+                                            locality: AddFilter?.locality,
+                                          })
                                         : single_item?.name ==
-                                            'Popular Locality' &&
+                                          'Popular Locality' &&
                                           item.value == AddFilter?.locality
-                                        ? SetAddFilter({
+                                          ? SetAddFilter({
                                             budget: AddFilter?.budget,
                                             bhk: AddFilter?.bhk,
                                             locality: null,
                                           })
-                                        : SetAddFilter({
+                                          : SetAddFilter({
                                             budget: AddFilter?.budget,
                                             bhk: AddFilter?.bhk,
                                             locality: item,
                                           });
-                                      this[RBSheet + single_index].close();
-                                      setFilterLoading(true);
-                                    }}>
-                                    <Text
-                                      style={{
-                                        fontSize: 14,
-                                        color:
-                                          AddFilter?.budget?.value ==
-                                            item?.value ||
+                                    this[RBSheet + single_index].close();
+                                    setFilterLoading(true);
+                                  }}>
+                                  <Text
+                                    style={{
+                                      fontSize: 14,
+                                      color:
+                                        AddFilter?.budget?.value ==
+                                          item?.value ||
                                           AddFilter?.bhk?.value ==
-                                            item?.value ||
+                                          item?.value ||
                                           AddFilter?.locality == item?.value
-                                            ? Color.white
-                                            : Color.black,
-                                        marginHorizontal: 10,
-                                        fontFamily: Poppins.SemiBold,
-                                      }}>
-                                      {single_item?.name == 'Budget'
-                                        ? common_fn.formatedDataforSuffix(
-                                            item?.title,
-                                          )
-                                        : item.title}
-                                    </Text>
-                                  </TouchableOpacity>
-                                );
-                              })}
+                                          ? Color.white
+                                          : Color.black,
+                                      marginHorizontal: 10,
+                                      fontFamily: Poppins.SemiBold,
+                                    }}>
+                                    {single_item?.name == 'Budget'
+                                      ? common_fn.formatedDataforSuffix(
+                                        item?.title,
+                                      )
+                                      : item.title}
+                                  </Text>
+                                </TouchableOpacity>
+                              );
+                            })}
                         </View>
                       </ScrollView>
                     </RBSheet>
@@ -1693,19 +1693,19 @@ const RentalScreen = ({route, navigation}) => {
             }}
             keyExtractor={(item, index) => item + index}
             onScroll={Animated.event(
-              [{nativeEvent: {contentOffset: {y: animatedOpacityValue}}}],
-              {useNativeDriver: false},
+              [{ nativeEvent: { contentOffset: { y: animatedOpacityValue } } }],
+              { useNativeDriver: false },
             )}
-            renderItem={({item, index}) => renderItem(item, index)}
+            renderItem={({ item, index }) => renderItem(item, index)}
             onEndReached={() => {
               loadMoreData();
             }}
             onEndReachedThreshold={3}
             ListFooterComponent={() => {
               return (
-                <View style={{alignItems: 'center', justifyContent: 'center'}}>
+                <View style={{ alignItems: 'center', justifyContent: 'center' }}>
                   {loadMore && countFilter > 10 && (
-                    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                       <Text
                         style={{
                           fontSize: 12,
@@ -1950,21 +1950,21 @@ const RentalScreen = ({route, navigation}) => {
                   <TextInput
                     placeholder="Enter your phone number"
                     placeholderTextColor={Color.cloudyGrey}
-                    value={mobile_number}
-                    editable={false}
+                    value={number}
+                    editable={mobile_number?.length !== 10}
                     keyboardType="phone-pad"
                     maxLength={10}
                     returnKeyType={'done'}
-                    // onChangeText={number => {
-                    //   chkNumber(number);
-                    // }}
+                    onChangeText={number => {
+                      chkNumber(number);
+                    }}
                     style={styles.numberTextBox}
                   />
                 </View>
               </View>
               <Button
                 title={'Submit'}
-                buttonStyle={{backgroundColor: Color.primary}}
+                buttonStyle={{ backgroundColor: Color.primary }}
                 onPress={() => {
                   updateProfile();
                 }}
@@ -2024,7 +2024,7 @@ const styles = StyleSheet.create({
     color: Color.black,
     marginVertical: 10,
     fontSize: 16,
-    // fontFamily: 'Poppins-SemiBold',
+    fontFamily: 'Poppins-SemiBold',
   },
 
   searchSection: {

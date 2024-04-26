@@ -373,7 +373,7 @@ const AuctionNotifyProperties = () => {
 
   async function submitClick() {
     try {
-      // console.log("sdkgjklsdklgksldgklh");
+      console.log("sdkgjklsdklgksldgklh");
       var data = {
         user_id: id,
         from_reserve_price: ReservedPriceFrom,
@@ -1052,7 +1052,7 @@ const AuctionNotifyProperties = () => {
                 borderRadius: 200,
               }}>
               <Image
-                source={{ uri: "https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Auction/legalService.jpg" }}
+               source={{ uri: "https://albion-backend.s3.ap-south-1.amazonaws.com/Mobile+Apk+Banners/assets/assets/Auction/legalService.jpg" }}
                 style={{
                   width: 130,
                   height: 130,

@@ -191,7 +191,6 @@ const Register = ({ navigation }) => {
             Find your dream property
           </Text>
           <View style={{ marginVertical: 5 }}>
-            {NameError && <Text style={styles.errorMsg}>{NameError}</Text>}
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -208,9 +207,10 @@ const Register = ({ navigation }) => {
               onChangeText={value => setUsername(value)}
               style={styles.demoNameTextInput}
             />
+            {NameError && <Text style={styles.errorMsg}>{NameError}</Text>}
           </View>
           <View style={{ marginVertical: 5 }}>
-            {NumError && <Text style={styles.errorMsg}>{NumError}</Text>}
+
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -235,9 +235,10 @@ const Register = ({ navigation }) => {
                 style={styles.phoneTextInput}
               />
             </View>
+            {NumError && <Text style={styles.errorMsg}>{NumError}</Text>}
           </View>
           <View style={{ marginVertical: 5 }}>
-            {emailerror && <Text style={styles.errorMsg}>{emailerror}</Text>}
+
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -255,9 +256,10 @@ const Register = ({ navigation }) => {
               textContentType="emailAddress"
               style={styles.EmailTextInput}
             />
+            {emailerror && <Text style={styles.errorMsg}>{emailerror}</Text>}
           </View>
           <View style={{ marginVertical: 5 }}>
-            {stateError && <Text style={styles.errorMsg}>{stateError}</Text>}
+
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -306,11 +308,10 @@ const Register = ({ navigation }) => {
                 />
               )}
             />
+            {stateError && <Text style={styles.errorMsg}>{stateError}</Text>}
           </View>
           <View style={{ marginVertical: 5 }}>
-            {DistrictError && (
-              <Text style={styles.errorMsg}>{DistrictError}</Text>
-            )}
+
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -362,11 +363,12 @@ const Register = ({ navigation }) => {
                 />
               )}
             />
+            {DistrictError && (
+              <Text style={styles.errorMsg}>{DistrictError}</Text>
+            )}
           </View>
           <View style={{ marginVertical: 5 }}>
-            {passworderror && (
-              <Text style={styles.errorMsg}>{passworderror}</Text>
-            )}
+
             <Text
               style={{
                 fontFamily: Poppins.Medium,
@@ -396,6 +398,9 @@ const Register = ({ navigation }) => {
                 />
               </TouchableOpacity>
             </View>
+            {passworderror && (
+              <Text style={styles.errorMsg}>{passworderror}</Text>
+            )}
           </View>
           <Button
             title={'Sign Up'}
@@ -432,7 +437,7 @@ const styles = StyleSheet.create({
     fontSize: 14,
     fontFamily: Poppins.Medium,
     color: Color.red,
-    marginTop: 20,
+    marginTop: 5,
   },
   DemoContainer: { flex: 1, backgroundColor: Color.white, padding: 10 },
   ImageContainer: {
@@ -467,7 +472,7 @@ const styles = StyleSheet.create({
     textAlign: 'left',
   },
   demoNameTextInput: {
-    height: 40,
+    height: 50,
     borderColor: Color.cloudyGrey,
     borderWidth: 1,
     borderRadius: 5,
@@ -477,7 +482,7 @@ const styles = StyleSheet.create({
   phoneView: {
     borderColor: Color.cloudyGrey,
     borderWidth: 1,
-    height: 40,
+    height: 50,
     flexDirection: 'row',
     alignItems: 'center',
     borderRadius: 5,
@@ -487,7 +492,7 @@ const styles = StyleSheet.create({
     marginHorizontal: 10,
   },
   phoneTextInput: {
-    height: 40,
+    height: 50,
     padding: 10,
     borderLeftColor: Color.cloudyGrey,
     color: Color.black,
@@ -495,7 +500,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   EmailTextInput: {
-    height: 40,
+    height: 50,
     borderColor: Color.cloudyGrey,
     borderWidth: 1,
     borderRadius: 5,
