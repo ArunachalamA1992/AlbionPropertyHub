@@ -1,7 +1,8 @@
-import React, { useState, useEffect } from 'react';
-import { StyleSheet } from 'react-native';
-import { Pressable, TextInput, View, Keyboard, Text } from 'react-native';
+import React, {useState, useEffect} from 'react';
+import {StyleSheet} from 'react-native';
+import {Pressable, TextInput, View, Keyboard, Text} from 'react-native';
 import Color from '../Config/Color';
+import {Poppins} from '../Global/FontFamily';
 
 const OTPInput = ({
   inputRef,
@@ -25,9 +26,7 @@ const OTPInput = ({
   };
 
   useEffect(() => {
-    // update pin ready status
     setIsPinReady(code.length === maximumLength);
-    // clean up function
     return () => {
       setIsPinReady(false);
     };
@@ -76,7 +75,7 @@ const OTPInput = ({
       </Pressable>
       <TextInput
         autoComplete="sms-otp"
-        textContentType='oneTimeCode'
+        textContentType="oneTimeCode"
         style={styles.TextInputValue}
         keyboardType="numeric"
         value={code}
@@ -109,15 +108,14 @@ const styles = StyleSheet.create({
   },
   BoxInputValue: {
     fontSize: 18,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     textAlign: 'center',
     color: Color.black,
-    paddingTop: 5
+    paddingTop: 5,
   },
   OtpContainer: {
     justifyContent: 'center',
     alignItems: 'center',
-    display: "flex"
   },
   otpPressable: {
     width: '80%',
@@ -127,7 +125,7 @@ const styles = StyleSheet.create({
   TextInputValue: {
     position: 'absolute',
     opacity: 0,
-    alignItems: "center",
-    justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
 });

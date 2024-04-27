@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   Alert,
   Image,
@@ -17,24 +17,28 @@ import {
 } from 'react-native';
 import Color from '../Config/Color';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
-import { Button } from 'react-native-elements';
-import { Poppins } from '../Global/FontFamily';
+import {Button} from 'react-native-elements';
+import {Poppins} from '../Global/FontFamily';
 import DeviceInfo from 'react-native-device-info';
 import fetchData from '../Config/fetchData';
 import common_fn from '../Config/common_fn';
-import { useNavigation } from '@react-navigation/native';
-import messaging, { firebase } from '@react-native-firebase/messaging';
+import {useNavigation} from '@react-navigation/native';
+import messaging, {firebase} from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { useDispatch } from 'react-redux';
+import {useDispatch} from 'react-redux';
 import OTPInput from './OTPInput';
-import { setLoginType, setUserData } from '../Redux';
-import { profileCompletion } from '../Utils/utils';
-import { RESULTS } from 'react-native-permissions';
-import { KeyboardAvoidingView } from 'react-native';
-import { Media } from '../Global/Media';
-import { scr_width } from '../Utils/Dimensions';
-import { Iconviewcomponent } from './Icontag';
-import { getHash, removeListener, startOtpListener } from 'react-native-otp-verify'
+import {setLoginType, setUserData} from '../Redux';
+import {profileCompletion} from '../Utils/utils';
+import {RESULTS} from 'react-native-permissions';
+import {KeyboardAvoidingView} from 'react-native';
+import {Media} from '../Global/Media';
+import {scr_width} from '../Utils/Dimensions';
+import {Iconviewcomponent} from './Icontag';
+import {
+  getHash,
+  removeListener,
+  startOtpListener,
+} from 'react-native-otp-verify';
 
 import {
   GoogleSignin,
@@ -42,13 +46,13 @@ import {
   statusCodes,
 } from '@react-native-google-signin/google-signin';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
 );
 
-const BottomLogin = ({ login, setLogin }) => {
+const BottomLogin = ({login, setLogin}) => {
   const navigation = useNavigation();
   const [number, setNumber] = useState('');
   const [error, setError] = useState(false);
@@ -68,7 +72,7 @@ const BottomLogin = ({ login, setLogin }) => {
   const dispatch = useDispatch();
   const [percentage, setPercentage] = useState(0);
 
-  const [otp, setOtp] = useState("")
+  const [otp, setOtp] = useState('');
 
   const chkNumber = number => {
     setNumber(number);
@@ -95,9 +99,11 @@ const BottomLogin = ({ login, setLogin }) => {
   }, []);
 
   useEffect(() => {
-    getHash().then(hash => {
-      console.log("Hash ================ :-----------------------", hash)
-    }).catch("error  ----------", console.log);
+    getHash()
+      .then(hash => {
+        console.log('Hash ================ :-----------------------', hash);
+      })
+      .catch('error  ----------', console.log);
 
     startOtpListener(message => {
       const otp = /(\d{4})/g.exec(message)[1];
@@ -118,7 +124,7 @@ const BottomLogin = ({ login, setLogin }) => {
         mobile_number: number,
         device_id: 2,
       });
-      var { message, user_id } = login;
+      var {message, user_id} = login;
       if (user_id) {
         if (Platform.OS === 'android') {
           common_fn.showToast('OTP Sent Successfully');
@@ -167,8 +173,8 @@ const BottomLogin = ({ login, setLogin }) => {
 
   const ResendOTP = async number => {
     setSeconds(30);
-    const ResendOtpVerify = await fetchData.login({ mobile_number: number });
-    var { message, user_id } = ResendOtpVerify;
+    const ResendOtpVerify = await fetchData.login({mobile_number: number});
+    var {message, user_id} = ResendOtpVerify;
     if (user_id) {
       if (Platform.OS === 'android') {
         common_fn.showToast('OTP Sent Successfully');
@@ -238,7 +244,7 @@ const BottomLogin = ({ login, setLogin }) => {
 
   const VerifyOTP = async navigation => {
     setLoading(true);
-    var { replace } = navigation;
+    var {replace} = navigation;
     if (otpCode.length == 4) {
       const VerifyOTP = await fetchData.verify_OTP({
         mobile_number: number,
@@ -246,7 +252,7 @@ const BottomLogin = ({ login, setLogin }) => {
         token: token,
       });
       if (VerifyOTP?.message == 'Success') {
-        var { user_id, username, mobile_number, email } = VerifyOTP?.data;
+        var {user_id, username, mobile_number, email} = VerifyOTP?.data;
         const percentage = profileCompletion(
           user_id,
           username,
@@ -263,7 +269,7 @@ const BottomLogin = ({ login, setLogin }) => {
         );
         await AsyncStorage.setItem(
           'action_login_type',
-          JSON.stringify({ login_type: 'properties' }),
+          JSON.stringify({login_type: 'properties'}),
         );
         dispatch(setLoginType('properties'));
         if (percentage == 100) {
@@ -271,7 +277,7 @@ const BottomLogin = ({ login, setLogin }) => {
         } else {
           replace('TabNavigator', UserLogin);
         }
-        setLogin(false)
+        setLogin(false);
         // locationTrack();
         if (Platform.OS === 'android') {
           common_fn.showToast(`Welcome to Albion ${VerifyOTP?.data?.username}`);
@@ -308,9 +314,9 @@ const BottomLogin = ({ login, setLogin }) => {
     }
   };
 
-  const signIn = async (navigation) => {
+  const signIn = async navigation => {
     try {
-      const replace = navigation
+      const replace = navigation;
       await GoogleSignin.hasPlayServices();
       const userInfo = await GoogleSignin.signIn();
       if (userInfo) {
@@ -331,7 +337,7 @@ const BottomLogin = ({ login, setLogin }) => {
           );
           await AsyncStorage.setItem(
             'action_login_type',
-            JSON.stringify({ login_type: 'properties' }),
+            JSON.stringify({login_type: 'properties'}),
           );
           dispatch(setLoginType('properties'));
           if (percentage == 100) {
@@ -356,21 +362,20 @@ const BottomLogin = ({ login, setLogin }) => {
     }
   };
 
-
   return (
     <KeyboardAvoidingView
-      style={{ flex: 1 }}
+      style={{flex: 1}}
       behavior={Platform.OS === 'ios' ? 'position' : null}
       keyboardVerticalOffset={Platform.OS === 'ios' ? 40 : 0}>
       {/* <DismissKeyboard> */}
-      <View style={{ flex: 1 }}>
+      <View style={{flex: 1}}>
         {otpVisible === true ? (
           <Modal
             transparent={true}
             animationType="slide"
             visible={otpVisible}
-            onRequestClose={() => { }}
-            style={{ alignItems: 'center', justifyContent: 'center' }}>
+            onRequestClose={() => {}}
+            style={{alignItems: 'center', justifyContent: 'center'}}>
             <View
               style={{
                 flex: 1,
@@ -379,7 +384,7 @@ const BottomLogin = ({ login, setLogin }) => {
                 justifyContent: 'center',
               }}>
               <Pressable
-                style={{ flex: 1, backgroundColor: Color.transparantBlack }}
+                style={{flex: 1, backgroundColor: Color.transparantBlack}}
                 onPress={() => {
                   setOTPVisible(false);
                   setNumber('');
@@ -397,8 +402,8 @@ const BottomLogin = ({ login, setLogin }) => {
                     alignItems: 'center',
                   }}>
                   <Image
-                    source={{ uri: Media.logo }}
-                    style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                    source={{uri: Media.logo}}
+                    style={{width: 100, height: 100, resizeMode: 'contain'}}
                   />
                 </View>
                 <View
@@ -471,7 +476,7 @@ const BottomLogin = ({ login, setLogin }) => {
             onRequestClose={() => {
               setOTPVisible(false);
             }}
-            style={{ alignItems: 'center', justifyContent: 'center' }}>
+            style={{alignItems: 'center', justifyContent: 'center'}}>
             <View
               style={{
                 flex: 1,
@@ -480,7 +485,7 @@ const BottomLogin = ({ login, setLogin }) => {
                 justifyContent: 'center',
               }}>
               <Pressable
-                style={{ flex: 1, backgroundColor: Color.transparantBlack }}
+                style={{flex: 1, backgroundColor: Color.transparantBlack}}
                 onPress={() => {
                   setLogin(false);
                   setNumber('');
@@ -514,8 +519,8 @@ const BottomLogin = ({ login, setLogin }) => {
                     alignItems: 'center',
                   }}>
                   <Image
-                    source={{ uri: Media.logo }}
-                    style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                    source={{uri: Media.logo}}
+                    style={{width: 100, height: 100, resizeMode: 'contain'}}
                   />
                 </View>
                 <Text style={styles.title}>Login</Text>
@@ -567,7 +572,10 @@ const BottomLogin = ({ login, setLogin }) => {
                       fontFamily: Poppins.SemiBold,
                     }}
                     icon={() => (
-                      <Image source={{ uri: Media.googlebg }} style={{ width: 30, height: 30 }} />
+                      <Image
+                        source={{uri: Media.googlebg}}
+                        style={{width: 30, height: 30}}
+                      />
                     )}
                     onPress={() => signIn(navigation)}
                     buttonStyle={{
@@ -578,7 +586,6 @@ const BottomLogin = ({ login, setLogin }) => {
                     }}
                   />
                 </View>
-
               </View>
             </View>
           </Modal>
@@ -598,7 +605,7 @@ const styles = StyleSheet.create({
     borderTopRightRadius: 10,
   },
   title: {
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     fontSize: 20,
     fontWeight: 'bold',
     textAlign: 'left',
@@ -607,7 +614,7 @@ const styles = StyleSheet.create({
     marginVertical: 10,
   },
   subtitle: {
-    fontFamily: 'Poppins-Medium',
+    fontFamily: Poppins.Medium,
     fontSize: 14,
     textAlign: 'left',
     color: Color.cloudyGrey,
@@ -628,12 +635,12 @@ const styles = StyleSheet.create({
     color: Color.black,
     fontSize: 14,
     padding: 5,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     alignItems: 'flex-start',
   },
   error: {
     fontSize: 12,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     color: Color.red,
     textAlign: 'left',
     marginTop: 10,
@@ -658,19 +665,19 @@ const styles = StyleSheet.create({
   noReceiveText: {
     color: Color.black,
     fontSize: 12,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
   },
   resendOtp: {
     color: Color.primary,
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     fontWeight: 'bold',
     textDecorationLine: 'underline',
     textAlign: 'right',
   },
   invalidLogin: {
     fontSize: 14,
-    fontFamily: 'Poppins-SemiBold',
+    fontFamily: Poppins.SemiBold,
     color: Color.red,
     textAlign: 'center',
   },

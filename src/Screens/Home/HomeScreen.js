@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Dimensions,
   ScrollView,
@@ -17,15 +17,15 @@ import {
   Platform,
 } from 'react-native';
 import Color from '../../Config/Color';
-import { Button, Divider } from 'react-native-elements';
+import {Button, Divider} from 'react-native-elements';
 import Icon from 'react-native-vector-icons/Ionicons';
 import AIcon from 'react-native-vector-icons/AntDesign';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import OIcon from 'react-native-vector-icons/Octicons';
-import { Media } from '../../Global/Media';
-import { useDispatch, useSelector } from 'react-redux';
+import {Media} from '../../Global/Media';
+import {useDispatch, useSelector} from 'react-redux';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import LinearGradient from 'react-native-linear-gradient';
@@ -38,27 +38,27 @@ import {
   setPropertyData,
   setUserData,
 } from '../../Redux';
-import { Poppins } from '../../Global/FontFamily';
+import {Poppins} from '../../Global/FontFamily';
 import Geolocation from 'react-native-geolocation-service';
 import axios from 'axios';
 import common_fn from '../../Config/common_fn';
 import moment from 'moment';
 
 import PrimeModal from '../Prime/PrimeModal';
-import { PlanPhonePurchase } from '../../Components/PlanPurchase';
-import { PlotTypeModal } from '../../Components/PlotTypeModal';
-import { ActivityIndicator } from 'react-native-paper';
-import { Iconviewcomponent } from '../../Components/Icontag';
+import {PlanPhonePurchase} from '../../Components/PlanPurchase';
+import {PlotTypeModal} from '../../Components/PlotTypeModal';
+import {ActivityIndicator} from 'react-native-paper';
+import {Iconviewcomponent} from '../../Components/Icontag';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { profileCompletion } from '../../Utils/utils';
+import {profileCompletion} from '../../Utils/utils';
 import SenderModal from '../../Components/SenderModal';
-import { base_auction_image_url } from '../../Config/base_url';
+import {base_auction_image_url} from '../../Config/base_url';
 import EnableLogin from '../../Components/EnableLogin';
 import BottomLogin from '../../Components/BottomLogin';
-import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
-import { Keyboard } from 'react-native';
+import {useBottomTabBarHeight} from '@react-navigation/bottom-tabs';
+import {Keyboard} from 'react-native';
 
-var { width, height } = Dimensions.get('screen');
+var {width, height} = Dimensions.get('screen');
 
 const TabBarHeight = 48;
 const HeaderHeight = 150;
@@ -120,11 +120,11 @@ const BuyItemCard = ({
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        })
+            cancelToken: cancelTokenSource.token,
+          })
         : fetchData.add_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        });
+            cancelToken: cancelTokenSource.token,
+          });
 
       const response = await apiRequest;
 
@@ -136,7 +136,7 @@ const BuyItemCard = ({
         }
         setBestOffers(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: false } : product,
+            product.p_id === id ? {...product, isWishListed: false} : product,
           ),
         );
       } else if (response?.message === 'Success' && !isWishList) {
@@ -148,7 +148,7 @@ const BuyItemCard = ({
 
         setBestOffers(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: true } : product,
+            product.p_id === id ? {...product, isWishListed: true} : product,
           ),
         );
       }
@@ -185,11 +185,11 @@ const BuyItemCard = ({
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        })
+            cancelToken: cancelTokenSource.token,
+          })
         : fetchData.add_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        });
+            cancelToken: cancelTokenSource.token,
+          });
 
       const response = await apiRequest;
 
@@ -201,7 +201,7 @@ const BuyItemCard = ({
         }
         setBuilderProducts(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: false } : product,
+            product.p_id === id ? {...product, isWishListed: false} : product,
           ),
         );
       } else if (response?.message === 'Success' && !isWishList) {
@@ -213,7 +213,7 @@ const BuyItemCard = ({
 
         setBuilderProducts(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: true } : product,
+            product.p_id === id ? {...product, isWishListed: true} : product,
           ),
         );
       }
@@ -306,7 +306,7 @@ const BuyItemCard = ({
   const starImageFilled = Media.star;
   const starImageCorner = Media.starOutline;
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
       <Animated.SectionList
         sections={BuySection}
         scrollEnabled={true}
@@ -314,7 +314,7 @@ const BuyItemCard = ({
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {
             useNativeDriver: true,
           },
@@ -330,11 +330,11 @@ const BuyItemCard = ({
         }}
         nestedScrollEnabled
         initialNumToRender={5}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           switch (item) {
             case 'Best Offers':
               return (
-                <View style={{ marginTop: 15 }}>
+                <View style={{marginTop: 15}}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -342,7 +342,7 @@ const BuyItemCard = ({
                       marginVertical: 10,
                       marginHorizontal: 10,
                     }}>
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -417,7 +417,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -438,7 +438,7 @@ const BuyItemCard = ({
                           });
                         }
                         return (
-                          <View style={{ flex: 1 }}>
+                          <View style={{flex: 1}}>
                             <TouchableOpacity
                               key={index}
                               activeOpacity={0.5}
@@ -458,7 +458,7 @@ const BuyItemCard = ({
                               }}>
                               <View>
                                 {item?.images?.length > 0 &&
-                                  item?.images?.[0]?.image_url != '' ? (
+                                item?.images?.[0]?.image_url != '' ? (
                                   <Image
                                     source={{
                                       uri: item?.images?.[0]?.image_url,
@@ -474,7 +474,7 @@ const BuyItemCard = ({
                                   />
                                 ) : (
                                   <Image
-                                    source={{ uri: Media.noImage }}
+                                    source={{uri: Media.noImage}}
                                     style={{
                                       width: 250,
                                       height: 150,
@@ -666,12 +666,12 @@ const BuyItemCard = ({
                                     {item?.property_type?.pt_name == 'PG'
                                       ? item?.property_type?.pt_name
                                       : item?.property_type?.pt_name ==
-                                        'Flat' ||
+                                          'Flat' ||
                                         item?.property_type?.pt_name ==
-                                        'Villa' ||
+                                          'Villa' ||
                                         item?.property_type?.pt_name == 'House'
-                                        ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                        : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                   </Text>
                                   {/* <F5Icon
                                     name="crown"
@@ -711,13 +711,13 @@ const BuyItemCard = ({
                                     ₹
                                     {item?.property_type?.pt_name == 'PG'
                                       ? common_fn.getMinToMaxPrice(
-                                        item?.room_category,
-                                      )
+                                          item?.room_category,
+                                        )
                                       : item?.expected_price?.length >= 5
-                                        ? common_fn.formatNumberWithSuffix(
+                                      ? common_fn.formatNumberWithSuffix(
                                           item?.expected_price,
                                         )
-                                        : item?.expected_price}
+                                      : item?.expected_price}
                                   </Text>
                                 </View>
                                 <View
@@ -764,7 +764,7 @@ const BuyItemCard = ({
                         width: '100%',
                       }}>
                       <Image
-                        source={{ uri: Media.noProperty }}
+                        source={{uri: Media.noProperty}}
                         style={{
                           width: 100,
                           height: 80,
@@ -791,7 +791,7 @@ const BuyItemCard = ({
             case 'New Property':
               return (
                 NewProperty?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -833,7 +833,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -897,7 +897,7 @@ const BuyItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -912,7 +912,7 @@ const BuyItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -922,8 +922,8 @@ const BuyItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -938,8 +938,8 @@ const BuyItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -950,7 +950,7 @@ const BuyItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -975,7 +975,7 @@ const BuyItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -1010,7 +1010,7 @@ const BuyItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -1036,13 +1036,13 @@ const BuyItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -1055,7 +1055,7 @@ const BuyItemCard = ({
               );
             case 'Selling Types':
               return (
-                <View style={{ marginTop: 25 }}>
+                <View style={{marginTop: 25}}>
                   <View
                     style={{
                       flex: 1,
@@ -1104,48 +1104,48 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         return (
                           <TouchableOpacity
                             key={index}
                             onPress={() => {
                               item?.name == 'Plot' ||
-                                item?.name == 'Shop' ||
-                                item?.name == 'Office'
+                              item?.name == 'Shop' ||
+                              item?.name == 'Office'
                                 ? navigation.navigate('Commercial', {
-                                  location:
-                                    AutoFilter?.length != ''
-                                      ? AutoFilter
-                                      : currentCity,
-                                  property_action: 'sell,rent',
-                                  filter: false,
-                                  property_type:
-                                    item?.name == 'Plot'
-                                      ? 'plot'
-                                      : item?.name == 'Office'
+                                    location:
+                                      AutoFilter?.length != ''
+                                        ? AutoFilter
+                                        : currentCity,
+                                    property_action: 'sell,rent',
+                                    filter: false,
+                                    property_type:
+                                      item?.name == 'Plot'
+                                        ? 'plot'
+                                        : item?.name == 'Office'
                                         ? 'Office'
                                         : 'shop',
-                                  data: {},
-                                  real_estate: 'commercial',
-                                  city_id: currentCityid,
-                                })
+                                    data: {},
+                                    real_estate: 'commercial',
+                                    city_id: currentCityid,
+                                  })
                                 : navigation.navigate('propertyPage', {
-                                  location:
-                                    AutoFilter?.length != ''
-                                      ? AutoFilter
-                                      : currentCity,
-                                  property_action: 'sell,rent',
-                                  filter: false,
-                                  property_type:
-                                    item?.name == 'House'
-                                      ? 'house'
-                                      : item?.name == 'Villa'
+                                    location:
+                                      AutoFilter?.length != ''
+                                        ? AutoFilter
+                                        : currentCity,
+                                    property_action: 'sell,rent',
+                                    filter: false,
+                                    property_type:
+                                      item?.name == 'House'
+                                        ? 'house'
+                                        : item?.name == 'Villa'
                                         ? 'villa'
                                         : 'flat',
-                                  data: {},
-                                  real_estate: 'residential',
-                                  city_id: currentCityid,
-                                });
+                                    data: {},
+                                    real_estate: 'residential',
+                                    city_id: currentCityid,
+                                  });
                             }}
                             style={{
                               alignItems: 'center',
@@ -1161,7 +1161,7 @@ const BuyItemCard = ({
                               elevation: 2,
                             }}>
                             <Image
-                              source={{ uri: item.image }}
+                              source={{uri: item.image}}
                               style={{
                                 width: 150,
                                 height: 100,
@@ -1190,7 +1190,7 @@ const BuyItemCard = ({
             case 'Builders Property':
               return (
                 buildersProducts?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -1232,7 +1232,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -1272,7 +1272,7 @@ const BuyItemCard = ({
                           });
                         }
                         return (
-                          <View style={{ flex: 1 }}>
+                          <View style={{flex: 1}}>
                             <TouchableOpacity
                               key={index}
                               activeOpacity={0.5}
@@ -1288,7 +1288,7 @@ const BuyItemCard = ({
                               }}>
                               <View>
                                 {item?.images?.length > 0 &&
-                                  item?.images?.[0]?.image_url != '' ? (
+                                item?.images?.[0]?.image_url != '' ? (
                                   <Image
                                     source={{
                                       uri: item?.images?.[0]?.image_url,
@@ -1304,7 +1304,7 @@ const BuyItemCard = ({
                                   />
                                 ) : (
                                   <Image
-                                    source={{ uri: Media.noImage }}
+                                    source={{uri: Media.noImage}}
                                     style={{
                                       width: 250,
                                       height: 250,
@@ -1472,13 +1472,13 @@ const BuyItemCard = ({
                                       ₹
                                       {item?.property_type?.pt_name == 'PG'
                                         ? common_fn.getMinToMaxPrice(
-                                          item?.room_category,
-                                        )
+                                            item?.room_category,
+                                          )
                                         : item?.expected_price?.length >= 5
-                                          ? common_fn.formatNumberWithSuffix(
+                                        ? common_fn.formatNumberWithSuffix(
                                             item?.expected_price,
                                           )
-                                          : item?.expected_price}
+                                        : item?.expected_price}
                                     </Text>
                                     <Text
                                       style={{
@@ -1502,7 +1502,7 @@ const BuyItemCard = ({
             case 'Featured Property':
               return (
                 FeaturedProducts?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -1544,7 +1544,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -1584,7 +1584,7 @@ const BuyItemCard = ({
                           });
                         }
                         return (
-                          <View style={{ flex: 1 }}>
+                          <View style={{flex: 1}}>
                             <TouchableOpacity
                               key={index}
                               activeOpacity={0.5}
@@ -1604,7 +1604,7 @@ const BuyItemCard = ({
                               }}>
                               <View>
                                 {item?.images?.length > 0 &&
-                                  item?.images?.[0]?.image_url != '' ? (
+                                item?.images?.[0]?.image_url != '' ? (
                                   <Image
                                     source={{
                                       uri: item?.images?.[0]?.image_url,
@@ -1620,7 +1620,7 @@ const BuyItemCard = ({
                                   />
                                 ) : (
                                   <Image
-                                    source={{ uri: Media.noImage }}
+                                    source={{uri: Media.noImage}}
                                     style={{
                                       width: 250,
                                       height: 150,
@@ -1804,12 +1804,12 @@ const BuyItemCard = ({
                                     {item?.property_type?.pt_name == 'PG'
                                       ? item?.property_type?.pt_name
                                       : item?.property_type?.pt_name ==
-                                        'Flat' ||
+                                          'Flat' ||
                                         item?.property_type?.pt_name ==
-                                        'Villa' ||
+                                          'Villa' ||
                                         item?.property_type?.pt_name == 'House'
-                                        ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                        : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                   </Text>
                                   {/* <F5Icon
                                     name="crown"
@@ -1850,13 +1850,13 @@ const BuyItemCard = ({
                                     ₹
                                     {item?.property_type?.pt_name == 'PG'
                                       ? common_fn.getMinToMaxPrice(
-                                        item?.room_category,
-                                      )
+                                          item?.room_category,
+                                        )
                                       : item?.expected_price?.length >= 5
-                                        ? common_fn.formatNumberWithSuffix(
+                                      ? common_fn.formatNumberWithSuffix(
                                           item?.expected_price,
                                         )
-                                        : item?.expected_price}
+                                      : item?.expected_price}
                                   </Text>
                                 </View>
                                 <View
@@ -1913,7 +1913,7 @@ const BuyItemCard = ({
             case 'Related Property':
               return (
                 relatedViewed?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -1954,7 +1954,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -2018,7 +2018,7 @@ const BuyItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -2033,7 +2033,7 @@ const BuyItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -2043,8 +2043,8 @@ const BuyItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -2059,8 +2059,8 @@ const BuyItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -2071,7 +2071,7 @@ const BuyItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -2096,7 +2096,7 @@ const BuyItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -2131,7 +2131,7 @@ const BuyItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -2157,13 +2157,13 @@ const BuyItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -2176,8 +2176,8 @@ const BuyItemCard = ({
               );
             case 'Property Services':
               return (
-                <View style={{ marginTop: 10 }}>
-                  <View style={{ marginVertical: 5 }}>
+                <View style={{marginTop: 10}}>
+                  <View style={{marginVertical: 5}}>
                     <Text
                       style={{
                         fontSize: 16,
@@ -2199,7 +2199,7 @@ const BuyItemCard = ({
                     windowSize={7}
                     keyExtractor={(item, index) => item + index}
                     showsHorizontalScrollIndicator={false}
-                    renderItem={({ item, index }) => {
+                    renderItem={({item, index}) => {
                       return (
                         <TouchableOpacity
                           key={index}
@@ -2218,8 +2218,8 @@ const BuyItemCard = ({
                             navigation.navigate(item?.navigate);
                           }}>
                           <Image
-                            source={{ uri: item?.image }}
-                            style={{ width: 50, height: 50 }}
+                            source={{uri: item?.image}}
+                            style={{width: 50, height: 50}}
                           />
                           <Text
                             style={{
@@ -2238,8 +2238,8 @@ const BuyItemCard = ({
               );
             case 'NearBy Location':
               return (
-                <View style={{ marginTop: 10 }}>
-                  <View style={{ marginVertical: 5 }}>
+                <View style={{marginTop: 10}}>
+                  <View style={{marginVertical: 5}}>
                     <Text
                       style={{
                         fontSize: 16,
@@ -2262,7 +2262,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -2327,7 +2327,7 @@ const BuyItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -2342,7 +2342,7 @@ const BuyItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -2352,8 +2352,8 @@ const BuyItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -2368,8 +2368,8 @@ const BuyItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
 
                                 <View
@@ -2381,7 +2381,7 @@ const BuyItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -2413,7 +2413,7 @@ const BuyItemCard = ({
                                     <MIcon
                                       name={'bed'}
                                       size={24}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     <Text
                                       style={{
@@ -2436,7 +2436,7 @@ const BuyItemCard = ({
                                     <MCIcon
                                       name={'bathtub-outline'}
                                       size={24}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     <Text
                                       style={{
@@ -2467,7 +2467,7 @@ const BuyItemCard = ({
                                     <MIcon
                                       name={'balcony'}
                                       size={24}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     <Text
                                       style={{
@@ -2489,7 +2489,7 @@ const BuyItemCard = ({
                                     <MCIcon
                                       name={'parking'}
                                       size={20}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     <Text
                                       style={{
@@ -2517,7 +2517,7 @@ const BuyItemCard = ({
                         width: '100%',
                       }}>
                       <Image
-                        source={{ uri: Media.noProperty }}
+                        source={{uri: Media.noProperty}}
                         style={{
                           width: 100,
                           height: 80,
@@ -2544,8 +2544,8 @@ const BuyItemCard = ({
             case 'Recent Property':
               return (
                 recentlyViewed?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
-                    <View style={{ marginVertical: 5 }}>
+                  <View style={{marginTop: 10}}>
+                    <View style={{marginVertical: 5}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -2576,7 +2576,7 @@ const BuyItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -2640,7 +2640,7 @@ const BuyItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -2655,7 +2655,7 @@ const BuyItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -2665,8 +2665,8 @@ const BuyItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -2681,8 +2681,8 @@ const BuyItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -2693,7 +2693,7 @@ const BuyItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -2718,7 +2718,7 @@ const BuyItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -2753,7 +2753,7 @@ const BuyItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -2779,13 +2779,13 @@ const BuyItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -2798,8 +2798,13 @@ const BuyItemCard = ({
               );
             case 'Our Loan Offers':
               return (
-                <View style={{ marginTop: 15, alignItems: 'center' }}>
-                  <View style={{width:'100%',justifyContent:'flex-start', marginVertical: 10 }}>
+                <View style={{marginTop: 15, alignItems: 'center'}}>
+                  <View
+                    style={{
+                      width: '100%',
+                      justifyContent: 'flex-start',
+                      marginVertical: 10,
+                    }}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -2841,8 +2846,10 @@ const BuyItemCard = ({
                       Get our ALBION INDIA NIDHI LIMITED loan offers
                     </Text>
                   </View>
-                  <View style={{ width: '95%', alignItems: 'center' }}>
-                    <ScrollView horizontal showsHorizontalScrollIndicator={false}>
+                  <View style={{width: '95%', alignItems: 'center'}}>
+                    <ScrollView
+                      horizontal
+                      showsHorizontalScrollIndicator={false}>
                       {popularBuilders.map((item, index) => {
                         return (
                           <View
@@ -2871,7 +2878,7 @@ const BuyItemCard = ({
                       })}
                     </ScrollView>
                   </View>
-                  <View style={{ marginVertical: 10 }}>
+                  <View style={{marginVertical: 10}}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -2879,7 +2886,7 @@ const BuyItemCard = ({
                         marginVertical: 10,
                         marginHorizontal: 10,
                       }}>
-                      <View style={{ flex: 1 }}>
+                      <View style={{flex: 1}}>
                         <View
                           style={{
                             flexDirection: 'row',
@@ -2916,7 +2923,7 @@ const BuyItemCard = ({
                       horizontal
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         return (
                           <View
                             key={index}
@@ -3311,7 +3318,7 @@ const AgentItemCard = ({
   const [Usermail, setUsermail] = useState(email);
   const [percentage, setPercentage] = useState(0);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id, username, mobile_number, email, get_phone_quota } = userData;
+  var {user_id, username, mobile_number, email, get_phone_quota} = userData;
   const dispatch = useDispatch();
 
   useEffect(() => {
@@ -3390,11 +3397,11 @@ const AgentItemCard = ({
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        })
+            cancelToken: cancelTokenSource.token,
+          })
         : fetchData.add_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        });
+            cancelToken: cancelTokenSource.token,
+          });
 
       const response = await apiRequest;
 
@@ -3406,7 +3413,7 @@ const AgentItemCard = ({
         }
         setBuilderProducts(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: false } : product,
+            product.p_id === id ? {...product, isWishListed: false} : product,
           ),
         );
       } else if (response?.message === 'Success' && !isWishList) {
@@ -3418,7 +3425,7 @@ const AgentItemCard = ({
 
         setBuilderProducts(prevBuyData =>
           prevBuyData.map(product =>
-            product.p_id === id ? { ...product, isWishListed: true } : product,
+            product.p_id === id ? {...product, isWishListed: true} : product,
           ),
         );
       }
@@ -3438,7 +3445,7 @@ const AgentItemCard = ({
   const getBannerData = async () => {
     try {
       const BannerData = await fetchData.Banner({});
-      console.log("BannerData   ------------- :", JSON.stringify(BannerData));
+      console.log('BannerData   ------------- :', JSON.stringify(BannerData));
       const filteredPopularBuilders = [];
       const filteredLoanOffers = [];
       // BannerData.forEach(item => {
@@ -3553,7 +3560,7 @@ const AgentItemCard = ({
   };
 
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
       <Animated.SectionList
         sections={AgentSection}
         scrollEnabled={true}
@@ -3561,7 +3568,7 @@ const AgentItemCard = ({
         showsVerticalScrollIndicator={false}
         scrollEventThrottle={1}
         onScroll={Animated.event(
-          [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+          [{nativeEvent: {contentOffset: {y: scrollY}}}],
           {
             useNativeDriver: true,
           },
@@ -3576,11 +3583,11 @@ const AgentItemCard = ({
         }}
         nestedScrollEnabled
         initialNumToRender={5}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           switch (item) {
             case 'Property Buyers':
               return (
-                <View style={{ marginTop: 15 }}>
+                <View style={{marginTop: 15}}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -3588,7 +3595,7 @@ const AgentItemCard = ({
                       marginVertical: 10,
                       marginHorizontal: 10,
                     }}>
-                    <View style={{ flex: 1 }}>
+                    <View style={{flex: 1}}>
                       <View
                         style={{
                           flexDirection: 'row',
@@ -3617,7 +3624,7 @@ const AgentItemCard = ({
                       updateCellsBatchingPeriod={100}
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         return (
                           <View
                             key={index}
@@ -3653,7 +3660,7 @@ const AgentItemCard = ({
                                   borderRadius: 10,
                                 }}>
                                 <Image
-                                  source={{ uri: Media.Userpng }}
+                                  source={{uri: Media.Userpng}}
                                   key={index}
                                   style={{
                                     width: 80,
@@ -3695,8 +3702,8 @@ const AgentItemCard = ({
                                     {item.user_type_id == '1'
                                       ? 'Buyer'
                                       : item.user_type_id == '2'
-                                        ? 'Agent'
-                                        : 'Builder'}
+                                      ? 'Agent'
+                                      : 'Builder'}
                                   </Text>
                                 </View>
                                 <Text
@@ -3785,8 +3792,8 @@ const AgentItemCard = ({
                                   {item?.user_type_id == '1'
                                     ? 'Buyer'
                                     : item?.user_type_id == '2'
-                                      ? 'Agent'
-                                      : 'Builder'}{' '}
+                                    ? 'Agent'
+                                    : 'Builder'}{' '}
                                   you still have {get_quota_value} to contact
                                 </Text>
                               </View>
@@ -3809,7 +3816,7 @@ const AgentItemCard = ({
                         width: '100%',
                       }}>
                       <Image
-                        source={{ uri: Media.noProperty }}
+                        source={{uri: Media.noProperty}}
                         style={{
                           width: 100,
                           height: 80,
@@ -3841,7 +3848,7 @@ const AgentItemCard = ({
                         padding: 10,
                       }}>
                       <ImageBackground
-                        source={{ uri: Media.dotBackground }}
+                        source={{uri: Media.dotBackground}}
                         resizeMode="contain"
                         style={{
                           height: 100,
@@ -3910,7 +3917,7 @@ const AgentItemCard = ({
             case 'New Property':
               return (
                 NewProperty?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -3952,7 +3959,7 @@ const AgentItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -4016,7 +4023,7 @@ const AgentItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -4031,7 +4038,7 @@ const AgentItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -4041,8 +4048,8 @@ const AgentItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -4057,8 +4064,8 @@ const AgentItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -4069,7 +4076,7 @@ const AgentItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -4094,7 +4101,7 @@ const AgentItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -4129,7 +4136,7 @@ const AgentItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -4155,13 +4162,13 @@ const AgentItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -4175,7 +4182,7 @@ const AgentItemCard = ({
             case 'Builders Property':
               return (
                 buildersProducts?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -4217,7 +4224,7 @@ const AgentItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -4257,7 +4264,7 @@ const AgentItemCard = ({
                           });
                         }
                         return (
-                          <View style={{ flex: 1 }}>
+                          <View style={{flex: 1}}>
                             <TouchableOpacity
                               key={index}
                               activeOpacity={0.5}
@@ -4273,7 +4280,7 @@ const AgentItemCard = ({
                               }}>
                               <View>
                                 {item?.images?.length > 0 &&
-                                  item?.images?.[0]?.image_url != '' ? (
+                                item?.images?.[0]?.image_url != '' ? (
                                   <Image
                                     source={{
                                       uri: item?.images?.[0]?.image_url,
@@ -4289,7 +4296,7 @@ const AgentItemCard = ({
                                   />
                                 ) : (
                                   <Image
-                                    source={{ uri: Media.noImage }}
+                                    source={{uri: Media.noImage}}
                                     style={{
                                       width: 250,
                                       height: 250,
@@ -4457,13 +4464,13 @@ const AgentItemCard = ({
                                       ₹
                                       {item?.property_type?.pt_name == 'PG'
                                         ? common_fn.getMinToMaxPrice(
-                                          item?.room_category,
-                                        )
+                                            item?.room_category,
+                                          )
                                         : item?.expected_price?.length >= 5
-                                          ? common_fn.formatNumberWithSuffix(
+                                        ? common_fn.formatNumberWithSuffix(
                                             item?.expected_price,
                                           )
-                                          : item?.expected_price}
+                                        : item?.expected_price}
                                     </Text>
                                     <Text
                                       style={{
@@ -4487,7 +4494,7 @@ const AgentItemCard = ({
             case 'Featured Property':
               return (
                 FeaturedProducts?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -4529,7 +4536,7 @@ const AgentItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -4569,7 +4576,7 @@ const AgentItemCard = ({
                           });
                         }
                         return (
-                          <View style={{ flex: 1 }}>
+                          <View style={{flex: 1}}>
                             <TouchableOpacity
                               key={index}
                               activeOpacity={0.5}
@@ -4589,7 +4596,7 @@ const AgentItemCard = ({
                               }}>
                               <View>
                                 {item?.images?.length > 0 &&
-                                  item?.images?.[0]?.image_url != '' ? (
+                                item?.images?.[0]?.image_url != '' ? (
                                   <Image
                                     source={{
                                       uri: item?.images?.[0]?.image_url,
@@ -4605,7 +4612,7 @@ const AgentItemCard = ({
                                   />
                                 ) : (
                                   <Image
-                                    source={{ uri: Media.noImage }}
+                                    source={{uri: Media.noImage}}
                                     style={{
                                       width: 250,
                                       height: 150,
@@ -4789,12 +4796,12 @@ const AgentItemCard = ({
                                     {item?.property_type?.pt_name == 'PG'
                                       ? item?.property_type?.pt_name
                                       : item?.property_type?.pt_name ==
-                                        'Flat' ||
+                                          'Flat' ||
                                         item?.property_type?.pt_name ==
-                                        'Villa' ||
+                                          'Villa' ||
                                         item?.property_type?.pt_name == 'House'
-                                        ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                        : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                   </Text>
                                   {/* <F5Icon
                                       name="crown"
@@ -4835,13 +4842,13 @@ const AgentItemCard = ({
                                     ₹
                                     {item?.property_type?.pt_name == 'PG'
                                       ? common_fn.getMinToMaxPrice(
-                                        item?.room_category,
-                                      )
+                                          item?.room_category,
+                                        )
                                       : item?.expected_price?.length >= 5
-                                        ? common_fn.formatNumberWithSuffix(
+                                      ? common_fn.formatNumberWithSuffix(
                                           item?.expected_price,
                                         )
-                                        : item?.expected_price}
+                                      : item?.expected_price}
                                   </Text>
                                 </View>
                                 <View
@@ -4898,7 +4905,7 @@ const AgentItemCard = ({
             case 'Related Property':
               return (
                 relatedViewed?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
+                  <View style={{marginTop: 10}}>
                     <View
                       style={{
                         flex: 1,
@@ -4939,7 +4946,7 @@ const AgentItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -5003,7 +5010,7 @@ const AgentItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -5018,7 +5025,7 @@ const AgentItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -5028,8 +5035,8 @@ const AgentItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -5044,8 +5051,8 @@ const AgentItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -5056,7 +5063,7 @@ const AgentItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -5081,7 +5088,7 @@ const AgentItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -5116,7 +5123,7 @@ const AgentItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -5142,13 +5149,13 @@ const AgentItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -5161,7 +5168,7 @@ const AgentItemCard = ({
               );
             case 'HotDeals':
               return (
-                <View style={{ marginTop: 15 }}>
+                <View style={{marginTop: 15}}>
                   <View
                     style={{
                       flexDirection: 'row',
@@ -5222,7 +5229,7 @@ const AgentItemCard = ({
                     updateCellsBatchingPeriod={100}
                     windowSize={7}
                     keyExtractor={(item, index) => item + index}
-                    renderItem={({ item, index }) => {
+                    renderItem={({item, index}) => {
                       const twentyFourHoursAgo = moment(
                         new Date() - 24 * 60 * 60 * 1000,
                       ).format('YYYY-MM-DD');
@@ -5333,7 +5340,7 @@ const AgentItemCard = ({
                               padding: 10,
                             }}>
                             {item?.images?.length > 0 &&
-                              item?.images?.[0]?.image_url != '' ? (
+                            item?.images?.[0]?.image_url != '' ? (
                               <Image
                                 source={{
                                   uri: item?.images?.[0]?.image_url,
@@ -5348,7 +5355,7 @@ const AgentItemCard = ({
                               />
                             ) : (
                               <Image
-                                source={{ uri: Media.noImage }}
+                                source={{uri: Media.noImage}}
                                 style={{
                                   width: 100,
                                   height: 100,
@@ -5358,8 +5365,8 @@ const AgentItemCard = ({
                               />
                             )}
                           </View>
-                          <View style={{ alignItems: 'flex-start' }}>
-                            <View style={{ padding: 5 }}>
+                          <View style={{alignItems: 'flex-start'}}>
+                            <View style={{padding: 5}}>
                               <Text
                                 style={{
                                   fontSize: 14,
@@ -5374,8 +5381,8 @@ const AgentItemCard = ({
                                   : item?.property_type?.pt_name == 'Flat' ||
                                     item?.property_type?.pt_name == 'Villa' ||
                                     item?.property_type?.pt_name == 'House'
-                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                  ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                  : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                               </Text>
                               <View
                                 style={{
@@ -5387,7 +5394,7 @@ const AgentItemCard = ({
                                 <OIcon
                                   name={'location'}
                                   size={18}
-                                  style={{ color: '#666' }}
+                                  style={{color: '#666'}}
                                 />
                                 <Text
                                   style={{
@@ -5412,7 +5419,7 @@ const AgentItemCard = ({
                                     <Icon
                                       name={'bed'}
                                       size={20}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     {item?.room_category?.map(item => {
                                       return (
@@ -5447,7 +5454,7 @@ const AgentItemCard = ({
                                     <F6Icon
                                       name={'object-ungroup'}
                                       size={20}
-                                      style={{ color: '#666' }}
+                                      style={{color: '#666'}}
                                     />
                                     <Text
                                       style={{
@@ -5473,13 +5480,13 @@ const AgentItemCard = ({
                                 ₹{' '}
                                 {item?.property_type?.pt_name == 'PG'
                                   ? common_fn.getMinToMaxPrice(
-                                    item?.room_category,
-                                  )
+                                      item?.room_category,
+                                    )
                                   : item?.expected_price?.length >= 5
-                                    ? common_fn.formatNumberWithSuffix(
+                                  ? common_fn.formatNumberWithSuffix(
                                       item?.expected_price,
                                     )
-                                    : item?.expected_price}
+                                  : item?.expected_price}
                               </Text>
                             </View>
                           </View>
@@ -5496,7 +5503,7 @@ const AgentItemCard = ({
                             width: '100%',
                           }}>
                           <Image
-                            source={{ uri: Media.noProperty }}
+                            source={{uri: Media.noProperty}}
                             style={{
                               width: 100,
                               height: 80,
@@ -5525,8 +5532,8 @@ const AgentItemCard = ({
             case 'Recent Property':
               return (
                 recentlyViewed?.length > 0 && (
-                  <View style={{ marginTop: 10 }}>
-                    <View style={{ marginVertical: 5 }}>
+                  <View style={{marginTop: 10}}>
+                    <View style={{marginVertical: 5}}>
                       <Text
                         style={{
                           fontSize: 16,
@@ -5557,7 +5564,7 @@ const AgentItemCard = ({
                       windowSize={7}
                       keyExtractor={(item, index) => item + index}
                       showsHorizontalScrollIndicator={false}
-                      renderItem={({ item, index }) => {
+                      renderItem={({item, index}) => {
                         const twentyFourHoursAgo = moment(
                           new Date() - 24 * 60 * 60 * 1000,
                         ).format('YYYY-MM-DD');
@@ -5621,7 +5628,7 @@ const AgentItemCard = ({
                                 padding: 10,
                               }}>
                               {item?.images?.length > 0 &&
-                                item?.images?.[0]?.image_url != '' ? (
+                              item?.images?.[0]?.image_url != '' ? (
                                 <Image
                                   source={{
                                     uri: item?.images?.[0]?.image_url,
@@ -5636,7 +5643,7 @@ const AgentItemCard = ({
                                 />
                               ) : (
                                 <Image
-                                  source={{ uri: Media.noImage }}
+                                  source={{uri: Media.noImage}}
                                   style={{
                                     width: 100,
                                     height: 100,
@@ -5646,8 +5653,8 @@ const AgentItemCard = ({
                                 />
                               )}
                             </View>
-                            <View style={{ flex: 1, alignItems: 'center' }}>
-                              <View style={{ padding: 5 }}>
+                            <View style={{flex: 1, alignItems: 'center'}}>
+                              <View style={{padding: 5}}>
                                 <Text
                                   style={{
                                     fontSize: 14,
@@ -5662,8 +5669,8 @@ const AgentItemCard = ({
                                     : item?.property_type?.pt_name == 'Flat' ||
                                       item?.property_type?.pt_name == 'Villa' ||
                                       item?.property_type?.pt_name == 'House'
-                                      ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
-                                      : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
+                                    ? `${bedroomValue} BHK, ${item?.property_type?.pt_name}`
+                                    : `${item?.area?.super_area} ${item?.area?.super_area_unit}, ${item?.property_type?.pt_name}`}
                                 </Text>
                                 <View
                                   style={{
@@ -5674,7 +5681,7 @@ const AgentItemCard = ({
                                   <OIcon
                                     name={'location'}
                                     size={18}
-                                    style={{ color: '#666' }}
+                                    style={{color: '#666'}}
                                   />
                                   <Text
                                     style={{
@@ -5699,7 +5706,7 @@ const AgentItemCard = ({
                                       <Icon
                                         name={'bed'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       {item?.room_category?.map(item => {
                                         return (
@@ -5734,7 +5741,7 @@ const AgentItemCard = ({
                                       <F6Icon
                                         name={'object-ungroup'}
                                         size={20}
-                                        style={{ color: '#666' }}
+                                        style={{color: '#666'}}
                                       />
                                       <Text
                                         style={{
@@ -5760,13 +5767,13 @@ const AgentItemCard = ({
                                   ₹{' '}
                                   {item?.property_type?.pt_name == 'PG'
                                     ? common_fn.getMinToMaxPrice(
-                                      item?.room_category,
-                                    )
+                                        item?.room_category,
+                                      )
                                     : item?.expected_price?.length >= 5
-                                      ? common_fn.formatNumberWithSuffix(
+                                    ? common_fn.formatNumberWithSuffix(
                                         item?.expected_price,
                                       )
-                                      : item?.expected_price}
+                                    : item?.expected_price}
                                 </Text>
                               </View>
                             </View>
@@ -5779,8 +5786,8 @@ const AgentItemCard = ({
               );
             case 'Property Selling':
               return (
-                <View style={{ marginTop: 15 }}>
-                  <View style={{ marginVertical: 10 }}>
+                <View style={{marginTop: 15}}>
+                  <View style={{marginVertical: 10}}>
                     <View
                       style={{
                         flexDirection: 'row',
@@ -5857,7 +5864,7 @@ const AgentItemCard = ({
                                 </LinearGradient>
                               </View>
                               <Image
-                                source={{ uri: item.image }}
+                                source={{uri: item.image}}
                                 style={{
                                   width: 80,
                                   height: 80,
@@ -6303,7 +6310,7 @@ const AgentItemCard = ({
           </View>
           <Button
             title={'Submit'}
-            buttonStyle={{ backgroundColor: Color.primary }}
+            buttonStyle={{backgroundColor: Color.primary}}
             onPress={() => {
               updateProfile();
             }}
@@ -6317,7 +6324,7 @@ const AgentItemCard = ({
   );
 };
 
-const HomeScreen = ({ navigation }) => {
+const HomeScreen = ({navigation}) => {
   const [tabIndex, setIndex] = useState(0);
   const [tabAgentIndex, setAgentIndex] = useState(0);
   const [loading, setLoading] = useState(false);
@@ -6436,10 +6443,10 @@ const HomeScreen = ({ navigation }) => {
     }
   }, []);
   const [routes] = useState([
-    { id: 1, title: 'Buy' },
-    { id: 2, title: 'Rent' },
+    {id: 1, title: 'Buy'},
+    {id: 2, title: 'Rent'},
     // {id: 3, title: 'PG'},
-    { id: 3, title: 'Commercial' },
+    {id: 3, title: 'Commercial'},
   ]);
   const [sellingTypes] = useState([
     {
@@ -6492,37 +6499,37 @@ const HomeScreen = ({ navigation }) => {
     },
   ]);
   const [BuySection] = useState([
-    { id: 1, title: 'Best Offers', data: ['Best Offers'] },
-    { id: 2, title: 'New Property', data: ['New Property'] },
-    { id: 3, title: 'Selling Types', data: ['Selling Types'] },
-    { id: 4, title: 'Builders Property', data: ['Builders Property'] },
-    { id: 5, title: 'Featured Property', data: ['Featured Property'] },
-    { id: 6, title: 'Related Property', data: ['Related Property'] },
-    { id: 7, title: 'Property Services', data: ['Property Services'] },
-    { id: 8, title: 'NearBy Location', data: ['NearBy Location'] },
-    { id: 9, title: 'Recent Property', data: ['Recent Property'] },
-    { id: 10, title: 'Most Viewed', data: ['Most Viewed'] },
-    { id: 11, title: 'Our Loan Offers', data: ['Our Loan Offers'] },
-    { id: 12, title: 'Popular Builders', data: ['Popular Builders'] },
-    { id: 13, title: 'post Ad', data: ['post Ad'] },
-    { id: 14, title: 'Banner', data: ['Banner'] },
-    { id: 15, title: 'Latest News', data: ['Latest News'] },
-    { id: 16, title: 'Feedback', data: ['Feedback'] },
+    {id: 1, title: 'Best Offers', data: ['Best Offers']},
+    {id: 2, title: 'New Property', data: ['New Property']},
+    {id: 3, title: 'Selling Types', data: ['Selling Types']},
+    {id: 4, title: 'Builders Property', data: ['Builders Property']},
+    {id: 5, title: 'Featured Property', data: ['Featured Property']},
+    {id: 6, title: 'Related Property', data: ['Related Property']},
+    {id: 7, title: 'Property Services', data: ['Property Services']},
+    {id: 8, title: 'NearBy Location', data: ['NearBy Location']},
+    {id: 9, title: 'Recent Property', data: ['Recent Property']},
+    {id: 10, title: 'Most Viewed', data: ['Most Viewed']},
+    {id: 11, title: 'Our Loan Offers', data: ['Our Loan Offers']},
+    {id: 12, title: 'Popular Builders', data: ['Popular Builders']},
+    {id: 13, title: 'post Ad', data: ['post Ad']},
+    {id: 14, title: 'Banner', data: ['Banner']},
+    {id: 15, title: 'Latest News', data: ['Latest News']},
+    {id: 16, title: 'Feedback', data: ['Feedback']},
   ]);
   const [AgentSection] = useState([
-    { id: 1, title: 'Property Buyers', data: ['Property Buyers'] },
-    { id: 2, title: 'New Property', data: ['New Property'] },
-    { id: 3, title: 'Builders Property', data: ['Builders Property'] },
-    { id: 4, title: 'Featured Property', data: ['Featured Property'] },
-    { id: 5, title: 'Related Property', data: ['Related Property'] },
-    { id: 6, title: 'Property Services', data: ['Property Services'] },
-    { id: 7, title: 'HotDeals', data: ['HotDeals'] },
-    { id: 8, title: 'Recent Property', data: ['Recent Property'] },
-    { id: 9, title: 'Most Viewed', data: ['Most Viewed'] },
-    { id: 10, title: 'Property Selling', data: ['Property Selling'] },
-    { id: 11, title: 'Popular Builders', data: ['Popular Builders'] },
-    { id: 12, title: 'Latest News', data: ['Latest News'] },
-    { id: 13, title: 'Feedback', data: ['Feedback'] },
+    {id: 1, title: 'Property Buyers', data: ['Property Buyers']},
+    {id: 2, title: 'New Property', data: ['New Property']},
+    {id: 3, title: 'Builders Property', data: ['Builders Property']},
+    {id: 4, title: 'Featured Property', data: ['Featured Property']},
+    {id: 5, title: 'Related Property', data: ['Related Property']},
+    {id: 6, title: 'Property Services', data: ['Property Services']},
+    {id: 7, title: 'HotDeals', data: ['HotDeals']},
+    {id: 8, title: 'Recent Property', data: ['Recent Property']},
+    {id: 9, title: 'Most Viewed', data: ['Most Viewed']},
+    {id: 10, title: 'Property Selling', data: ['Property Selling']},
+    {id: 11, title: 'Popular Builders', data: ['Popular Builders']},
+    {id: 12, title: 'Latest News', data: ['Latest News']},
+    {id: 13, title: 'Feedback', data: ['Feedback']},
   ]);
   const [propertyServices] = useState([
     {
@@ -6576,7 +6583,7 @@ const HomeScreen = ({ navigation }) => {
   ]);
 
   useEffect(() => {
-    const onScrollListener = ({ value }) => {
+    const onScrollListener = ({value}) => {
       const currentRoute = routes[tabIndex];
 
       if (currentRoute) {
@@ -6696,20 +6703,23 @@ const HomeScreen = ({ navigation }) => {
       setNearByProperty(localityFilter);
 
       // Recent Viewed
-      const recentViewedData = `projects=recently_viewed&user_id=${user_id}&location=${AutoFilter || currentCity
-        }`;
+      const recentViewedData = `projects=recently_viewed&user_id=${user_id}&location=${
+        AutoFilter || currentCity
+      }`;
       const recentViewed = await fetchData.Properties(recentViewedData);
       setRecentlyViewed(recentViewed);
 
       // Featured Property
-      const feturedProductsData = `projects=featured&location=${AutoFilter || currentCity
-        }`;
+      const feturedProductsData = `projects=featured&location=${
+        AutoFilter || currentCity
+      }`;
       const feturedProducts = await fetchData.Properties(feturedProductsData);
       setFeaturedProducts(feturedProducts);
 
       // Builders Property
-      const buildersProductsData = `seller_type=3&location=${AutoFilter || currentCity
-        }`;
+      const buildersProductsData = `seller_type=3&location=${
+        AutoFilter || currentCity
+      }`;
       const buildersProducts = await fetchData.Properties(buildersProductsData);
       setBuilderProducts(buildersProducts);
 
@@ -6718,20 +6728,23 @@ const HomeScreen = ({ navigation }) => {
       const newProperty = await fetchData.Properties({});
       setNewProperty(newProperty);
       // New Property
-      const recommendedPropertyData = `projects=recommended&user_id=${user_id}&location=${AutoFilter || currentCity
-        }`;
+      const recommendedPropertyData = `projects=recommended&user_id=${user_id}&location=${
+        AutoFilter || currentCity
+      }`;
       const recommendedProperty = await fetchData.Properties(
         recommendedPropertyData,
       );
       // setNewProperty(newProperty);
 
-      const mostViewedData = `projects=most_viewed&location=${AutoFilter || currentCity
-        }`;
+      const mostViewedData = `projects=most_viewed&location=${
+        AutoFilter || currentCity
+      }`;
       const mostViewed = await fetchData.Properties(mostViewedData);
       setMostlyViewed(mostViewed);
 
-      const relatedViewedData = `user_id=${user_id}&location=${AutoFilter || currentCity
-        }`;
+      const relatedViewedData = `user_id=${user_id}&location=${
+        AutoFilter || currentCity
+      }`;
       const relatedProperty = await fetchData.Properties(relatedViewedData);
       setRelatedViewed(relatedProperty);
 
@@ -6808,7 +6821,7 @@ const HomeScreen = ({ navigation }) => {
       Geolocation.getCurrentPosition(
         async position => {
           clearTimeout(timeoutId);
-          const { latitude, longitude } = position.coords;
+          const {latitude, longitude} = position.coords;
 
           try {
             const response = await axios.get(
@@ -6876,11 +6889,11 @@ const HomeScreen = ({ navigation }) => {
         style={[
           styles.header,
           {
-            transform: [{ translateY: y }],
+            transform: [{translateY: y}],
           },
         ]}>
         <ImageBackground
-          source={{ uri: Media.dotBackground }}
+          source={{uri: Media.dotBackground}}
           style={{
             width: '100%',
             height: HeaderHeight,
@@ -6891,7 +6904,7 @@ const HomeScreen = ({ navigation }) => {
               alignItems: 'flex-end',
               paddingHorizontal: 15,
             }}>
-            <View style={{ flex: 1 }}>
+            <View style={{flex: 1}}>
               <Text
                 style={{
                   fontSize: 26,
@@ -6926,7 +6939,7 @@ const HomeScreen = ({ navigation }) => {
                 navigation.navigate('MapSearchScreen');
               }}>
               <Icon
-                style={{ width: 20, height: 20 }}
+                style={{width: 20, height: 20}}
                 color={Color.sunShade}
                 name="location"
                 size={20}
@@ -7059,15 +7072,15 @@ const HomeScreen = ({ navigation }) => {
         // Object.values(AutoFilter).length > 0
         AutoFilter?.length != ''
           ? // ? AutoFilter?.structured_formatting?.main_text
-          AutoFilter
+            AutoFilter
           : currentCity,
       property_action: 'sell',
       property_type:
         plot_type_data?.data?.name == 'House'
           ? 'house'
           : plot_type_data?.data?.name == 'Villa'
-            ? 'villa'
-            : 'flat',
+          ? 'villa'
+          : 'flat',
       filter: false,
       data: {},
       real_estate: 'residential',
@@ -7082,15 +7095,15 @@ const HomeScreen = ({ navigation }) => {
         // Object.values(AutoFilter).length > 0
         AutoFilter?.length != ''
           ? // ? AutoFilter?.structured_formatting?.main_text
-          AutoFilter
+            AutoFilter
           : currentCity,
       property_action: 'rent',
       property_type:
         plot_type_data?.data?.name == 'House'
           ? 'house'
           : plot_type_data?.data?.name == 'Villa'
-            ? 'villa'
-            : 'flat',
+          ? 'villa'
+          : 'flat',
       filter: false,
       data: {},
       real_estate: 'residential',
@@ -7099,7 +7112,7 @@ const HomeScreen = ({ navigation }) => {
     closeModal();
   };
   return (
-    <View style={{ flex: 1, backgroundColor: Color.white }}>
+    <View style={{flex: 1, backgroundColor: Color.white}}>
       {loading ? (
         <View
           style={{
@@ -7108,8 +7121,8 @@ const HomeScreen = ({ navigation }) => {
             justifyContent: 'center',
           }}>
           <Image
-            source={{ uri: Media.loader }}
-            style={{ width: 80, height: 80, resizeMode: 'contain' }}
+            source={{uri: Media.loader}}
+            style={{width: 80, height: 80, resizeMode: 'contain'}}
           />
         </View>
       ) : (
@@ -7119,7 +7132,7 @@ const HomeScreen = ({ navigation }) => {
               <Animated.View
                 style={{
                   zIndex: 1,
-                  transform: [{ translateY: taby }],
+                  transform: [{translateY: taby}],
                   width: '100%',
                 }}>
                 <View
@@ -7162,7 +7175,7 @@ const HomeScreen = ({ navigation }) => {
                       {`Find your Flat, Home, Plot, Shop, or Villa.`}
                     </Text>
                     <Icon
-                      style={{ width: 20, height: 20 }}
+                      style={{width: 20, height: 20}}
                       color={Color.primary}
                       name="search"
                       size={20}
@@ -7217,7 +7230,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           filter: false,
@@ -7269,7 +7282,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           filter: false,
@@ -7321,7 +7334,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           filter: false,
@@ -7373,7 +7386,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           filter: false,
@@ -7425,7 +7438,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           filter: false,
@@ -7479,7 +7492,7 @@ const HomeScreen = ({ navigation }) => {
                               // Object.values(AutoFilter).length > 0
                               AutoFilter?.length != ''
                                 ? // ? AutoFilter?.structured_formatting?.main_text
-                                AutoFilter
+                                  AutoFilter
                                 : currentCity,
                             property_action: 'rent',
                             property_type: 'pg',
@@ -7490,7 +7503,7 @@ const HomeScreen = ({ navigation }) => {
                           });
                         }}>
                         <Image
-                          source={{ uri: Media.pg }}
+                          source={{uri: Media.pg}}
                           style={{
                             width: 20,
                             height: 20,
@@ -7561,7 +7574,7 @@ const HomeScreen = ({ navigation }) => {
               <Animated.View
                 style={{
                   zIndex: 1,
-                  transform: [{ translateY: taby }],
+                  transform: [{translateY: taby}],
                   width: '100%',
                 }}>
                 <View
@@ -7605,7 +7618,7 @@ const HomeScreen = ({ navigation }) => {
                       {`Find your Flat, Home, Plot, Shop, or Villa.`}
                     </Text>
                     <Icon
-                      style={{ width: 20, height: 20 }}
+                      style={{width: 20, height: 20}}
                       color={Color.primary}
                       name="search"
                       size={20}
@@ -7660,7 +7673,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell',
                           property_type: '',
@@ -7672,7 +7685,7 @@ const HomeScreen = ({ navigation }) => {
                         setIndex(1);
                       }}>
                       <Image
-                        source={{ uri: Media.buy }}
+                        source={{uri: Media.buy}}
                         style={{
                           width: 20,
                           height: 20,
@@ -7712,7 +7725,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'rent',
                           property_type: '',
@@ -7723,7 +7736,7 @@ const HomeScreen = ({ navigation }) => {
                         });
                       }}>
                       <Image
-                        source={{ uri: Media.rent }}
+                        source={{uri: Media.rent}}
                         style={{
                           width: 20,
                           height: 20,
@@ -7763,7 +7776,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'rent',
                           property_type: 'pg',
@@ -7774,7 +7787,7 @@ const HomeScreen = ({ navigation }) => {
                         });
                       }}>
                       <Image
-                        source={{ uri: Media.pg }}
+                        source={{uri: Media.pg}}
                         style={{
                           width: 20,
                           height: 20,
@@ -7814,7 +7827,7 @@ const HomeScreen = ({ navigation }) => {
                             // Object.values(AutoFilter).length > 0
                             AutoFilter?.length != ''
                               ? // ? AutoFilter?.structured_formatting?.main_text
-                              AutoFilter
+                                AutoFilter
                               : currentCity,
                           property_action: 'sell,rent',
                           property_type: '',
@@ -7825,7 +7838,7 @@ const HomeScreen = ({ navigation }) => {
                         });
                       }}>
                       <Image
-                        source={{ uri: Media.commercial }}
+                        source={{uri: Media.commercial}}
                         style={{
                           width: 20,
                           height: 20,
@@ -7915,14 +7928,14 @@ const HomeScreen = ({ navigation }) => {
                 borderTopRightRadius: 20,
               }}>
               <TouchableOpacity
-                style={{ position: 'absolute', right: 10, top: 10 }}
+                style={{position: 'absolute', right: 10, top: 10}}
                 onPress={() => dispatch(setEditVisible(false))}>
                 <MCIcon name="close-circle" size={30} color={Color.red} />
               </TouchableOpacity>
-              <View style={{ alignItems: 'center' }}>
+              <View style={{alignItems: 'center'}}>
                 <Image
-                  source={{ uri: Media.alert_success }}
-                  style={{ width: 100, height: 100, resizeMode: 'contain' }}
+                  source={{uri: Media.alert_success}}
+                  style={{width: 100, height: 100, resizeMode: 'contain'}}
                 />
               </View>
               <Text
@@ -7997,9 +8010,9 @@ const styles = StyleSheet.create({
     position: 'absolute',
     // padding: 10,
   },
-  label: { fontSize: 16, color: '#222' },
-  tab: { elevation: 0, shadowOpacity: 0, backgroundColor: '#FFCC80' },
-  indicator: { backgroundColor: '#222' },
+  label: {fontSize: 16, color: '#222'},
+  tab: {elevation: 0, shadowOpacity: 0, backgroundColor: '#FFCC80'},
+  indicator: {backgroundColor: '#222'},
   TabviewContainer: {
     flexDirection: 'row',
     justifyContent: 'space-evenly',
@@ -8024,7 +8037,7 @@ const styles = StyleSheet.create({
     backgroundColor: 'black',
     height: 1,
   },
-  TabViewAboutus: { marginHorizontal: 20, alignItems: 'center' },
+  TabViewAboutus: {marginHorizontal: 20, alignItems: 'center'},
   customRatingBarStyle: {
     justifyContent: 'center',
     flexDirection: 'row',
