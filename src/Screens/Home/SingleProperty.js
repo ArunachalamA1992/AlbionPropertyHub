@@ -99,7 +99,14 @@ const AmenitiesIconData = ({ item }) => {
     case 'wifi':
       return <MCIcon name="wifi" size={20} color={Color.black} />;
     case 'building wi-Fi':
-      return <MCIcon name="wifi" size={20} color={Color.black} />;
+      return (
+        <Image
+          source={{ uri: Media.Electricgenerator }}
+          style={{ width: 20, height: 20 }}
+        />
+      );
+
+      // return <MCIcon name="wifi" size={20} color={Color.black} />;
     case 'fitness centre':
       return <MIcon name="fitness-center" size={20} color={Color.black} />;
     case 'spa':
@@ -1206,14 +1213,14 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                                     marginVertical:
                                       Platform.OS == 'ios' ? 5 : 0,
                                   }}>
-                                  {/* {`₹${parseFloat(
+                                  {`₹${parseFloat(
                                   ProductData?.expected_price /
                                     ProductData?.area?.super_area,
-                                ).toFixed(2)}`}{" "} */}
-                                  {common_fn.formatNumberWithSuffix(
+                                ).toFixed(2)}`}{" "}
+                                  {/* {common_fn.formatNumberWithSuffix(
                                     ProductData?.expected_price /
                                     ProductData?.area?.super_area,
-                                  )}{' '}
+                                  )}{' '} */}
                                 </Text>
                                 <Text
                                   style={{
@@ -1744,7 +1751,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                         ? ProductData?.description
                           .split('\n')
                           .join('')
-                          .substring(0, 80)
+                          .substring(0, 120)
                           .concat('...')
                         : ProductData?.description.split('\n').join('')}{' '}
                       {showMoreButton || numLines > 3 ? (
@@ -1912,16 +1919,16 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                             <View
                               style={{
                                 flex: 1,
-                                justifyContent: 'flex-start',
-                                alignItems: 'flex-start',
+                                justifyContent: 'center',
+                                alignItems: 'center',
                               }}>
                               <Text
                                 style={{
-                                  fontSize: 16,
+                                  fontSize: 17,
                                   color: Color.black,
-                                  fontFamily: Poppins.Bold,
-                                  textAlign: 'left',
-                                  fontWeight: '800'
+                                  // fontFamily: Poppins.Bold,
+                                  textAlign: 'right',
+                                  fontWeight: 'bold'
                                 }}
                                 numberOfLines={1}>
                                 {common_fn.formatText(item.value)}

@@ -298,29 +298,37 @@ const MyContactedList = React.memo(({ navigation, user_id, contacted }) => {
                         </Text>
                       </View>
                     </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>User Name :</Text>
-                      <Text
-                        style={{
-                          flex: 1,
-                          color: Color.black,
-                          fontSize: 16, textAlign: 'right',
-                          fontFamily: Poppins.Medium, fontWeight: '800'
-                        }}>
-                        {item?.property?.seller_details?.username}
-                      </Text>
-                    </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>
-                        Interested IN :
-                      </Text>
-                      <View style={{ padding: 5, flex: 1, }}>
+
+
+                    <View
+                      style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text style={styles.orderHeaderText}>User Name :</Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            color: Color.black,
+                            fontSize: 16, textAlign: 'right',
+                            fontFamily: Poppins.Medium, fontWeight: '800'
+                          }}>
+                          {item?.property?.seller_details?.username}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text style={styles.orderHeaderText}>
+                          Interested IN :
+                        </Text>
                         <Text style={styles.orderDateText} numberOfLines={2}>
                           {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
                         </Text>
                       </View>
                     </View>
-                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginTop: 5 }}>
+
+                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
                       <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
                         <Text style={styles.orderHeaderText}>Price</Text>
                         <Text style={[styles.totalText, { paddingVertical: 3 }]}>
@@ -372,7 +380,7 @@ const MyContactedList = React.memo(({ navigation, user_id, contacted }) => {
                         buttonStyle={{
                           backgroundColor: Color.primary,
                           borderRadius: 5,
-                          marginHorizontal: 5,
+                          marginHorizontal: 5, height: 45
                         }}
                         icon={() => (
                           <Icon
@@ -381,10 +389,10 @@ const MyContactedList = React.memo(({ navigation, user_id, contacted }) => {
                             style={{ color: Color.white }}
                           />
                         )}
-                        containerStyle={{ flex: 1 }}
+                        containerStyle={{ flex: 1, height: 45 }}
                         onPress={() => {
                           RNImmediatePhoneCall.immediatePhoneCall(
-                            item?.user?.mobile_number,
+                            item?.property?.seller_details?.mobile_number
                           );
                         }}
                       />
@@ -563,82 +571,103 @@ const MyResponseProperty = ({ navigation, user_id, ResponseList }) => {
                     </View>
                     <View
                       style={{
+                        width: '100%',
                         flexDirection: 'row',
                         alignItems: 'center',
                         marginVertical: 10,
                       }}>
-                      <Text
-                        style={{
-                          flex: 1,
-                          color: Color.black,
-                          fontSize: 14,
-                          fontFamily: Poppins.Medium,
-                        }}>
-                        Id : {item?.p_id}
-                      </Text>
-                      <Text
-                        style={{
-                          color: Color.black,
-                          fontSize: 14,
-                          fontFamily: Poppins.Medium,
-                        }}>
-                        Date :{' '}
-                        {moment(item?.user?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
-                      </Text>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text
+                          style={{
+                            color: Color.cloudyGrey,
+                            fontSize: 13,
+                            fontFamily: Poppins.Medium, textAlign: 'left'
+                          }}>
+                          Id
+                        </Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', textAlign: 'left', paddingVertical: 5
+                          }}>{item?.p_id}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text
+                          style={{
+                            color: Color.cloudyGrey,
+                            fontSize: 13,
+                            fontFamily: Poppins.Medium, textAlign: 'right'
+                          }}>Date</Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', textAlign: 'right', paddingVertical: 5
+                          }}>
+                          {moment(item?.user?.created_at, 'YYYY-MM-DD hh:mm A').format('MMMM DD, YYYY')}
+                        </Text>
+                      </View>
                     </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>User Name : </Text>
-                      <Text
-                        style={{
-                          flex: 1,
-                          color: Color.black,
-                          fontSize: 16,
-                          fontFamily: Poppins.Medium,
-                        }}>
-                        {item?.user?.username}
-                      </Text>
-                    </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>
-                        Interested IN :
-                      </Text>
-                      <View style={{ padding: 5, flex: 1, marginHorizontal: 5 }}>
+                    <View
+                      style={{
+                        width: '100%',
+                        flexDirection: 'row',
+                        alignItems: 'center',
+                      }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text style={styles.orderHeaderText}>User Name :</Text>
+                        <Text
+                          style={{
+                            flex: 1,
+                            color: Color.black,
+                            fontSize: 16, textAlign: 'right',
+                            fontFamily: Poppins.Medium, fontWeight: '800'
+                          }}>
+                          {item?.user?.username}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text style={styles.orderHeaderText}>
+                          Interested IN :
+                        </Text>
                         <Text style={styles.orderDateText} numberOfLines={2}>
                           {`${item?.property?.real_estate} ${item?.property?.property_type?.pt_name} in ${item?.property?.locality} ${item?.property?.location}`}
                         </Text>
                       </View>
                     </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>Price :</Text>
-                      <Text style={styles.totalText}>
-                        ₹
-                        {item?.property?.property_type?.pt_name == 'PG'
-                          ? common_fn.getMinToMaxPrice(
-                            item?.property?.room_category,
-                          )
-                          : item?.property?.expected_price?.length >= 5
-                            ? common_fn.formatNumberWithSuffix(
-                              item?.property?.expected_price,
+                    <View style={{ width: '100%', flexDirection: 'row', alignItems: 'center', marginVertical: 10 }}>
+                      <View style={{ flex: 1, justifyContent: 'flex-start', alignItems: 'flex-start' }}>
+                        <Text style={styles.orderHeaderText}>Price</Text>
+                        <Text style={[styles.totalText, { paddingVertical: 3 }]}>
+                          ₹
+                          {item?.property?.property_type?.pt_name == 'PG'
+                            ? common_fn.getMinToMaxPrice(
+                              item?.property?.room_category,
                             )
-                            : item?.property?.expected_price}
-                      </Text>
-                    </View>
-                    <View style={styles.orderDataView}>
-                      <Text style={styles.orderHeaderText}>
-                        Mobile Number :
-                      </Text>
-                      <Text
-                        style={{
-                          color: Color.black,
-                          fontSize: 14,
-                          fontFamily: Poppins.Medium,
-                        }}>
-                        {
-                          item?.user?.mobile_number
-                          // ?.substring(0, 5)
-                          // .concat('*****')
-                        }
-                      </Text>
+                            : item?.property?.expected_price?.length >= 5
+                              ? common_fn.formatNumberWithSuffix(
+                                item?.property?.expected_price,
+                              )
+                              : item?.property?.expected_price}
+                        </Text>
+                      </View>
+                      <View style={{ flex: 1, justifyContent: 'flex-end', alignItems: 'flex-end' }}>
+                        <Text style={styles.orderHeaderText}>
+                          {item?.user?.mobile_number == 0 ? "Email" : "Mobile Number"}
+                        </Text>
+                        <Text
+                          style={{
+                            color: Color.black,
+                            fontSize: 16,
+                            fontFamily: Poppins.Medium, fontWeight: '800', paddingVertical: 3
+                          }}>
+                          {
+                            item?.user?.mobile_number == 0 ? item?.user?.email : item?.user?.mobile_number
+                          }
+                        </Text>
+                      </View>
                     </View>
                     <View
                       style={{
@@ -647,25 +676,6 @@ const MyResponseProperty = ({ navigation, user_id, ResponseList }) => {
                         justifyContent: 'space-evenly',
                         marginVertical: 5,
                       }}>
-                      {/* <View
-                      style={{
-                        flex: 1,
-                        borderWidth: 1,
-                        borderColor: Color.lightgrey,
-                        height: 40,
-                        padding: 5,
-                        borderRadius: 5,
-                      }}>
-                      <Text
-                        style={{
-                          color: Color.black,
-                          fontSize: 14,
-                          fontFamily: Poppins.SemiBold,
-                          paddingTop: 2,
-                        }}>
-                        Lead Status
-                      </Text>
-                    </View> */}
                       <Button
                         title={'Call'}
                         titleStyle={{
@@ -677,8 +687,9 @@ const MyResponseProperty = ({ navigation, user_id, ResponseList }) => {
                         buttonStyle={{
                           backgroundColor: Color.primary,
                           borderRadius: 5,
-                          marginHorizontal: 5,
+                          marginHorizontal: 5, height: 45
                         }}
+                        disabled={item?.user?.mobile_number == 0 ? true : false}
                         icon={() => (
                           <Icon
                             name="call"
@@ -686,7 +697,7 @@ const MyResponseProperty = ({ navigation, user_id, ResponseList }) => {
                             style={{ color: Color.white }}
                           />
                         )}
-                        containerStyle={{ flex: 1 }}
+                        containerStyle={{ flex: 1, height: 45 }}
                         onPress={() => {
                           RNImmediatePhoneCall.immediatePhoneCall(
                             item?.user?.mobile_number,
@@ -1270,9 +1281,9 @@ const PostedProperty = ({
                           textTransform: 'capitalize',
                         }}>
                         by{' '}
-                        {item?.property?.seller_details?.user_type_id == '1'
+                        {item?.seller_details?.user_type_id == '1'
                           ? 'Buyer'
-                          : item?.property?.seller_details?.user_type_id == '2'
+                          : item?.seller_details?.user_type_id == '2'
                             ? 'Agent'
                             : 'Builder'}{' '}
                         | {resultDate}
@@ -1286,7 +1297,7 @@ const PostedProperty = ({
                             fontFamily: Poppins.SemiBold,
                             marginHorizontal: 5,
                           }}>
-                          {`@ ₹ ${item?.property?.area?.super_area} per ${item?.property?.area?.super_area_unit}`}
+                          {`@ ₹ ${item?.area?.super_area} per ${item?.area?.super_area_unit}`}
                         </Text>
                       )}
                     </View>
@@ -1299,7 +1310,7 @@ const PostedProperty = ({
                           textTransform: 'capitalize',
                           marginVertical: 5,
                         }}>
-                        {`${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}`}
+                        {`${item?.area?.super_area} ${item?.area?.super_area_unit}`}
                       </Text>
                     )}
                     <View
@@ -2075,12 +2086,15 @@ const MyPropertyScreen = ({ navigation }) => {
             const post_response = await fetchData.Properties(
               `seller_id=${user_id}&listAll=true&status=Posted`,
             );
+            console.log("post_response ==========  :", JSON.stringify(post_response));
             setMyproperties(post_response);
             break;
           case 3:
             const status_response = await fetchData.Properties(
               `seller_id=${user_id}&listAll=true&status=sold,Posted,Rejected,in_review,cancelled`,
             );
+            
+            console.log("status_response ==========  :", JSON.stringify(status_response));
             setStatusproperties(status_response);
             break;
           default:
@@ -2454,9 +2468,8 @@ const styles = StyleSheet.create({
   },
   orderDateText: {
     color: Color.black,
-    fontSize: 12,
-    fontFamily: Poppins.Medium, textAlign: 'right',
-    textTransform: 'capitalize', fontWeight: '800'
+    fontSize: 16, textAlign: 'right',
+    fontFamily: Poppins.Medium, fontWeight: '800'
   },
   totalText: {
     color: Color.red,

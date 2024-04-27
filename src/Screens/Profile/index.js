@@ -23,20 +23,20 @@ import {
   Pressable,
   Dimensions,
 } from 'react-native';
-import {scr_height, scr_width} from '../../Utils/Dimensions';
-import {primarycolor} from '../../Utils/Colors';
-import {StackActions, useNavigation} from '@react-navigation/native';
-import {useSelector, useDispatch} from 'react-redux';
+import { scr_height, scr_width } from '../../Utils/Dimensions';
+import { primarycolor } from '../../Utils/Colors';
+import { StackActions, useNavigation } from '@react-navigation/native';
+import { useSelector, useDispatch } from 'react-redux';
 import NetInfo from '@react-native-community/netinfo';
 import Icon from 'react-native-vector-icons/Ionicons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
-import {Iconviewcomponent} from '../../Components/Icontag';
-import {Media} from '../../Global/Media';
-import {Poppins} from '../../Global/FontFamily';
+import { Iconviewcomponent } from '../../Components/Icontag';
+import { Media } from '../../Global/Media';
+import { Poppins } from '../../Global/FontFamily';
 import Color from '../../Config/Color';
-import {Divider} from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 import {
   setActionUserData,
   setEditVisible,
@@ -46,11 +46,11 @@ import {
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
-import {base_image_properties, base_profile} from '../../Config/base_url';
+import { base_image_properties, base_profile } from '../../Config/base_url';
 import BottomLogin from '../../Components/BottomLogin';
 
-var {width, height} = Dimensions.get('screen');
-const ProfileScreen = ({navigation}) => {
+var { width, height } = Dimensions.get('screen');
+const ProfileScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   // const navigation = useNavigation();
   const [netInfo_State, setNetinfo] = useState(true);
@@ -58,12 +58,12 @@ const ProfileScreen = ({navigation}) => {
   const [proimage, setProImage] = useState('null');
   const [profileCompletion, setProfileCompletion] = useState(0);
   const userData = useSelector(state => state.UserReducer.userData);
-  var {user_id, username, profile, user_type_id, mobile_number, email} =
+  var { user_id, username, profile, user_type_id, mobile_number, email } =
     userData;
   const Auction_userData = useSelector(
     state => state.UserReducer.auctionUserData,
   );
-  var {id} = Auction_userData;
+  var { id } = Auction_userData;
   const EditVisible = useSelector(state => state.UserReducer.editUserVisible);
   const [contacted, setContacted] = useState(0);
   const [totalPost, setTotalPost] = useState(0);
@@ -157,7 +157,7 @@ const ProfileScreen = ({navigation}) => {
         [
           {
             text: 'No',
-            onPress: async () => {},
+            onPress: async () => { },
           },
           {
             text: 'Yes',
@@ -172,7 +172,7 @@ const ProfileScreen = ({navigation}) => {
             },
           },
         ],
-        {cancelable: false},
+        { cancelable: false },
       );
     } catch (error) {
       console.log('error', error);
@@ -190,8 +190,8 @@ const ProfileScreen = ({navigation}) => {
             // height: height / 1.5,
           }}>
           <Image
-            source={{uri: Media.loader}}
-            style={{width: 80, height: 80, resizeMode: 'contain'}}
+            source={{ uri: Media.loader }}
+            style={{ width: 80, height: 80, resizeMode: 'contain' }}
           />
         </View>
       ) : (
@@ -204,7 +204,7 @@ const ProfileScreen = ({navigation}) => {
                 backgroundColor: 'white',
                 marginVertical: 10,
               }}>
-              <View style={{flexDirection: 'row', alignItems: 'center'}}>
+              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <View
                   style={{
                     width: 130,
@@ -228,7 +228,7 @@ const ProfileScreen = ({navigation}) => {
                     />
                   ) : (
                     <Image
-                      source={{uri: Media.Userpng}}
+                      source={{ uri: Media.Userpng }}
                       style={{
                         width: '100%',
                         height: '100%',
@@ -256,8 +256,8 @@ const ProfileScreen = ({navigation}) => {
                       {user_type_id == '1'
                         ? 'Buyer'
                         : user_type_id == '2'
-                        ? 'Agent'
-                        : 'Builder'}
+                          ? 'Agent'
+                          : 'Builder'}
                     </Text>
                   ))}
               </View>
@@ -268,7 +268,7 @@ const ProfileScreen = ({navigation}) => {
                   alignItems: 'center',
                 }}>
                 {user_id == undefined ||
-                (userData?.length > 0 && userData == undefined) ? (
+                  (userData?.length > 0 && userData == undefined) ? (
                   <TouchableOpacity
                     style={{
                       backgroundColor: Color.sunShade,
@@ -287,7 +287,7 @@ const ProfileScreen = ({navigation}) => {
                         fontSize: 16,
                         color: Color.white,
                         fontFamily: Poppins.Bold,
-                        paddingTop: 7,
+                        padding: 5, paddingHorizontal: 15
                       }}>
                       Login
                     </Text>
@@ -301,11 +301,11 @@ const ProfileScreen = ({navigation}) => {
                         fontFamily: Poppins.Bold,
                       }}>
                       {user_id == undefined ||
-                      (userData?.length > 0 && userData == undefined)
+                        (userData?.length > 0 && userData == undefined)
                         ? '********'
                         : username?.length != ''
-                        ? username
-                        : '*****'}
+                          ? username
+                          : '*****'}
                     </Text>
                     <Text
                       style={{
@@ -323,11 +323,11 @@ const ProfileScreen = ({navigation}) => {
                         fontFamily: Poppins.Bold,
                       }}>
                       {user_id == undefined ||
-                      (userData?.length > 0 && userData == undefined)
+                        (userData?.length > 0 && userData == undefined)
                         ? 'Email'
                         : email?.length != ''
-                        ? email
-                        : 'Email'}
+                          ? email
+                          : 'Email'}
                     </Text>
                   </>
                 )}
@@ -339,12 +339,12 @@ const ProfileScreen = ({navigation}) => {
                     marginVertical: 5,
                   }}>
                   {user_id == undefined ||
-                  (userData?.length > 0 && userData == undefined)
+                    (userData?.length > 0 && userData == undefined)
                     ? 0
                     : profileCompletion.toFixed(0)}{' '}
                   %{' '}
                   {user_id == undefined ||
-                  (userData?.length > 0 && userData == undefined)
+                    (userData?.length > 0 && userData == undefined)
                     ? '( Need to Login for status )'
                     : 'Completed'}
                 </Text>
@@ -375,10 +375,10 @@ const ProfileScreen = ({navigation}) => {
                     alignItems: 'center',
                   }}>
                   <Text
-                    style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+                    style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
                     {contacted}
                   </Text>
-                  <Text style={{fontSize: 14, color: 'white'}}>Contacted</Text>
+                  <Text style={{ fontSize: 14, color: 'white' }}>Contacted</Text>
                 </View>
                 <View
                   style={{
@@ -393,15 +393,15 @@ const ProfileScreen = ({navigation}) => {
                     alignItems: 'center',
                   }}>
                   <Text
-                    style={{fontSize: 24, color: 'white', fontWeight: 'bold'}}>
+                    style={{ fontSize: 24, color: 'white', fontWeight: 'bold' }}>
                     {totalPost || 0}
                   </Text>
-                  <Text style={{fontSize: 14, color: 'white'}}>Total Post</Text>
+                  <Text style={{ fontSize: 14, color: 'white' }}>Total Post</Text>
                 </View>
               </View>
             </View>
 
-            <View style={{marginVertical: 20}}>
+            <View style={{ marginVertical: 20 }}>
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -412,7 +412,7 @@ const ProfileScreen = ({navigation}) => {
                 }}
                 onPress={() => {
                   user_id == undefined ||
-                  (userData?.length > 0 && userData == undefined)
+                    (userData?.length > 0 && userData == undefined)
                     ? setLogin(true)
                     : navigation.navigate('myProperty');
                 }}>
@@ -424,13 +424,13 @@ const ProfileScreen = ({navigation}) => {
                     alignItems: 'flex-start',
                     marginHorizontal: 10,
                   }}>
-                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                     <Text
-                      style={{fontSize: 16, color: '#333', fontWeight: 'bold'}}>
+                      style={{ fontSize: 16, color: '#333', fontWeight: 'bold' }}>
                       My properties
                     </Text>
                   </View>
-                  <Text style={{fontSize: 12, color: '#666'}}>
+                  <Text style={{ fontSize: 12, color: '#666' }}>
                     Your property details and reviews
                   </Text>
                 </View>
@@ -441,7 +441,7 @@ const ProfileScreen = ({navigation}) => {
                   icon_color={'#666'}
                 />
               </TouchableOpacity>
-              <Divider style={{height: 1, marginVertical: 10}} />
+              <Divider style={{ height: 1, marginVertical: 10 }} />
 
               {Platform.OS == 'android' && (
                 <>
@@ -465,7 +465,7 @@ const ProfileScreen = ({navigation}) => {
                         marginHorizontal: 10,
                       }}>
                       <View
-                        style={{flexDirection: 'row', alignItems: 'center'}}>
+                        style={{ flexDirection: 'row', alignItems: 'center' }}>
                         <Text
                           style={{
                             fontSize: 16,
@@ -482,12 +482,12 @@ const ProfileScreen = ({navigation}) => {
                             backgroundColor: '#FFA825',
                             borderRadius: 40,
                           }}>
-                          <Text style={{fontSize: 12, color: 'white'}}>
+                          <Text style={{ fontSize: 12, color: 'white' }}>
                             FREE
                           </Text>
                         </View>
                       </View>
-                      <Text style={{fontSize: 12, color: '#666'}}>
+                      <Text style={{ fontSize: 12, color: '#666' }}>
                         Free / Per Month
                       </Text>
                     </View>
@@ -499,7 +499,7 @@ const ProfileScreen = ({navigation}) => {
                     />
                   </TouchableOpacity>
 
-                  <Divider style={{height: 1, marginVertical: 10}} />
+                  <Divider style={{ height: 1, marginVertical: 10 }} />
                 </>
               )}
 
@@ -513,7 +513,7 @@ const ProfileScreen = ({navigation}) => {
                 }}
                 onPress={() => {
                   user_id == undefined ||
-                  (userData?.length > 0 && userData == undefined)
+                    (userData?.length > 0 && userData == undefined)
                     ? setLogin(true)
                     : navigation.navigate('wishTab');
                 }}>
@@ -526,10 +526,10 @@ const ProfileScreen = ({navigation}) => {
                     marginHorizontal: 10,
                   }}>
                   <Text
-                    style={{fontSize: 16, color: '#333', fontWeight: 'bold'}}>
+                    style={{ fontSize: 16, color: '#333', fontWeight: 'bold' }}>
                     Wishlist
                   </Text>
-                  <Text style={{fontSize: 12, color: '#666'}}>
+                  <Text style={{ fontSize: 12, color: '#666' }}>
                     List of your Favourite Property
                   </Text>
                 </View>
@@ -541,7 +541,7 @@ const ProfileScreen = ({navigation}) => {
                 />
               </TouchableOpacity>
 
-              <Divider style={{height: 1, marginVertical: 10}} />
+              <Divider style={{ height: 1, marginVertical: 10 }} />
 
               <TouchableOpacity
                 style={{
@@ -579,10 +579,10 @@ const ProfileScreen = ({navigation}) => {
                     marginHorizontal: 10,
                   }}>
                   <Text
-                    style={{fontSize: 16, color: '#333', fontWeight: 'bold'}}>
+                    style={{ fontSize: 16, color: '#333', fontWeight: 'bold' }}>
                     Bank Auction
                   </Text>
-                  <Text style={{fontSize: 12, color: '#666'}}>
+                  <Text style={{ fontSize: 12, color: '#666' }}>
                     Redirect to Auction Properties
                   </Text>
                 </View>
@@ -594,7 +594,7 @@ const ProfileScreen = ({navigation}) => {
                 />
               </TouchableOpacity>
 
-              <Divider style={{height: 1, marginVertical: 10}} />
+              <Divider style={{ height: 1, marginVertical: 10 }} />
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -620,10 +620,10 @@ const ProfileScreen = ({navigation}) => {
                     marginHorizontal: 10,
                   }}>
                   <Text
-                    style={{fontSize: 16, color: '#333', fontWeight: 'bold'}}>
+                    style={{ fontSize: 16, color: '#333', fontWeight: 'bold' }}>
                     Delete User
                   </Text>
-                  <Text style={{fontSize: 12, color: '#666'}}>
+                  <Text style={{ fontSize: 12, color: '#666' }}>
                     Removing Your Account
                   </Text>
                 </View>
@@ -634,7 +634,7 @@ const ProfileScreen = ({navigation}) => {
                   icon_color={'#666'}
                 />
               </TouchableOpacity>
-              <Divider style={{height: 1, marginVertical: 10}} />
+              <Divider style={{ height: 1, marginVertical: 10 }} />
               <TouchableOpacity
                 style={{
                   flexDirection: 'row',
@@ -663,7 +663,7 @@ const ProfileScreen = ({navigation}) => {
                     marginHorizontal: 10,
                   }}>
                   <Text
-                    style={{fontSize: 16, color: '#333', fontWeight: 'bold'}}>
+                    style={{ fontSize: 16, color: '#333', fontWeight: 'bold' }}>
                     Logout
                   </Text>
                 </View>
@@ -699,16 +699,16 @@ const ProfileScreen = ({navigation}) => {
                 borderTopRightRadius: 20,
               }}>
               <TouchableOpacity
-                style={{position: 'absolute', right: 10, top: 10}}
+                style={{ position: 'absolute', right: 10, top: 10 }}
                 onPress={() => {
                   dispatch(setEditVisible(false));
                 }}>
                 <MCIcon name="close-circle" size={30} color={Color.red} />
               </TouchableOpacity>
-              <View style={{alignItems: 'center'}}>
+              <View style={{ alignItems: 'center' }}>
                 <Image
-                  source={{uri: Media.alert_success}}
-                  style={{width: 100, height: 100, resizeMode: 'contain'}}
+                  source={{ uri: Media.alert_success }}
+                  style={{ width: 100, height: 100, resizeMode: 'contain' }}
                 />
               </View>
               <Text
