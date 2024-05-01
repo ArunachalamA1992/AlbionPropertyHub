@@ -22,6 +22,7 @@ import {
   Modal,
   Pressable,
   Dimensions,
+  Linking,
 } from 'react-native';
 import { scr_height, scr_width } from '../../Utils/Dimensions';
 import { primarycolor } from '../../Utils/Colors';
@@ -60,6 +61,8 @@ const ProfileScreen = ({ navigation }) => {
   const userData = useSelector(state => state.UserReducer.userData);
   var { user_id, username, profile, user_type_id, mobile_number, email } =
     userData;
+
+    // console.log("user_id --------- : ",user_id);
   const Auction_userData = useSelector(
     state => state.UserReducer.auctionUserData,
   );
@@ -162,13 +165,21 @@ const ProfileScreen = ({ navigation }) => {
           {
             text: 'Yes',
             onPress: async () => {
-              const usersData = await fetchData.deleteData(data);
-              if (usersData?.message == 'Disabled') {
-                AsyncStorage.clear();
-                navigation.replace('ActionSelect');
-                dispatch(setUserData({}));
-                dispatch(setLoginType(''));
-              }
+              Linking.openURL(
+                `https://albionpropertyhub.com/albion/${user_id}`,
+              );
+              AsyncStorage.clear();
+              navigation.replace('ActionSelect');
+              dispatch(setUserData({}));
+              dispatch(setLoginType(''));
+              // const usersData = await fetchData.deleteData(data);
+              // if (usersData?.message == 'Disabled') {
+              //   AsyncStorage.clear();
+              //   navigation.replace('ActionSelect');
+              //   dispatch(setUserData({}));
+              //   dispatch(setLoginType(''));
+              // }
+
             },
           },
         ],

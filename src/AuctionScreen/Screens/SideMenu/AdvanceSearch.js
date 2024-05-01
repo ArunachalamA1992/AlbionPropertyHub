@@ -136,7 +136,7 @@ const AdvanceSearch = ({ navigation, route }) => {
             setDistrict(get_district);
             //get District
             const getBankDetails = await fetchData.get_banks({});
-            console.log("Bank List ------------ : ",JSON.stringify(getBankDetails));
+            // console.log("Bank List ------------ : ",JSON.stringify(getBankDetails));
             setBankDetails(getBankDetails);
         } catch (error) {
             console.log('error', error);
