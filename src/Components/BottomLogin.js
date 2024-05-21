@@ -106,8 +106,11 @@ const BottomLogin = ({login, setLogin}) => {
       .catch('error  ----------', console.log);
 
     startOtpListener(message => {
-      const otp = /(\d{4})/g.exec(message)[1];
-      setOTPCode(otp);
+      console.log('message----------------', message);
+      if (message != null) {
+        const otp = /(\d{4})/g.exec(message)[1];
+        setOTPCode(otp);
+      }
     });
     return () => removeListener();
   }, []);
@@ -272,25 +275,18 @@ const BottomLogin = ({login, setLogin}) => {
           JSON.stringify({login_type: 'properties'}),
         );
         dispatch(setLoginType('properties'));
-        if (percentage == 100) {
-          replace('TabNavigator', UserLogin);
-        } else {
-          replace('TabNavigator', UserLogin);
-        }
+        replace('TabNavigator', UserLogin);
+        setLoading(false);
+        setVisible(false);
         setLogin(false);
-        // locationTrack();
+        // setOTPVisible(false);
+        setNumber('');
+        common_fn.locationPermission();
         if (Platform.OS === 'android') {
           common_fn.showToast(`Welcome to Albion ${VerifyOTP?.data?.username}`);
         } else {
           Alert.alert(`Welcome to Albion ${VerifyOTP?.data?.username}`);
         }
-
-        common_fn.locationPermission();
-        setOTPVisible(false);
-        setLoading(false);
-        setVisible(false);
-        setNumber('');
-        setLogin(false);
       } else {
         setOTPCode('');
         inputRef.current.focus();
@@ -314,7 +310,7 @@ const BottomLogin = ({login, setLogin}) => {
     }
   };
 
-  const signIn = async navigation => {
+  const googleSignIn = async navigation => {
     try {
       const replace = navigation;
       await GoogleSignin.hasPlayServices();
@@ -324,6 +320,7 @@ const BottomLogin = ({login, setLogin}) => {
           email: userInfo?.user?.email,
         };
         const updateProfiledata = await fetchData.login_with_gmail(data);
+        console.log('updateProfiledata', updateProfiledata);
         if (updateProfiledata.message) {
           dispatch(setUserData(updateProfiledata?.users));
 
@@ -340,11 +337,9 @@ const BottomLogin = ({login, setLogin}) => {
             JSON.stringify({login_type: 'properties'}),
           );
           dispatch(setLoginType('properties'));
-          if (percentage == 100) {
-            replace('TabNavigator', UserLogin);
-          } else {
-            replace('TabNavigator', UserLogin);
-          }
+          replace('TabNavigator', UserLogin);
+          setLogin(false);
+          setOTPVisible(false);
           // locationTrack();
         }
       }
@@ -577,7 +572,9 @@ const BottomLogin = ({login, setLogin}) => {
                         style={{width: 30, height: 30}}
                       />
                     )}
-                    onPress={() => signIn(navigation)}
+                    onPress={() => {
+                      googleSignIn(navigation);
+                    }}
                     buttonStyle={{
                       marginVertical: 10,
                       backgroundColor: Color.white,
