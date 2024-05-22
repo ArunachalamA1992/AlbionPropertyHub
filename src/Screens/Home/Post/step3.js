@@ -26,7 +26,7 @@ import { useDispatch, useSelector } from 'react-redux';
 import { setFilterLocation, setPostPropertyLocation } from '../../../Redux';
 import { Dropdown } from 'react-native-element-dropdown';
 import { Button } from 'react-native-elements';
-import { openPicker } from 'react-native-image-picker';
+import { launchImageLibrary } from 'react-native-image-picker';
 import { Image } from 'react-native';
 import CheckboxData from '../../../Components/Checkbox';
 import { Poppins } from '../../../Global/FontFamily';
@@ -148,6 +148,7 @@ const PostStep3Screen = ({ route, navigation }) => {
       }
       const newForm = new FormData();
       var { uri, name } = step3SelectedItem.images[0];
+      // console.log("klfdgnklsdnlgnld ",step3SelectedItem.images[0]);
       newForm.append('main_image', { uri, type: 'image/jpeg', name });
       for (let i = 1; i < step3SelectedItem.images.length; i++) {
         var { uri, name } = step3SelectedItem.images[i];
@@ -190,10 +191,11 @@ const PostStep3Screen = ({ route, navigation }) => {
   }, [step3SelectedItem?.images]);
   useEffect(() => {
     const resizeImages = [];
-    console.log('photo', photo)
+    // console.log('photo----------------------', photo)
     Promise.all(
-      photo.map(async (image, index) => {
-        var path = image.realPath;
+      photo?.map(async (image, index) => {
+        // console.log('image ------------', image)
+        var path = image?.originalPath;
         var maxWidth = 1000,
           maxHeight = 1000,
           compressFormat = 'JPEG',
@@ -215,7 +217,7 @@ const PostStep3Screen = ({ route, navigation }) => {
               keepMeta,
               options,
             );
-            resizeImages.push(resizedImage);
+            resizeImages?.push(resizedImage);
           } catch (err) {
             console.log(err);
           }
@@ -237,9 +239,11 @@ const PostStep3Screen = ({ route, navigation }) => {
       });
     });
   }, [photo.length]);
+
   const galleryImage = async () => {
     try {
-      const response = await openPicker({
+      // console.log(`calllll`);
+      const response = await launchImageLibrary({
         selectedAssets: 'images',
         isExportThumbnail: true,
         maxVideo: 1,
@@ -247,7 +251,7 @@ const PostStep3Screen = ({ route, navigation }) => {
         isCrop: true,
         isCropCircle: true,
       });
-      setPhoto(response);
+      setPhoto(response?.assets);
       // setImages(response);
       setStep3SelectedItem({
         images: response,

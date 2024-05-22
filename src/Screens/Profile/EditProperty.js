@@ -47,7 +47,7 @@ const EditPropertyScreen = ({navigation}) => {
     const resizeImages = [];
     Promise.all(
       photo.map(async (image, index) => {
-        var path = image.realPath;
+        var path = image.originalPath;
         var maxWidth = 1000,
           maxHeight = 1000,
           compressFormat = 'JPEG',

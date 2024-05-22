@@ -1,4 +1,4 @@
-import React, {useEffect, useState} from 'react';
+import React, { useEffect, useState } from 'react';
 import {
   Dimensions,
   FlatList,
@@ -13,21 +13,21 @@ import {
 } from 'react-native';
 import FIcon from 'react-native-vector-icons/FontAwesome';
 import Icon from 'react-native-vector-icons/Ionicons';
-import {Divider} from 'react-native-elements';
+import { Divider } from 'react-native-elements';
 import Color from '../Config/Color';
-import {useDispatch, useSelector} from 'react-redux';
+import { useDispatch, useSelector } from 'react-redux';
 import {
   setFilterLocation,
   setFilterLocationRemove,
 } from '../Redux/user/UserAction';
-import {Image} from 'react-native';
-import {Media} from '../Global/Media';
-import {setPostPropertyLocation} from '../Redux';
+import { Image } from 'react-native';
+import { Media } from '../Global/Media';
+import { setPostPropertyLocation } from '../Redux';
 import fetchData from '../Config/fetchData';
-import {Searchbar} from 'react-native-paper';
-import {Dropdown} from 'react-native-element-dropdown';
+import { Searchbar } from 'react-native-paper';
+import { Dropdown } from 'react-native-element-dropdown';
 
-const LocationBottomModal = ({data, city_id}) => {
+const LocationBottomModal = ({ data, city_id }) => {
   const [search, setSearch] = useState('');
   const [cityData, setCityData] = useState([]);
   const [selectedCity, setSelectedCity] = useState({});
@@ -36,7 +36,7 @@ const LocationBottomModal = ({data, city_id}) => {
   const [cityVisible, setCityVisible] = useState(false);
   const [localityVisible, setLocalityVisible] = useState(false);
   const filter_data = useSelector(state => state.UserReducer.filterLocation);
-  var {city, landmark} = filter_data;
+  var { city, landmark } = filter_data;
 
   const dispatch = useDispatch();
   const handleCitySelection = city => {
@@ -267,7 +267,7 @@ const LocationBottomModal = ({data, city_id}) => {
     //     </View>
     //   </View>
     // </Modal>
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{ flexDirection: 'row', alignItems: 'center' }}>
       {/* <Dropdown
         style={{
           backgroundColor: Color.white,
@@ -341,7 +341,7 @@ const LocationBottomModal = ({data, city_id}) => {
           {city ? city : 'Select City'}
         </Text>
         <Icon
-          style={{width: 20, height: 20}}
+          style={{ width: 20, height: 20 }}
           color={Color.cloudyGrey}
           name="chevron-down"
           size={20}
@@ -422,7 +422,7 @@ const LocationBottomModal = ({data, city_id}) => {
           {landmark ? landmark : 'Select Locality'}
         </Text>
         <Icon
-          style={{width: 20, height: 20}}
+          style={{ width: 20, height: 20 }}
           color={Color.cloudyGrey}
           name="chevron-down"
           size={20}
@@ -431,7 +431,7 @@ const LocationBottomModal = ({data, city_id}) => {
       {/* } */}
       <Modal visible={cityVisible} transparent={true}>
         <Pressable
-          style={{flex: 1, backgroundColor: Color.transparantBlack}}
+          style={{ flex: 1, backgroundColor: Color.transparantBlack }}
           onPress={() => {
             setCityVisible(false);
           }}
@@ -468,7 +468,7 @@ const LocationBottomModal = ({data, city_id}) => {
                   }}>
                   {item?.city}
                 </Text>
-                <Divider style={{height: 1, marginVertical: 10}} />
+                <Divider style={{ height: 1, marginVertical: 10 }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -476,7 +476,7 @@ const LocationBottomModal = ({data, city_id}) => {
       </Modal>
       <Modal visible={localityVisible} transparent={true}>
         <Pressable
-          style={{flex: 1, backgroundColor: Color.transparantBlack}}
+          style={{ flex: 1, backgroundColor: Color.transparantBlack }}
           onPress={() => {
             setLocalityVisible(false);
           }}
@@ -520,7 +520,7 @@ const LocationBottomModal = ({data, city_id}) => {
                   }}>
                   {item?.value}
                 </Text>
-                <Divider style={{height: 1, marginVertical: 10}} />
+                <Divider style={{ height: 1, marginVertical: 10 }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -546,7 +546,7 @@ export const PostPropertyLocationBottomModal = ({
   const post_data = useSelector(
     state => state.PropertyReducer.propertyLocation,
   );
-  var {city, landmark} = post_data;
+  var { city, landmark } = post_data;
 
   const dispatch = useDispatch();
   const handleCitySelection = city => {
@@ -776,7 +776,7 @@ export const PostPropertyLocationBottomModal = ({
     //     </View>
     //   </View>
     // </Modal>
-    <View style={{flexDirection: 'row', alignItems: 'center'}}>
+    <View style={{ flexDirection: 'row', justifyContent: 'center', alignItems: 'center', marginTop: 10 }}>
       {/* <Dropdown
         style={{
           backgroundColor: Color.white,
@@ -831,9 +831,9 @@ export const PostPropertyLocationBottomModal = ({
           borderWidth: 1,
           paddingHorizontal: 10,
           borderRadius: 5,
-          width: '40%',
-          height: 40,
-          marginHorizontal: 10,
+          width: '45%',
+          height: 45,
+          // marginHorizontal: 10,
           flexDirection: 'row',
           alignItems: 'center',
         }}
@@ -850,7 +850,7 @@ export const PostPropertyLocationBottomModal = ({
           {city ? city : 'Select City'}
         </Text>
         <Icon
-          style={{width: 20, height: 20}}
+          style={{ width: 20, height: 20 }}
           color={Color.cloudyGrey}
           name="chevron-down"
           size={20}
@@ -912,8 +912,8 @@ export const PostPropertyLocationBottomModal = ({
           borderWidth: 1,
           paddingHorizontal: 10,
           borderRadius: 5,
-          width: '40%',
-          height: 40,
+          width: '45%',
+          height: 45,
           flexDirection: 'row',
           alignItems: 'center',
           marginHorizontal: 10,
@@ -931,7 +931,7 @@ export const PostPropertyLocationBottomModal = ({
           {landmark ? landmark : 'Select Locality'}
         </Text>
         <Icon
-          style={{width: 20, height: 20}}
+          style={{ width: 20, height: 20 }}
           color={Color.cloudyGrey}
           name="chevron-down"
           size={20}
@@ -940,7 +940,7 @@ export const PostPropertyLocationBottomModal = ({
       {/* } */}
       <Modal visible={cityVisible} transparent={true}>
         <Pressable
-          style={{flex: 1, backgroundColor: Color.transparantBlack}}
+          style={{ flex: 1, backgroundColor: Color.transparantBlack }}
           onPress={() => {
             setCityVisible(false);
           }}
@@ -977,7 +977,7 @@ export const PostPropertyLocationBottomModal = ({
                   }}>
                   {item?.city}
                 </Text>
-                <Divider style={{height: 1, marginVertical: 10}} />
+                <Divider style={{ height: 1, marginVertical: 10 }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -985,7 +985,7 @@ export const PostPropertyLocationBottomModal = ({
       </Modal>
       <Modal visible={localityVisible} transparent={true}>
         <Pressable
-          style={{flex: 1, backgroundColor: Color.transparantBlack}}
+          style={{ flex: 1, backgroundColor: Color.transparantBlack }}
           onPress={() => {
             setLocalityVisible(false);
           }}
@@ -1029,7 +1029,7 @@ export const PostPropertyLocationBottomModal = ({
                   }}>
                   {item?.value}
                 </Text>
-                <Divider style={{height: 1, marginVertical: 10}} />
+                <Divider style={{ height: 1, marginVertical: 10 }} />
               </TouchableOpacity>
             ))}
           </ScrollView>
@@ -1053,7 +1053,7 @@ const styles = StyleSheet.create({
     color: Color.black,
     textTransform: 'capitalize',
   },
-  Divider: {height: 1, marginVertical: 10},
+  Divider: { height: 1, marginVertical: 10 },
   pillContainer: {
     // marginVertical: 10,
     flexDirection: 'row',

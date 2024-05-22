@@ -4563,7 +4563,7 @@ const PostStep2Screen = ({ navigation, route }) => {
                               ? 'radio-button-on'
                               : 'radio-button-off'
                           }
-                          size={20}
+                          size={22}
                           color={
                             step2CommercialSelected.pantry?.id === item.id
                               ? Color.primary
@@ -4725,8 +4725,8 @@ const PostStep2Screen = ({ navigation, route }) => {
                               justifyContent: 'center',
                               marginHorizontal: 5,
                               borderRadius: 50,
-                              width: 40,
-                              height: 40,
+                              width: 45,
+                              height: 45,
                               marginVertical: 10,
                               borderColor:
                                 step2CommercialSelected?.washroom?.id ==
@@ -5767,7 +5767,7 @@ const PostStep2Screen = ({ navigation, route }) => {
                               ? 'radio-button-on'
                               : 'radio-button-off'
                           }
-                          size={20}
+                          size={22}
                           color={
                             step2CommercialSelected.pantry?.id === item.id
                               ? Color.primary
