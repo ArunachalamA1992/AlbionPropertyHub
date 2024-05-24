@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -9,7 +9,7 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 import Color from '../../../Config/Color';
 import StepIndicator from 'react-native-step-indicator';
 import FeIcon from 'react-native-vector-icons/Feather';
@@ -22,27 +22,28 @@ import OIcon from 'react-native-vector-icons/Octicons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFilterLocation, setPostPropertyLocation } from '../../../Redux';
-import { Dropdown } from 'react-native-element-dropdown';
-import { Button } from 'react-native-elements';
-import { launchImageLibrary } from 'react-native-image-picker';
-import { Image } from 'react-native';
+import {useDispatch, useSelector} from 'react-redux';
+import {setFilterLocation, setPostPropertyLocation} from '../../../Redux';
+import {Dropdown} from 'react-native-element-dropdown';
+import {Button} from 'react-native-elements';
+import {launchImageLibrary} from 'react-native-image-picker';
+import {Image} from 'react-native';
 import CheckboxData from '../../../Components/Checkbox';
-import { Poppins } from '../../../Global/FontFamily';
+import {Poppins} from '../../../Global/FontFamily';
 import common_fn from '../../../Config/common_fn';
 import ImageResizer from 'react-native-image-resizer';
 import axios from 'axios';
 import fetchData from '../../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
-import { BackHandler } from 'react-native';
-import { Alert } from 'react-native';
-import { Modal } from 'react-native';
-import { Linking } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import {BackHandler} from 'react-native';
+import {Alert} from 'react-native';
+import {Modal} from 'react-native';
+import {Linking} from 'react-native';
+import {useRoute} from '@react-navigation/native';
+import ImageCropPicker from 'react-native-image-crop-picker';
 
-const { width } = Dimensions.get('screen');
+const {width} = Dimensions.get('screen');
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -77,7 +78,7 @@ const labels = [
 
 const Plotlabels = ['Basic Details', 'Property Details', 'Photos & Pricing'];
 
-const PostStep3Screen = ({ route, navigation }) => {
+const PostStep3Screen = ({route, navigation}) => {
   const routeName = useRoute();
   const [step1SelectedItem] = useState(route.params.step1SelectedItem);
   const [step1RentSelectedItem] = useState(route.params.step1RentSelectedItem);
@@ -91,8 +92,8 @@ const PostStep3Screen = ({ route, navigation }) => {
   const [unit] = useState(route.params.unit);
 
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id } = userData;
-  var { city, landmark } = propertyLocation;
+  var {user_id} = userData;
+  var {city, landmark} = propertyLocation;
   const [OpenModal, setOpenModal] = useState(false);
   const [images, setImages] = useState([]);
   const [photo, setPhoto] = useState([]);
@@ -110,16 +111,16 @@ const PostStep3Screen = ({ route, navigation }) => {
     checked: [],
   });
   const [Ownership] = useState([
-    { id: 1, title: 'Freehold' },
-    { id: 2, title: 'Leasehold' },
-    { id: 3, title: 'Co-operative Society' },
-    { id: 4, title: 'Power of Attorney' },
+    {id: 1, title: 'Freehold'},
+    {id: 2, title: 'Leasehold'},
+    {id: 3, title: 'Co-operative Society'},
+    {id: 4, title: 'Power of Attorney'},
   ]);
   const [occupation] = useState([
-    { label: '50,000', value: '50,000' },
-    { label: '1,00,000', value: '1,00,000' },
-    { label: '1,50,000', value: '1,50,000' },
-    { label: '2,00,000', value: '2,00,000' },
+    {label: '50,000', value: '50,000'},
+    {label: '1,00,000', value: '1,00,000'},
+    {label: '1,50,000', value: '1,50,000'},
+    {label: '2,00,000', value: '2,00,000'},
   ]);
   var text =
     'Upload original property photos for Enjoy 40% better visibility and';
@@ -147,12 +148,11 @@ const PostStep3Screen = ({ route, navigation }) => {
         return;
       }
       const newForm = new FormData();
-      var { uri, name } = step3SelectedItem.images[0];
-      // console.log("klfdgnklsdnlgnld ",step3SelectedItem.images[0]);
-      newForm.append('main_image', { uri, type: 'image/jpeg', name });
+      var {uri, name} = step3SelectedItem.images[0];
+      newForm.append('main_image', {uri, type: 'image/jpeg', name});
       for (let i = 1; i < step3SelectedItem.images.length; i++) {
-        var { uri, name } = step3SelectedItem.images[i];
-        newForm.append('sub_image[]', { uri, type: 'image/jpeg', name });
+        var {uri, name} = step3SelectedItem.images[i];
+        newForm.append('sub_image[]', {uri, type: 'image/jpeg', name});
       }
       axios
         .post(
@@ -189,13 +189,12 @@ const PostStep3Screen = ({ route, navigation }) => {
   useEffect(() => {
     uploadImages();
   }, [step3SelectedItem?.images]);
+
   useEffect(() => {
     const resizeImages = [];
-    // console.log('photo----------------------', photo)
     Promise.all(
       photo?.map(async (image, index) => {
-        // console.log('image ------------', image)
-        var path = image?.originalPath;
+        var path = image?.path;
         var maxWidth = 1000,
           maxHeight = 1000,
           compressFormat = 'JPEG',
@@ -242,17 +241,18 @@ const PostStep3Screen = ({ route, navigation }) => {
 
   const galleryImage = async () => {
     try {
-      // console.log(`calllll`);
-      const response = await launchImageLibrary({
-        selectedAssets: 'images',
-        isExportThumbnail: true,
-        maxVideo: 1,
-        usedCameraButton: false,
-        isCrop: true,
-        isCropCircle: true,
+      // const response = await launchImageLibrary({
+      //   selectedAssets: 'images',
+      //   isExportThumbnail: true,
+      //   maxVideo: 1,
+      //   usedCameraButton: false,
+      //   isCrop: true,
+      //   isCropCircle: true,
+      // });
+      const response = await ImageCropPicker.openPicker({
+        multiple: true,
       });
-      setPhoto(response?.assets);
-      // setImages(response);
+      setPhoto(response);
       setStep3SelectedItem({
         images: response,
         Ownership: step3SelectedItem?.Ownership,
@@ -272,7 +272,7 @@ const PostStep3Screen = ({ route, navigation }) => {
       } else {
         setImagesError(false);
       }
-    } catch (e) { }
+    } catch (e) {}
   };
 
   const deleteImage = (key, photo) => {
@@ -289,7 +289,7 @@ const PostStep3Screen = ({ route, navigation }) => {
       value: 'one_price_includes_everything',
       index: 0,
     },
-    { id: 2, title: 'Price negotiable', value: 'price_negotiable', index: 1 },
+    {id: 2, title: 'Price negotiable', value: 'price_negotiable', index: 1},
     {
       id: 3,
       title: 'Tax & Govt. charges excluded',
@@ -368,9 +368,9 @@ const PostStep3Screen = ({ route, navigation }) => {
     try {
       const ispg = step1SelectedItem?.post?.value === 'pg';
       if (
-        step3SelectedItem?.pricingDetails?.expected?.length > 0 &&
-        step3SelectedItem?.pricingDetails?.pricePersq != 0
-        || ispg
+        (step3SelectedItem?.pricingDetails?.expected?.length > 0 &&
+          step3SelectedItem?.pricingDetails?.pricePersq != 0) ||
+        ispg
       ) {
         navigation.navigate('step4', {
           step1SelectedItem,
@@ -387,7 +387,7 @@ const PostStep3Screen = ({ route, navigation }) => {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select all the required fields');
         } else {
-          alert('Please select all the required fields')
+          alert('Please select all the required fields');
         }
       }
     } catch (error) {
@@ -397,7 +397,7 @@ const PostStep3Screen = ({ route, navigation }) => {
   const dispatch = useDispatch();
 
   const dataPayload = () => {
-    let customIDCounter = { counter: 0 };
+    let customIDCounter = {counter: 0};
     let dataArray = [];
     const plotPayload = {
       // no_of_floors_allwd: step2SelectedItem?.plotSpec?.plotAllowed,
@@ -633,8 +633,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                 ? step1SelectedItem?.type?.value
                 : step1SelectedItem.commercialPropType?.value
               : step1RentSelectedItem?.kind?.value == 'residential'
-                ? step1RentSelectedItem?.type?.value
-                : step1RentSelectedItem.commercialPropType?.value,
+              ? step1RentSelectedItem?.type?.value
+              : step1RentSelectedItem.commercialPropType?.value,
           location: city,
           real_estate:
             step1SelectedItem?.post?.value === 'sell'
@@ -648,8 +648,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                   : step2CommercialSelected?.propertyArea?.plotArea
                 : step1SelectedItem?.post?.value === 'rent' &&
                   step1RentSelectedItem?.kind?.value == 'residential'
-                  ? step2SelectedItem?.propertyArea?.plotArea
-                  : step2CommercialSelected?.propertyArea?.plotArea,
+                ? step2SelectedItem?.propertyArea?.plotArea
+                : step2CommercialSelected?.propertyArea?.plotArea,
             super_area_unit: unit?.plotStatus?.value,
           },
           facing: step2SelectedItem?.propertyFacing?.value,
@@ -689,7 +689,7 @@ const PostStep3Screen = ({ route, navigation }) => {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select all the required fields');
         } else {
-          alert('Please select all the required fields')
+          alert('Please select all the required fields');
         }
       }
     } catch (error) {
@@ -702,20 +702,30 @@ const PostStep3Screen = ({ route, navigation }) => {
     // step1SelectedItem?.commercialPropType?.value === 'Plot';
     (step1SelectedItem?.kind?.value === 'residential' &&
       step1SelectedItem?.type?.value === 'plot') ||
-    step1SelectedItem?.kind?.value === 'commercial'
+    step1SelectedItem?.kind?.value === 'commercial';
   const isRentPlotSelected =
     // step1RentSelectedItem?.type?.value === 'Plot' ||
     // step1RentSelectedItem?.commercialPropType?.value === 'Plot';
     (step1RentSelectedItem?.kind?.value === 'residential' &&
       step1RentSelectedItem?.type?.value === 'plot') ||
-    step1RentSelectedItem?.kind?.value === 'commercial'
+    step1RentSelectedItem?.kind?.value === 'commercial';
 
-  const stepCount = isPlotSelected || isRentPlotSelected || step1SelectedItem?.post?.value == "pg" ? 3 : 4;
+  const stepCount =
+    isPlotSelected ||
+    isRentPlotSelected ||
+    step1SelectedItem?.post?.value == 'pg'
+      ? 3
+      : 4;
 
-  const Datalabels = isPlotSelected || isRentPlotSelected || step1SelectedItem?.post?.value == "pg" ? Plotlabels : labels;
+  const Datalabels =
+    isPlotSelected ||
+    isRentPlotSelected ||
+    step1SelectedItem?.post?.value == 'pg'
+      ? Plotlabels
+      : labels;
 
   function handleBackButtonClick() {
-    if (routeName.name == "step3") {
+    if (routeName.name == 'step3') {
       navigation.goBack();
       return true;
     }
@@ -723,13 +733,20 @@ const PostStep3Screen = ({ route, navigation }) => {
   }
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonClick,
+    );
     return () => backHandler.remove();
   }, [routeName.name, navigation]);
 
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.header, marginVertical: Platform.OS == "ios" ? 40 : 10 }}>
+      <View
+        style={{
+          ...styles.header,
+          marginVertical: Platform.OS == 'ios' ? 40 : 10,
+        }}>
         <TouchableOpacity
           style={styles.backIcon}
           onPress={() => navigation.goBack()}>
@@ -763,7 +780,7 @@ const PostStep3Screen = ({ route, navigation }) => {
             switch (position?.stepStatus) {
               case 'current':
                 return (
-                  <Text style={{ fontSize: 14, color: Color.white }}>
+                  <Text style={{fontSize: 14, color: Color.white}}>
                     {position?.position + 1}
                   </Text>
                 );
@@ -771,7 +788,7 @@ const PostStep3Screen = ({ route, navigation }) => {
                 return <FIcon name="check" size={16} color={Color.white} />;
               case 'unfinished':
                 return (
-                  <Text style={{ fontSize: 14, color: Color.white }}>
+                  <Text style={{fontSize: 14, color: Color.white}}>
                     {position?.position + 1}
                   </Text>
                 );
@@ -782,8 +799,8 @@ const PostStep3Screen = ({ route, navigation }) => {
         />
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
-        <View style={{ marginVertical: 10 }}>
-          <View style={{ marginVertical: 10 }}>
+        <View style={{marginVertical: 10}}>
+          <View style={{marginVertical: 10}}>
             <Text
               style={{
                 fontSize: 20,
@@ -801,16 +818,17 @@ const PostStep3Screen = ({ route, navigation }) => {
               Photos, Ownership Details and Pricing
             </Text>
           </View>
-          <View style={{ marginVertical: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{marginVertical: 10}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
                   color: Color.black,
                   fontWeight: 'bold',
                 }}>
-                {`Add ${step1SelectedItem?.post?.value == 'pg' ? 'PG' : 'Property'
-                  } Images`}
+                {`Add ${
+                  step1SelectedItem?.post?.value == 'pg' ? 'PG' : 'Property'
+                } Images`}
               </Text>
             </View>
             <Text
@@ -840,10 +858,10 @@ const PostStep3Screen = ({ route, navigation }) => {
                   {images.map((item, key) => (
                     <TouchableOpacity
                       key={key}
-                      style={{ width: '50%' }}
+                      style={{width: '50%'}}
                       onPress={() => deleteImage(key, images)}>
                       <Image
-                        source={{ uri: item.uri }}
+                        source={{uri: item?.uri}}
                         style={{
                           height: 100,
                           marginVertical: 10,
@@ -867,7 +885,7 @@ const PostStep3Screen = ({ route, navigation }) => {
                   ))}
                 </View>
               ) : (
-                <View style={{ padding: 10 }}>
+                <View style={{padding: 10}}>
                   {/* <Image
                   source={require('../../image/image_upload.png')}
                   style={styles.ImageUploadContainer}
@@ -1011,8 +1029,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                   </View>
                 </View> */}
 
-            {step1SelectedItem?.post?.value != 'pg' &&
-              <View style={{ marginVertical: 10 }}>
+            {step1SelectedItem?.post?.value != 'pg' && (
+              <View style={{marginVertical: 10}}>
                 <Text
                   style={{
                     fontSize: 18,
@@ -1022,8 +1040,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                   }}>
                   Price Details
                 </Text>
-                <View style={{ flexDirection: 'row', alignItems: 'center' }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                <View style={{flexDirection: 'row', alignItems: 'center'}}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text
                       style={{
                         fontSize: 14,
@@ -1063,18 +1081,20 @@ const PostStep3Screen = ({ route, navigation }) => {
                           pricePersq:
                             isPlotSelected || isRentPlotSelected
                               ? step1SelectedItem?.post?.value === 'sell'
-                                ? step1SelectedItem?.kind?.value == 'residential'
-                                  ? value /
-                                  step2SelectedItem?.propertyArea?.plotArea
-                                  : value /
-                                  step2CommercialSelected?.propertyArea
-                                    ?.plotArea
-                                : step1RentSelectedItem?.kind?.value ==
+                                ? step1SelectedItem?.kind?.value ==
                                   'residential'
                                   ? value /
-                                  step2SelectedItem?.propertyArea?.plotArea
+                                    step2SelectedItem?.propertyArea?.plotArea
                                   : value /
-                                  step2CommercialSelected?.propertyArea?.plotArea
+                                    step2CommercialSelected?.propertyArea
+                                      ?.plotArea
+                                : step1RentSelectedItem?.kind?.value ==
+                                  'residential'
+                                ? value /
+                                  step2SelectedItem?.propertyArea?.plotArea
+                                : value /
+                                  step2CommercialSelected?.propertyArea
+                                    ?.plotArea
                               : value / unit?.superValue,
                           token: step3SelectedItem?.pricingDetails?.token,
                         },
@@ -1253,9 +1273,9 @@ const PostStep3Screen = ({ route, navigation }) => {
                   {ExpectedError}
                 </Text>
               </View>
-            }
+            )}
 
-            <View style={{ marginVertical: 10 }}>
+            <View style={{marginVertical: 10}}>
               {checkbox.map((item, index) => {
                 return (
                   <CheckboxData
@@ -1271,9 +1291,13 @@ const PostStep3Screen = ({ route, navigation }) => {
           {/* )} */}
           <Button
             title={
-              isPlotSelected || isRentPlotSelected ? 'Confirm Post' : step1SelectedItem?.post?.value == "pg" ? "Move to next step" : 'NEXT'
+              isPlotSelected || isRentPlotSelected
+                ? 'Confirm Post'
+                : step1SelectedItem?.post?.value == 'pg'
+                ? 'Move to next step'
+                : 'NEXT'
             }
-            titleStyle={{ textTransform: 'uppercase' }}
+            titleStyle={{textTransform: 'uppercase'}}
             buttonStyle={{
               backgroundColor: Color.primary,
               height: 45,
@@ -1284,12 +1308,11 @@ const PostStep3Screen = ({ route, navigation }) => {
               // step1SelectedItem?.type?.value == 'flat' ||
               // step1RentSelectedItem?.type?.value == 'flat' ||
               // step1RentSelectedItem?.type?.value == 'villa'
-              if (
-                step3SelectedItem?.images?.length > 0) {
+              if (step3SelectedItem?.images?.length > 0) {
                 isPlotSelected || isRentPlotSelected
                   ? confirmPlotWithCommercial(navigation)
-                  : step1SelectedItem?.post?.value == "pg" ?
-                    navigation.navigate('confirmPost', {
+                  : step1SelectedItem?.post?.value == 'pg'
+                  ? navigation.navigate('confirmPost', {
                       step1SelectedItem,
                       step2SelectedItem,
                       step3SelectedItem,
@@ -1301,18 +1324,16 @@ const PostStep3Screen = ({ route, navigation }) => {
                       PgStep2Item,
                       PgStep4Item: {},
                       exclusivePost: false,
-                    }) : step3Data(navigation);
+                    })
+                  : step3Data(navigation);
                 checkTextInput();
               } else {
-                setOpenModal(true)
+                setOpenModal(true);
               }
             }}
           />
         </View>
-        <Modal
-          visible={OpenModal}
-          transparent={true}
-          animationType={'fade'}>
+        <Modal visible={OpenModal} transparent={true} animationType={'fade'}>
           <Pressable
             style={{
               backgroundColor: Color.transparantBlack,
@@ -1330,7 +1351,7 @@ const PostStep3Screen = ({ route, navigation }) => {
               borderTopRightRadius: 20,
             }}>
             <TouchableOpacity
-              style={{ position: 'absolute', right: 10, top: 10 }}
+              style={{position: 'absolute', right: 10, top: 10}}
               onPress={() => setOpenModal(false)}>
               <MCIcon name="close-circle" size={30} color={Color.red} />
             </TouchableOpacity>
@@ -1373,7 +1394,10 @@ const PostStep3Screen = ({ route, navigation }) => {
                 color: Color.black,
                 marginVertical: 10,
               }}>
-              Enhance your property listing by adding high-quality images. Visual content not only makes your property more attractive to potential buyers or renters but also improves its online visibility.
+              Enhance your property listing by adding high-quality images.
+              Visual content not only makes your property more attractive to
+              potential buyers or renters but also improves its online
+              visibility.
             </Text>
             <Text
               style={{
@@ -1383,7 +1407,9 @@ const PostStep3Screen = ({ route, navigation }) => {
                 color: Color.black,
                 marginVertical: 10,
               }}>
-              Studies show that listings with images receive more engagement. Take this opportunity to showcase the best features of your property and make a lasting impression on your audience.
+              Studies show that listings with images receive more engagement.
+              Take this opportunity to showcase the best features of your
+              property and make a lasting impression on your audience.
             </Text>
             <Text
               style={{
@@ -1393,7 +1419,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                 color: Color.black,
                 marginVertical: 10,
               }}>
-              If you need assistance with uploading images or have any questions, feel free to reach out to{" "}
+              If you need assistance with uploading images or have any
+              questions, feel free to reach out to{' '}
               <Text
                 style={{
                   fontSize: 12,
@@ -1401,50 +1428,56 @@ const PostStep3Screen = ({ route, navigation }) => {
                   textAlign: 'center',
                   color: Color.blue,
                   marginVertical: 10,
-                }} onPress={() => Linking.openURL('mailto:support@example.com')}>our support team.{" "}</Text>
-              We're here to help you create a compelling property listing that stands out in the market.
+                }}
+                onPress={() => Linking.openURL('mailto:support@example.com')}>
+                our support team.{' '}
+              </Text>
+              We're here to help you create a compelling property listing that
+              stands out in the market.
             </Text>
-            <View style={{ flexDirection: "row", alignItems: "center" }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Button
-                title={
-                  "Upload Image"
-                }
+                title={'Upload Image'}
                 titleStyle={{
                   textTransform: 'uppercase',
                   fontSize: 12,
-                  fontFamily: Poppins.SemiBold
+                  fontFamily: Poppins.SemiBold,
                 }}
                 buttonStyle={{
                   backgroundColor: Color.primary,
                   marginVertical: 20,
                   marginHorizontal: 5,
                 }}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{width: '50%'}}
                 onPress={() => {
-                  setOpenModal(false)
+                  setOpenModal(false);
                 }}
               />
               <Button
                 title={
-                  isPlotSelected || isRentPlotSelected ? "Confirm Post" : step1SelectedItem?.post?.value == "pg" ? "Move to next step" : "Move to next step"
+                  isPlotSelected || isRentPlotSelected
+                    ? 'Confirm Post'
+                    : step1SelectedItem?.post?.value == 'pg'
+                    ? 'Move to next step'
+                    : 'Move to next step'
                 }
                 titleStyle={{
                   textTransform: 'uppercase',
                   fontSize: 12,
-                  fontFamily: Poppins.SemiBold
+                  fontFamily: Poppins.SemiBold,
                 }}
                 buttonStyle={{
                   backgroundColor: Color.primary,
                   marginVertical: 20,
                   marginHorizontal: 5,
                 }}
-                containerStyle={{ width: '50%' }}
+                containerStyle={{width: '50%'}}
                 onPress={() => {
-                  setOpenModal(false)
+                  setOpenModal(false);
                   isPlotSelected || isRentPlotSelected
                     ? confirmPlotWithCommercial(navigation)
-                    : step1SelectedItem?.post?.value == "pg" ?
-                      navigation.navigate('confirmPost', {
+                    : step1SelectedItem?.post?.value == 'pg'
+                    ? navigation.navigate('confirmPost', {
                         step1SelectedItem,
                         step2SelectedItem,
                         step3SelectedItem,
@@ -1456,7 +1489,8 @@ const PostStep3Screen = ({ route, navigation }) => {
                         PgStep2Item,
                         PgStep4Item: {},
                         exclusivePost: false,
-                      }) : step3Data(navigation);
+                      })
+                    : step3Data(navigation);
                   checkTextInput();
                 }}
               />
