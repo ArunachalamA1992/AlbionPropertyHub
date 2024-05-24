@@ -1,4 +1,4 @@
-import React, { useEffect, useState } from 'react';
+import React, {useEffect, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -10,7 +10,7 @@ import {
   Pressable,
   Platform,
 } from 'react-native';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 import Color from '../../../Config/Color';
 import StepIndicator from 'react-native-step-indicator';
 import FeIcon from 'react-native-vector-icons/Feather';
@@ -23,24 +23,24 @@ import OIcon from 'react-native-vector-icons/Octicons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useDispatch, useSelector } from 'react-redux';
-import { setFilterLocation, setPostPropertyLocation } from '../../../Redux';
-import { Dropdown } from 'react-native-element-dropdown';
-import { Button, Divider } from 'react-native-elements';
+import {useDispatch, useSelector} from 'react-redux';
+import {setFilterLocation, setPostPropertyLocation} from '../../../Redux';
+import {Dropdown} from 'react-native-element-dropdown';
+import {Button, Divider} from 'react-native-elements';
 import CheckboxData, {
   AmenitiesCheckbox,
   RightCheckBox,
 } from '../../../Components/Checkbox';
-import { Poppins } from '../../../Global/FontFamily';
+import {Poppins} from '../../../Global/FontFamily';
 import common_fn from '../../../Config/common_fn';
-import { Switch } from 'react-native-paper';
+import {Switch} from 'react-native-paper';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import fetchData from '../../../Config/fetchData';
-import { BackHandler } from 'react-native';
-import { useRoute } from '@react-navigation/native';
+import {BackHandler} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
 
-const { width } = Dimensions.get('screen');
+const {width} = Dimensions.get('screen');
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -73,7 +73,7 @@ const labels = [
   'Amenities',
 ];
 
-const ExampleUSPS = ({ data }) => {
+const ExampleUSPS = ({data}) => {
   switch (data) {
     case 'Food':
       return (
@@ -153,7 +153,8 @@ const ExampleUSPS = ({ data }) => {
   }
 };
 
-const PostStep4Screen = ({ navigation, route }) => {
+const PostStep4Screen = ({route}) => {
+  const navigation = useNavigation();
   const routeName = useRoute();
   const [step1SelectedItem] = useState(route.params.step1SelectedItem);
   const [step2SelectedItem] = useState(route.params.step2SelectedItem);
@@ -163,70 +164,70 @@ const PostStep4Screen = ({ navigation, route }) => {
   const [PgStep1Item] = useState(route.params.PgStep1Item);
   const [PgStep2Item] = useState(route.params.PgStep2Item);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id } = userData;
+  var {user_id} = userData;
   const [exclusivePost, setExclusivePost] = useState(false);
-  const [reraID, setReraID] = useState("");
+  const [reraID, setReraID] = useState('');
   const [step2CommercialSelected] = useState(
     route.params.step2CommercialSelected,
   );
   const [unit] = useState(route.params.unit);
   const [Amenities] = useState([
-    { id: 1, title: 'Lift', value: "lift" },
-    { id: 2, title: 'Fitness Center', value: "fitness_center" },
-    { id: 3, title: 'cctv', value: "cctv" },
-    { id: 4, title: 'Wi-Fi', value: "wi-fi" },
-    { id: 5, title: 'Security', value: "security" },
-    { id: 6, title: '24 / 7 Water', value: "24_/_7_Water" },
-    { id: 7, title: 'Parking', value: "parking" },
-    { id: 8, title: 'Power Backup', value: "power_backup" },
+    {id: 1, title: 'Lift', value: 'lift'},
+    {id: 2, title: 'Fitness Center', value: 'fitness_center'},
+    {id: 3, title: 'cctv', value: 'cctv'},
+    {id: 4, title: 'Wi-Fi', value: 'wi-fi'},
+    {id: 5, title: 'Security', value: 'security'},
+    {id: 6, title: '24 / 7 Water', value: '24_/_7_Water'},
+    {id: 7, title: 'Parking', value: 'parking'},
+    {id: 8, title: 'Power Backup', value: 'power_backup'},
   ]);
   const [water] = useState([
-    { id: 1, title: 'Municipal corporation' },
-    { id: 2, title: '24/7 Water' },
-    { id: 3, title: 'Borewell/Tank' },
-    { id: 4, title: 'Water Disposal' },
+    {id: 1, title: 'Municipal corporation'},
+    {id: 2, title: '24/7 Water'},
+    {id: 3, title: 'Borewell/Tank'},
+    {id: 4, title: 'Water Disposal'},
   ]);
   const [Overlooking] = useState([
-    { id: 1, title: 'Park/Garden' },
-    { id: 2, title: 'Main Road' },
-    { id: 3, title: 'Club' },
-    { id: 5, title: 'Swimming Pool ' },
+    {id: 1, title: 'Park/Garden'},
+    {id: 2, title: 'Main Road'},
+    {id: 3, title: 'Club'},
+    {id: 5, title: 'Swimming Pool '},
   ]);
   const [LocationAdvantages] = useState([
-    { id: 1, title: 'Close to school' },
-    { id: 2, title: 'Close to Hospital' },
-    { id: 3, title: 'Close to market' },
-    { id: 4, title: 'Close to Bustand' },
-    { id: 5, title: 'Close to Airport' },
-    { id: 6, title: 'Close to Metro' },
-    { id: 7, title: 'Close to railway station' },
-    { id: 8, title: 'Close to Theatre' },
-    { id: 9, title: 'Close to mall' },
+    {id: 1, title: 'Close to school'},
+    {id: 2, title: 'Close to Hospital'},
+    {id: 3, title: 'Close to market'},
+    {id: 4, title: 'Close to Bustand'},
+    {id: 5, title: 'Close to Airport'},
+    {id: 6, title: 'Close to Metro'},
+    {id: 7, title: 'Close to railway station'},
+    {id: 8, title: 'Close to Theatre'},
+    {id: 9, title: 'Close to mall'},
   ]);
   const [PowerBackup] = useState([
-    { id: 1, title: 'None', value: 'None' },
-    { id: 2, title: 'Partial', value: 'Partial' },
-    { id: 3, title: 'Full', value: 'Full' },
+    {id: 1, title: 'None', value: 'None'},
+    {id: 2, title: 'Partial', value: 'Partial'},
+    {id: 3, title: 'Full', value: 'Full'},
   ]);
   const [PropertyFacing] = useState([
-    { id: 1, title: 'North', value: 'north' },
-    { id: 2, title: 'North -  East', value: 'north_east' },
-    { id: 3, title: 'East', value: 'east' },
-    { id: 4, title: 'West', value: 'west' },
-    { id: 5, title: 'South', value: 'south' },
-    { id: 6, title: 'South - East', value: 'south_east' },
-    { id: 7, title: 'South - West', value: 'south_west' },
-    { id: 8, title: 'North - West', value: 'north_west' },
+    {id: 1, title: 'North', value: 'north'},
+    {id: 2, title: 'North -  East', value: 'north_east'},
+    {id: 3, title: 'East', value: 'east'},
+    {id: 4, title: 'West', value: 'west'},
+    {id: 5, title: 'South', value: 'south'},
+    {id: 6, title: 'South - East', value: 'south_east'},
+    {id: 7, title: 'South - West', value: 'south_west'},
+    {id: 8, title: 'North - West', value: 'north_west'},
   ]);
   const [FlooringTypes] = useState([
-    { id: 1, title: 'Marble', value: 'marble' },
-    { id: 2, title: 'Wood', value: 'wood' },
-    { id: 3, title: 'Stone', value: 'stone' },
-    { id: 4, title: 'Cement', value: 'cement' },
-    { id: 5, title: 'Mosaic', value: 'mosaic' },
-    { id: 6, title: 'Granite', value: 'granite' },
-    { id: 7, title: 'Polished concrete', value: 'polished_concrete' },
-    { id: 8, title: 'Others', value: 'others' },
+    {id: 1, title: 'Marble', value: 'marble'},
+    {id: 2, title: 'Wood', value: 'wood'},
+    {id: 3, title: 'Stone', value: 'stone'},
+    {id: 4, title: 'Cement', value: 'cement'},
+    {id: 5, title: 'Mosaic', value: 'mosaic'},
+    {id: 6, title: 'Granite', value: 'granite'},
+    {id: 7, title: 'Polished concrete', value: 'polished_concrete'},
+    {id: 8, title: 'Others', value: 'others'},
   ]);
   const [step4SelectedItem, setStep4SelectedItem] = useState({
     amenities: [],
@@ -239,7 +240,7 @@ const PostStep4Screen = ({ navigation, route }) => {
     features: [],
   });
   const filter_data = useSelector(state => state.UserReducer.propertyLocation);
-  var { city, landmark } = propertyLocation;
+  var {city, landmark} = propertyLocation;
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [currentStatus, setCurrentStatus] = useState('');
@@ -415,9 +416,9 @@ const PostStep4Screen = ({ navigation, route }) => {
   const [selectedCheckbox, setSelectedCheckbox] = useState(null);
 
   const [checkbox, setCheckbox] = useState([
-    { id: 1, title: 'Gated society', value: 'gated_society', index: 0 },
-    { id: 2, title: 'Waste Disposal', value: 'waste_disposal', index: 1 },
-    { id: 3, title: 'Vaastu Compliant', value: 'vaastu_compliant', index: 2 },
+    {id: 1, title: 'Gated society', value: 'gated_society', index: 0},
+    {id: 2, title: 'Waste Disposal', value: 'waste_disposal', index: 1},
+    {id: 3, title: 'Vaastu Compliant', value: 'vaastu_compliant', index: 2},
     // { id: 4, title: 'Security', value: 'security', index: 3 },
     {
       id: 4,
@@ -533,11 +534,10 @@ const PostStep4Screen = ({ navigation, route }) => {
         // // step4SelectedItem?.locationAdvantage?.length > 0 &&
         // step4SelectedItem?.powerBackUp?.value?.length > 0 &&
         // step4SelectedItem?.flooringType?.value?.length > 0
-        ispg ?
-          PgStep4Item?.common_area_amenities?.length > 0 &&
-          PgStep4Item?.parking_avail?.value?.length > 0
-          :
-          step4SelectedItem?.p_facing?.value?.length > 0
+        ispg
+          ? PgStep4Item?.common_area_amenities?.length > 0 &&
+            PgStep4Item?.parking_avail?.value?.length > 0
+          : step4SelectedItem?.p_facing?.value?.length > 0
       ) {
         navigation.navigate('confirmPost', {
           step1SelectedItem,
@@ -556,7 +556,7 @@ const PostStep4Screen = ({ navigation, route }) => {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select all the required fields');
         } else {
-          alert('Please select all the required fields')
+          alert('Please select all the required fields');
         }
       }
     } catch (error) {
@@ -581,27 +581,27 @@ const PostStep4Screen = ({ navigation, route }) => {
       title: 'Kitchen for self-cooking',
       value: 'kitchen_for_self_cooking',
     },
-    { id: 2, title: 'RO', value: 'ro' },
-    { id: 3, title: 'Fridge', value: 'fridge' },
-    { id: 4, title: 'microwave', value: 'microwave' },
-    { id: 5, title: 'lift', value: 'lift' },
-    { id: 6, title: 'gymnasium', value: 'gymnasium' },
-    { id: 7, title: 'power-backup', value: 'power_backup' },
-    { id: 8, title: 'wi-fi', value: 'wi_fi' },
-    { id: 9, title: 'Tv', value: 'tv' },
+    {id: 2, title: 'RO', value: 'ro'},
+    {id: 3, title: 'Fridge', value: 'fridge'},
+    {id: 4, title: 'microwave', value: 'microwave'},
+    {id: 5, title: 'lift', value: 'lift'},
+    {id: 6, title: 'gymnasium', value: 'gymnasium'},
+    {id: 7, title: 'power-backup', value: 'power_backup'},
+    {id: 8, title: 'wi-fi', value: 'wi_fi'},
+    {id: 9, title: 'Tv', value: 'tv'},
   ]);
   const [radioData] = useState([
-    { id: 1, title: 'Two Wheeler', value: 'two_wheeler' },
-    { id: 2, title: 'Four Wheeler', value: 'four_wheeler' },
-    { id: 3, title: 'Both', value: 'both' },
+    {id: 1, title: 'Two Wheeler', value: 'two_wheeler'},
+    {id: 2, title: 'Four Wheeler', value: 'four_wheeler'},
+    {id: 3, title: 'Both', value: 'both'},
   ]);
   const [usp_categoryData] = useState([
-    { id: 1, label: 'Food', value: 'food' },
-    { id: 2, label: 'Room', value: 'room' },
-    { id: 3, label: 'PG', value: 'pg' },
-    { id: 3, label: 'Locality', value: 'locality' },
-    { id: 3, label: 'Amenities', value: 'amenities' },
-    { id: 3, label: 'Others', value: 'others' },
+    {id: 1, label: 'Food', value: 'food'},
+    {id: 2, label: 'Room', value: 'room'},
+    {id: 3, label: 'PG', value: 'pg'},
+    {id: 3, label: 'Locality', value: 'locality'},
+    {id: 3, label: 'Amenities', value: 'amenities'},
+    {id: 3, label: 'Others', value: 'others'},
   ]);
   const [common_area_amenitiesItem, setCommon_area_amenitiesItem] = useState(
     [],
@@ -679,8 +679,9 @@ const PostStep4Screen = ({ navigation, route }) => {
     requestUserPermission();
   }, [token]);
 
-  const confirmPost = async navigation => {
+  const confirmPost = async () => {
     try {
+      var {replace} = navigation;
       if (step4SelectedItem?.p_facing?.value?.length > 0) {
         var data = {
           property_action: step1SelectedItem?.post?.value,
@@ -690,8 +691,8 @@ const PostStep4Screen = ({ navigation, route }) => {
                 ? step1SelectedItem?.type?.value
                 : step1SelectedItem?.commercialPropType?.value
               : step1RentSelectedItem?.kind?.value == 'residential'
-                ? step1RentSelectedItem?.type?.value
-                : step1RentSelectedItem?.commercialPropType?.value,
+              ? step1RentSelectedItem?.type?.value
+              : step1RentSelectedItem?.commercialPropType?.value,
           location: city,
           real_estate:
             step1SelectedItem?.post?.value === 'sell'
@@ -763,13 +764,13 @@ const PostStep4Screen = ({ navigation, route }) => {
               landmark: null,
             }),
           );
-          navigation.replace('postCompleted');
+          replace('postCompleted');
         }
       } else {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select the required fields');
         } else {
-          alert('Please select all the required fields')
+          alert('Please select all the required fields');
         }
       }
     } catch (error) {
@@ -778,21 +779,28 @@ const PostStep4Screen = ({ navigation, route }) => {
   };
 
   function handleBackButtonClick() {
-    if (routeName.name == "step4") {
+    if (routeName.name == 'step4') {
       navigation.goBack();
       return true;
     }
     return false;
-  };
+  }
 
   useEffect(() => {
-    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    const backHandler = BackHandler.addEventListener(
+      'hardwareBackPress',
+      handleBackButtonClick,
+    );
     return () => backHandler.remove();
   }, [routeName.name, navigation]);
 
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.header, marginVertical: Platform.OS == "ios" ? 40 : 10 }}>
+      <View
+        style={{
+          ...styles.header,
+          marginVertical: Platform.OS == 'ios' ? 40 : 10,
+        }}>
         <TouchableOpacity
           style={styles.backIcon}
           onPress={() => navigation.goBack()}>
@@ -826,7 +834,7 @@ const PostStep4Screen = ({ navigation, route }) => {
             switch (position?.stepStatus) {
               case 'current':
                 return (
-                  <Text style={{ fontSize: 14, color: Color.white }}>
+                  <Text style={{fontSize: 14, color: Color.white}}>
                     {position?.position + 1}
                   </Text>
                 );
@@ -834,7 +842,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 return <FIcon name="check" size={16} color={Color.white} />;
               case 'unfinished':
                 return (
-                  <Text style={{ fontSize: 14, color: Color.white }}>
+                  <Text style={{fontSize: 14, color: Color.white}}>
                     {position?.position + 1}
                   </Text>
                 );
@@ -846,8 +854,8 @@ const PostStep4Screen = ({ navigation, route }) => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         {step1SelectedItem?.post?.value == 'sell' ||
-          step1SelectedItem?.post?.value == 'rent' ? (
-          <View style={{ marginVertical: 10 }}>
+        step1SelectedItem?.post?.value == 'rent' ? (
+          <View style={{marginVertical: 10}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -870,7 +878,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 (Select Nearby Amenities)
               </Text>
             </View>
-            <View style={{ marginVertical: 10 }}>
+            <View style={{marginVertical: 10}}>
               {/* <View style={{ flexDirection: 'row', alignItems: 'center' }}>
                 <Text
                   style={{
@@ -889,7 +897,7 @@ const PostStep4Screen = ({ navigation, route }) => {
               }}>
               {amenitiesError}
             </Text> */}
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 <View
                   style={{
                     backgroundColor: Color.white,
@@ -980,7 +988,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                         backgroundColor: Color.transparantBlack,
                       }}>
                       <Pressable
-                        style={{ flex: 1 }}
+                        style={{flex: 1}}
                         onPress={() => {
                           setAmenitiesVisible(false);
                         }}
@@ -1031,7 +1039,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                           })}
                           <Button
                             title={'Add'}
-                            buttonStyle={{ backgroundColor: Color.primary }}
+                            buttonStyle={{backgroundColor: Color.primary}}
                             onPress={() => {
                               setAmenitiesVisible(false);
                             }}
@@ -1405,8 +1413,8 @@ const PostStep4Screen = ({ navigation, route }) => {
               </View>
             </View> */}
 
-            <View style={{ marginVertical: 10 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{marginVertical: 10}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -1416,7 +1424,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                   Property facing
                 </Text>
                 <Text
-                  style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                  style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                   *
                 </Text>
               </View>
@@ -1428,7 +1436,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 }}>
                 {p_facingError}
               </Text>
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 <View
                   style={{
                     backgroundColor: Color.white,
@@ -1591,7 +1599,7 @@ const PostStep4Screen = ({ navigation, route }) => {
               </View>
             </View> */}
 
-            <View style={{ marginVertical: 10 }}>
+            <View style={{marginVertical: 10}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1599,11 +1607,11 @@ const PostStep4Screen = ({ navigation, route }) => {
                   fontWeight: 'bold',
                 }}>
                 Other Features{' '}
-                <Text style={{ fontSize: 14, color: Color.lightgrey }}>
+                <Text style={{fontSize: 14, color: Color.lightgrey}}>
                   (Optional)
                 </Text>
               </Text>
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 {checkbox.map((item, index) => {
                   return (
                     <CheckboxData
@@ -1618,7 +1626,7 @@ const PostStep4Screen = ({ navigation, route }) => {
             </View>
           </View>
         ) : (
-          <View style={{ marginVertical: 10 }}>
+          <View style={{marginVertical: 10}}>
             <View
               style={{
                 flexDirection: 'row',
@@ -1641,7 +1649,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 (Select Nearby Amenities)
               </Text>
             </View>
-            <View style={{ marginVertical: 10 }}>
+            <View style={{marginVertical: 10}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1650,7 +1658,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 }}>
                 Common Area Amenities
               </Text>
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 {CommonAmenitiesData.map((item, index) => {
                   return (
                     <RightCheckBox
@@ -1663,8 +1671,8 @@ const PostStep4Screen = ({ navigation, route }) => {
                 })}
               </View>
             </View>
-            <View style={{ marginVertical: 10 }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{marginVertical: 10}}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -1681,7 +1689,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                   }}>
                   *
                 </Text>
-                <View style={{ flex: 1 }}>
+                <View style={{flex: 1}}>
                   <Switch
                     value={checked}
                     onValueChange={() => {
@@ -1691,7 +1699,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 </View>
               </View>
               {checked && (
-                <View style={{ marginVertical: 10 }}>
+                <View style={{marginVertical: 10}}>
                   {radioData.map((item, index) => {
                     return (
                       <TouchableOpacity
@@ -1926,7 +1934,7 @@ const PostStep4Screen = ({ navigation, route }) => {
             </View> */}
           </View>
         )}
-        {step1SelectedItem?.post?.value != 'pg' &&
+        {step1SelectedItem?.post?.value != 'pg' && (
           <>
             <View
               style={{
@@ -1947,7 +1955,7 @@ const PostStep4Screen = ({ navigation, route }) => {
                 value={reraID}
                 textAlignVertical="top"
                 onChangeText={value => {
-                  setReraID(value)
+                  setReraID(value);
                 }}
                 style={{
                   flex: 1,
@@ -1989,18 +1997,23 @@ const PostStep4Screen = ({ navigation, route }) => {
                   fontSize: 14,
                   fontFamily: Poppins.SemiBold,
                   color: Color.cloudyGrey,
-                  textAlign: 'justify'
+                  textAlign: 'justify',
                 }}>
-                I'm posting this property on 'exclusively' on Albion Property Hub
+                I'm posting this property on 'exclusively' on Albion Property
+                Hub
               </Text>
-              <MCIcon name="brightness-percent" size={24} color={Color.primary} />
+              <MCIcon
+                name="brightness-percent"
+                size={24}
+                color={Color.primary}
+              />
             </View>
           </>
-        }
+        )}
         <Button
           title={
             step1SelectedItem?.post?.value == 'sell' ||
-              step1SelectedItem?.post?.value == 'rent'
+            step1SelectedItem?.post?.value == 'rent'
               ? 'Confirm Post'
               : 'Next'
           }
@@ -2011,7 +2024,7 @@ const PostStep4Screen = ({ navigation, route }) => {
           }}
           onPress={() => {
             step1SelectedItem?.post?.value == 'sell' ||
-              step1SelectedItem?.post?.value == 'rent'
+            step1SelectedItem?.post?.value == 'rent'
               ? confirmPost(navigation)
               : step4Data(navigation);
           }}
@@ -2074,5 +2087,5 @@ const styles = StyleSheet.create({
     color: Color.black,
     textTransform: 'capitalize',
   },
-  Divider: { height: 1, marginVertical: 10 },
+  Divider: {height: 1, marginVertical: 10},
 });
