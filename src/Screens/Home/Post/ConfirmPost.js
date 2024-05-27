@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useLayoutEffect, useState } from 'react';
+import React, {useCallback, useEffect, useLayoutEffect, useState} from 'react';
 import {
   Text,
   View,
@@ -21,17 +21,19 @@ import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import Color from '../../../Config/Color';
-import { Button, Divider } from 'react-native-elements';
+import {Button, Divider} from 'react-native-elements';
 import fetchData from '../../../Config/fetchData';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import common_fn from '../../../Config/common_fn';
 import axios from 'axios';
-import { setPostPropertyLocation } from '../../../Redux';
+import {setPostPropertyLocation} from '../../../Redux';
 import messaging from '@react-native-firebase/messaging';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { Poppins } from '../../../Global/FontFamily';
+import {Poppins} from '../../../Global/FontFamily';
+import {StackActions, useNavigation} from '@react-navigation/native';
 
-const ConfirmPostScreen = ({ route, navigation }) => {
+const ConfirmPostScreen = ({route}) => {
+  const navigation = useNavigation();
   const [step1SelectedItem] = useState(route.params.step1SelectedItem);
   const [step2SelectedItem] = useState(route.params.step2SelectedItem);
   const [step3SelectedItem] = useState(route.params.step3SelectedItem);
@@ -47,8 +49,8 @@ const ConfirmPostScreen = ({ route, navigation }) => {
     route.params.step2CommercialSelected,
   );
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id } = userData;
-  var { city, landmark } = propertyLocation;
+  var {user_id} = userData;
+  var {city, landmark} = propertyLocation;
   const [cardHeight, setCardHeight] = useState(undefined);
   const dispatch = useDispatch();
 
@@ -57,15 +59,15 @@ const ConfirmPostScreen = ({ route, navigation }) => {
   const [feature3Visible, setFeature3Visible] = useState(false);
   const [feature4Visible, setFeature4Visible] = useState(false);
   const [featuresData] = useState([
-    { id: 1, title: 'Close to School' },
-    { id: 2, title: 'Close to Hospital' },
-    { id: 3, title: 'Close to Market' },
-    { id: 4, title: 'Close to Bus Stand' },
-    { id: 5, title: 'Close to Airport' },
-    { id: 6, title: 'Close to Metro' },
-    { id: 7, title: 'Close to Railway Station' },
-    { id: 8, title: 'Close to Theatre' },
-    { id: 9, title: 'Close to Mall' },
+    {id: 1, title: 'Close to School'},
+    {id: 2, title: 'Close to Hospital'},
+    {id: 3, title: 'Close to Market'},
+    {id: 4, title: 'Close to Bus Stand'},
+    {id: 5, title: 'Close to Airport'},
+    {id: 6, title: 'Close to Metro'},
+    {id: 7, title: 'Close to Railway Station'},
+    {id: 8, title: 'Close to Theatre'},
+    {id: 9, title: 'Close to Mall'},
   ]);
   const [fetures2Data, setFeatures2Data] = useState([]);
   const [fetures3Data, setFeatures3Data] = useState([]);
@@ -143,7 +145,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
   }, [token]);
 
   const featureDataPayload = () => {
-    let customIDCounter = { counter: 0 };
+    let customIDCounter = {counter: 0};
     let dataArray = [];
     const features = {
       bedroom: step2SelectedItem?.bedrooms,
@@ -199,7 +201,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
     return dataArray;
   };
 
-  const confirmPost = async navigation => {
+  const confirmPost = async () => {
     try {
       var data = {
         property_action: step1SelectedItem?.post?.value,
@@ -209,8 +211,8 @@ const ConfirmPostScreen = ({ route, navigation }) => {
               ? step1SelectedItem?.type?.value
               : step1SelectedItem?.commercialPropType?.value
             : step1RentSelectedItem?.kind?.value == 'residential'
-              ? step1RentSelectedItem?.type?.value
-              : step1RentSelectedItem?.commercialPropType?.value,
+            ? step1RentSelectedItem?.type?.value
+            : step1RentSelectedItem?.commercialPropType?.value,
         location: city,
         real_estate:
           step1SelectedItem?.post?.value === 'sell'
@@ -281,7 +283,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
             landmark: null,
           }),
         );
-        navigation.replace('postCompleted');
+        navigation.dispatch(StackActions.replace('postCompleted'));
       }
     } catch (error) {
       console.log('error', error);
@@ -365,7 +367,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
   // };
 
   const pGFeatureDataPayload = () => {
-    let customIDCounter = { counter: 0 };
+    let customIDCounter = {counter: 0};
     let dataArray = [];
 
     const featureMappings = {
@@ -378,7 +380,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
       gate_closing: 'gate_closing',
     };
     for (const key in featureMappings) {
-      const value = PgStep2Item?.[key]?.value || PgStep1Item?.[key]?.value
+      const value = PgStep2Item?.[key]?.value || PgStep1Item?.[key]?.value;
       // || PgStep4Item?.[key]?.value;
       if (value) {
         dataArray.push({
@@ -390,7 +392,9 @@ const ConfirmPostScreen = ({ route, navigation }) => {
         dataArray.push({
           key: common_fn.generateCustomID(customIDCounter, key),
           title: 'gate_closing',
-          value: decodeURIComponent(PgStep2Item?.gate_closing_time?.toLocaleTimeString()),
+          value: decodeURIComponent(
+            PgStep2Item?.gate_closing_time?.toLocaleTimeString(),
+          ),
         });
       }
     }
@@ -424,28 +428,27 @@ const ConfirmPostScreen = ({ route, navigation }) => {
     return dataArray;
   };
 
-
   const transformData = (categories, rent, deposit) => {
     return categories.map(category => {
       const key = category.value;
-      const pricePerBed = parseInt(rent[key + "_bed"]) || 0;
-      const depositAmount = parseInt(deposit[key + "_bed"]) || 0;
+      const pricePerBed = parseInt(rent[key + '_bed']) || 0;
+      const depositAmount = parseInt(deposit[key + '_bed']) || 0;
 
       return {
         key,
         price_per_bed: pricePerBed,
-        deposit: depositAmount
+        deposit: depositAmount,
       };
     });
   };
 
   const PGRulesData = () => {
     const titles = PgStep2Item?.pg_rules?.map(rule => rule.title) || [];
-    titles.push("Entry of Opposite Gender");
+    titles.push('Entry of Opposite Gender');
     return titles;
   };
 
-  const pgconfirmPost = async navigation => {
+  const pgconfirmPost = async () => {
     try {
       var data = {
         property_action: 'rent',
@@ -455,7 +458,9 @@ const ConfirmPostScreen = ({ route, navigation }) => {
         property_name: PgStep1Item?.name,
         locality: landmark,
         features: pGFeatureDataPayload(),
-        amenities: pGAmenitiesDataPayload(PgStep2Item?.room_facility, PgStep2Item?.service_avail,
+        amenities: pGAmenitiesDataPayload(
+          PgStep2Item?.room_facility,
+          PgStep2Item?.service_avail,
           // PgStep4Item?.common_area_amenities
         ),
         rules: PGRulesData(),
@@ -476,7 +481,11 @@ const ConfirmPostScreen = ({ route, navigation }) => {
             value: PgStep2Item?.food_charges?.value,
           },
         ],
-        room_category: transformData(PgStep2Item?.bedrooms, PgStep2Item?.monthly_rent, PgStep2Item?.security_deposit),
+        room_category: transformData(
+          PgStep2Item?.bedrooms,
+          PgStep2Item?.monthly_rent,
+          PgStep2Item?.security_deposit,
+        ),
         expected_price: 0,
         token_amount: null,
         address: PgStep1Item?.address,
@@ -488,7 +497,6 @@ const ConfirmPostScreen = ({ route, navigation }) => {
         fcm_token: token,
       };
       const postProperty = await fetchData.create(data);
-      console.log(postProperty)
       if (postProperty?.message == 'Success') {
         dispatch(
           setPostPropertyLocation({
@@ -496,7 +504,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
             landmark: null,
           }),
         );
-        navigation.replace('postCompleted');
+        navigation.dispatch(StackActions.replace('postCompleted'));
       }
     } catch (error) {
       console.log('error', error);
@@ -504,7 +512,11 @@ const ConfirmPostScreen = ({ route, navigation }) => {
   };
   return (
     <View style={styles.container}>
-      <View style={{ ...styles.header, marginVertical: Platform.OS == "ios" ? 40 : 10 }}>
+      <View
+        style={{
+          ...styles.header,
+          marginVertical: Platform.OS == 'ios' ? 40 : 10,
+        }}>
         <TouchableOpacity
           style={styles.backIcon}
           onPress={() => navigation.goBack()}>
@@ -520,7 +532,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
         <TouchableOpacity
           onPress={() => {
             step1SelectedItem?.post?.value == 'sell' ||
-              step1SelectedItem?.post?.value == 'rent'
+            step1SelectedItem?.post?.value == 'rent'
               ? confirmPost(navigation)
               : pgconfirmPost(navigation);
           }}>
@@ -540,9 +552,9 @@ const ConfirmPostScreen = ({ route, navigation }) => {
       </View>
       <ScrollView showsVerticalScrollIndicator={false}>
         {step1SelectedItem?.post?.value == 'sell' ||
-          step1SelectedItem?.post?.value == 'rent' ? (
-          <View style={{ marginVertical: 10, flex: 1 }}>
-            <View style={{ marginVertical: 10 }}>
+        step1SelectedItem?.post?.value == 'rent' ? (
+          <View style={{marginVertical: 10, flex: 1}}>
+            <View style={{marginVertical: 10}}>
               <Text
                 style={{
                   fontSize: 18,
@@ -610,7 +622,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                   name="caret-down"
                   size={20}
                   color={Color.black}
-                  style={{ marginRight: 20, marginHorizontal: 10 }}
+                  style={{marginRight: 20, marginHorizontal: 10}}
                 />
               </TouchableOpacity>
               <Modal
@@ -623,7 +635,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                     backgroundColor: Color.transparantBlack,
                   }}>
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     onPress={() => {
                       setFeature1Visible(false);
                     }}
@@ -711,7 +723,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                   name="caret-down"
                   size={20}
                   color={Color.black}
-                  style={{ marginRight: 20, marginHorizontal: 10 }}
+                  style={{marginRight: 20, marginHorizontal: 10}}
                 />
               </TouchableOpacity>
               <Modal
@@ -724,7 +736,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                     backgroundColor: Color.transparantBlack,
                   }}>
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     onPress={() => {
                       setFeature2Visible(false);
                     }}
@@ -812,7 +824,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                   name="caret-down"
                   size={20}
                   color={Color.black}
-                  style={{ marginRight: 20, marginHorizontal: 10 }}
+                  style={{marginRight: 20, marginHorizontal: 10}}
                 />
               </TouchableOpacity>
               <Modal
@@ -825,7 +837,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                     backgroundColor: Color.transparantBlack,
                   }}>
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     onPress={() => {
                       setFeature3Visible(false);
                     }}
@@ -913,7 +925,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                   name="caret-down"
                   size={20}
                   color={Color.black}
-                  style={{ marginRight: 20, marginHorizontal: 10 }}
+                  style={{marginRight: 20, marginHorizontal: 10}}
                 />
               </TouchableOpacity>
               <Modal
@@ -926,7 +938,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                     backgroundColor: Color.transparantBlack,
                   }}>
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     onPress={() => {
                       setFeature4Visible(true);
                     }}
@@ -975,8 +987,8 @@ const ConfirmPostScreen = ({ route, navigation }) => {
             </View>
           </View>
         ) : (
-          <View style={{ marginVertical: 10, flex: 1 }}>
-            <View style={{ marginVertical: 10 }}>
+          <View style={{marginVertical: 10, flex: 1}}>
+            <View style={{marginVertical: 10}}>
               <Text
                 style={{
                   fontSize: 20,
@@ -1001,7 +1013,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
               style={{
                 marginVertical: 10,
               }}>
-              <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+              <View style={{flexDirection: 'row', alignItems: 'center'}}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -1057,7 +1069,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                 }}>
                 Sample Description
               </Text>
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 <Text
                   style={{
                     color: Color.lightBlack,
@@ -1098,7 +1110,7 @@ const ConfirmPostScreen = ({ route, navigation }) => {
                   </Text>
                 </TouchableOpacity>
               </View>
-              <View style={{ marginVertical: 10 }}>
+              <View style={{marginVertical: 10}}>
                 <Text
                   style={{
                     color: Color.lightBlack,
@@ -1144,10 +1156,14 @@ const ConfirmPostScreen = ({ route, navigation }) => {
         )}
         <Button
           title={'Confirm and post property'}
-          buttonStyle={{ backgroundColor: Color.primary, height: 45, marginVertical: 20 }}
+          buttonStyle={{
+            backgroundColor: Color.primary,
+            height: 45,
+            marginVertical: 20,
+          }}
           onPress={() => {
             step1SelectedItem?.post?.value == 'sell' ||
-              step1SelectedItem?.post?.value == 'rent'
+            step1SelectedItem?.post?.value == 'rent'
               ? confirmPost(navigation)
               : pgconfirmPost(navigation);
           }}
@@ -1215,5 +1231,5 @@ const styles = StyleSheet.create({
     color: Color.black,
     textTransform: 'capitalize',
   },
-  Divider: { height: 1, marginVertical: 10 },
+  Divider: {height: 1, marginVertical: 10},
 });

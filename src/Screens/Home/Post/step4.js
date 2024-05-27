@@ -9,6 +9,7 @@ import {
   Modal,
   Pressable,
   Platform,
+  Alert,
 } from 'react-native';
 import {Text, View} from 'react-native';
 import Color from '../../../Config/Color';
@@ -38,7 +39,7 @@ import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import fetchData from '../../../Config/fetchData';
 import {BackHandler} from 'react-native';
-import {useNavigation, useRoute} from '@react-navigation/native';
+import {StackActions, useNavigation, useRoute} from '@react-navigation/native';
 
 const {width} = Dimensions.get('screen');
 
@@ -681,7 +682,6 @@ const PostStep4Screen = ({route}) => {
 
   const confirmPost = async () => {
     try {
-      var {replace} = navigation;
       if (step4SelectedItem?.p_facing?.value?.length > 0) {
         var data = {
           property_action: step1SelectedItem?.post?.value,
@@ -764,13 +764,15 @@ const PostStep4Screen = ({route}) => {
               landmark: null,
             }),
           );
-          replace('postCompleted');
+          navigation.dispatch(StackActions.replace('postCompleted'));
+        } else {
+          common_fn.showToast(postProperty?.message);
         }
       } else {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select the required fields');
         } else {
-          alert('Please select all the required fields');
+          Alert.alert('Please select all the required fields');
         }
       }
     } catch (error) {

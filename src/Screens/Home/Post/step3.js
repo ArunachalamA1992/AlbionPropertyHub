@@ -40,7 +40,7 @@ import {BackHandler} from 'react-native';
 import {Alert} from 'react-native';
 import {Modal} from 'react-native';
 import {Linking} from 'react-native';
-import {useRoute} from '@react-navigation/native';
+import {StackActions, useNavigation, useRoute} from '@react-navigation/native';
 import ImageCropPicker from 'react-native-image-crop-picker';
 
 const {width} = Dimensions.get('screen');
@@ -78,7 +78,8 @@ const labels = [
 
 const Plotlabels = ['Basic Details', 'Property Details', 'Photos & Pricing'];
 
-const PostStep3Screen = ({route, navigation}) => {
+const PostStep3Screen = ({route}) => {
+  const navigation = useNavigation();
   const routeName = useRoute();
   const [step1SelectedItem] = useState(route.params.step1SelectedItem);
   const [step1RentSelectedItem] = useState(route.params.step1RentSelectedItem);
@@ -619,7 +620,7 @@ const PostStep3Screen = ({route, navigation}) => {
     requestUserPermission();
   }, [token]);
 
-  const confirmPlotWithCommercial = async navigation => {
+  const confirmPlotWithCommercial = async () => {
     try {
       if (
         step3SelectedItem?.pricingDetails?.expected?.length > 0 &&
@@ -683,13 +684,13 @@ const PostStep3Screen = ({route, navigation}) => {
               landmark: null,
             }),
           );
-          navigation.replace('postCompleted');
+          navigation.dispatch(StackActions.replace('postCompleted'));
         }
       } else {
         if (Platform.OS === 'android') {
           common_fn.showToast('Please select all the required fields');
         } else {
-          alert('Please select all the required fields');
+          Alert.alert('Please select all the required fields');
         }
       }
     } catch (error) {

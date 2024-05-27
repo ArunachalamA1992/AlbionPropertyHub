@@ -1,4 +1,4 @@
-import React, { useCallback, useEffect, useRef, useState } from 'react';
+import React, {useCallback, useEffect, useRef, useState} from 'react';
 import {
   Image,
   StyleSheet,
@@ -13,26 +13,30 @@ import {
   Modal,
 } from 'react-native';
 import Color from '../../Config/Color';
-import { Media } from '../../Global/Media';
+import {Media} from '../../Global/Media';
 import OTPInput from '../../Components/OTPInput';
-import { Button } from 'react-native-elements';
-import Icon from "react-native-vector-icons/Ionicons"
+import {Button} from 'react-native-elements';
+import Icon from 'react-native-vector-icons/Ionicons';
 import common_fn from '../../Config/common_fn';
 import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import RNOtpVerify from 'react-native-otp-verify';
-import { useFocusEffect, useNavigation } from '@react-navigation/native';
-import { profileCompletion } from '../../Utils/utils';
-import { setLoginType } from '../../Redux';
-import { useDispatch } from 'react-redux';
-import { Poppins } from '../../Global/FontFamily';
-import { primarycolor } from '../../Utils/Colors';
-import { firebase } from '@react-native-firebase/analytics'
+import {
+  StackActions,
+  useFocusEffect,
+  useNavigation,
+} from '@react-navigation/native';
+import {profileCompletion} from '../../Utils/utils';
+import {setLoginType} from '../../Redux';
+import {useDispatch} from 'react-redux';
+import {Poppins} from '../../Global/FontFamily';
+import {primarycolor} from '../../Utils/Colors';
+import {firebase} from '@react-native-firebase/analytics';
 // import { PERMISSIONS, request } from 'react-native-permissions';
-import { PERMISSIONS, RESULTS, request } from 'react-native-permissions';
+import {PERMISSIONS, RESULTS, request} from 'react-native-permissions';
 
-const DismissKeyboard = ({ children }) => (
+const DismissKeyboard = ({children}) => (
   <TouchableWithoutFeedback onPress={() => Keyboard.dismiss()}>
     {children}
   </TouchableWithoutFeedback>
@@ -42,12 +46,10 @@ const requestPermissionTransparency = async () => {
   return await request(PERMISSIONS.IOS.APP_TRACKING_TRANSPARENCY);
 };
 
-
-const OTPScreen = ({ route, AppState }) => {
-
+const OTPScreen = ({route}) => {
   const navigation = useNavigation();
   const [number] = useState(route.params.number);
-  const [visible, setVisible] = useState(false)
+  const [visible, setVisible] = useState(false);
   const inputRef = useRef();
   const [otpCode, setOTPCode] = useState('');
   const [isPinReady, setIsPinReady] = useState(false);
@@ -80,16 +82,15 @@ const OTPScreen = ({ route, AppState }) => {
     };
   }, [seconds]);
 
-
   const ResendOTP = async number => {
     setSeconds(30);
-    const ResendOtpVerify = await fetchData.login({ mobile_number: number });
-    var { message, user_id } = ResendOtpVerify;
+    const ResendOtpVerify = await fetchData.login({mobile_number: number});
+    var {message, user_id} = ResendOtpVerify;
     if (user_id) {
       if (Platform.OS === 'android') {
         common_fn.showToast('OTP Sent Successfully');
       } else {
-        alert('OTP Sent Successfully')
+        alert('OTP Sent Successfully');
       }
     } else {
       var msg = 'message';
@@ -149,16 +150,18 @@ const OTPScreen = ({ route, AppState }) => {
     }
   };
 
-
   useEffect(() => {
     requestUserPermission();
+    // if (otpCode?.length == 4) {
+    // navigation.dispatch(StackActions.replace('TabNavigator'));
+    // } else {
+    //   setLoading(false);
+    // }
   }, [token]);
 
   const [percentage, setPercentage] = useState(0);
-
-  const VerifyOTP = async navigation => {
+  const VerifyOTP = async () => {
     setLoading(true);
-    var { replace } = navigation;
     if (otpCode.length == 4) {
       const VerifyOTP = await fetchData.verify_OTP({
         mobile_number: number,
@@ -166,8 +169,9 @@ const OTPScreen = ({ route, AppState }) => {
         token: token,
       });
       // var {user_id} = VerifyOTP?.data;
+      console.log('navigation.replace', navigation.replace);
       if (VerifyOTP?.message == 'Success') {
-        var { user_id, username, mobile_number, email } = VerifyOTP?.data;
+        var {user_id, username, mobile_number, email} = VerifyOTP?.data;
         const percentage = profileCompletion(
           user_id,
           username,
@@ -184,39 +188,42 @@ const OTPScreen = ({ route, AppState }) => {
         );
         await AsyncStorage.setItem(
           'action_login_type',
-          JSON.stringify({ login_type: 'properties' }),
+          JSON.stringify({login_type: 'properties'}),
         );
         dispatch(setLoginType('properties'));
         if (percentage == 100) {
-          replace('TabNavigator', UserLogin);
+          // navigation.replace('TabNavigator', UserLogin);
+          navigation.dispatch(StackActions.replace('TabNavigator'));
         } else {
-          replace('TabNavigator', UserLogin);
+          navigation.dispatch(StackActions.replace('TabNavigator'));
         }
         locationTrack();
         if (Platform.OS === 'android') {
           common_fn.showToast(`Welcome to Albion ${VerifyOTP?.data?.username}`);
         } else {
-          alert(`Welcome to Albion ${VerifyOTP?.data?.username}`)
+          alert(`Welcome to Albion ${VerifyOTP?.data?.username}`);
         }
 
         common_fn.locationPermission();
         setLoading(false);
-        setVisible(false)
+        setVisible(false);
       } else {
         setOTPCode('');
         inputRef.current.focus();
         var msg = VerifyOTP?.message;
         setError(msg);
         setLoading(false);
-        setVisible(false)
+        setVisible(false);
       }
     } else {
       if (Platform.OS === 'android') {
-        common_fn.showToast('Invalid OTP Code Please Enter Your 4 Digit OTP Code');
+        common_fn.showToast(
+          'Invalid OTP Code Please Enter Your 4 Digit OTP Code',
+        );
       } else {
-        alert('Invalid OTP Code Please Enter Your 4 Digit OTP Code')
+        alert('Invalid OTP Code Please Enter Your 4 Digit OTP Code');
         setLoading(false);
-        setVisible(false)
+        setVisible(false);
       }
     }
 
@@ -238,10 +245,9 @@ const OTPScreen = ({ route, AppState }) => {
 
       // }, [dispatch]);
     } catch (error) {
-      console.log("catch in location_Track :", error);
+      console.log('catch in location_Track :', error);
     }
   }
-
 
   // useEffect(async () => {
 
@@ -256,21 +262,19 @@ const OTPScreen = ({ route, AppState }) => {
 
   const checkPermmissions = () => {
     try {
-      setVisible(true)
+      setVisible(true);
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
-  }
+  };
 
-  const declineApp = (navigation) => {
+  const declineApp = navigation => {
     try {
-      navigation.replace("Auth")
+      navigation.replace('Auth');
     } catch (error) {
-      console.log("error", error);
+      console.log('error', error);
     }
-  }
-
-
+  };
 
   const requestSMSPermission = async () => {
     try {
@@ -316,7 +320,7 @@ const OTPScreen = ({ route, AppState }) => {
     try {
       console.log('Received SMS for OTP processing:', message);
       const otpMatch = /(\d{4})/g.exec(message);
-      console.log('otpMatch', otpMatch)
+      console.log('otpMatch', otpMatch);
       if (otpMatch && otpMatch[1]) {
         const otpDigit = otpMatch[1];
 
@@ -342,15 +346,14 @@ const OTPScreen = ({ route, AppState }) => {
     RNOtpVerify.getOtp()
       .then(receivedSMS => {
         console.log('Received SMS:', receivedSMS);
-        // setOTPCode('1234'); 
+        // setOTPCode('1234');
         RNOtpVerify.addListener(otpHandler.bind(this));
       })
       .catch(error => console.error('Error getting SMS:', error));
-
   };
   return (
     <ScrollView
-      contentContainerStyle={{ justifyContent: 'center', flex: 1 }}
+      contentContainerStyle={{justifyContent: 'center', flex: 1}}
       keyboardShouldPersistTaps="handled">
       <DismissKeyboard>
         <View
@@ -433,8 +436,6 @@ const OTPScreen = ({ route, AppState }) => {
                   </View>
                 </View> */}
 
-
-
                 <View
                   style={{
                     flexDirection: 'row',
@@ -471,15 +472,20 @@ const OTPScreen = ({ route, AppState }) => {
                         }}>
                         Albion would like to Access the Camera?
                       </Text>
-                      <View style={{ width: '95%', alignItems: 'flex-start' }}>
+                      <View style={{width: '95%', alignItems: 'flex-start'}}>
                         <Text
                           style={{
                             textAlign: 'justify',
                             fontSize: 13,
                             color: '#666',
-                            fontFamily: Poppins.Regular, lineHeight: 20
+                            fontFamily: Poppins.Regular,
+                            lineHeight: 20,
                           }}>
-                          Albion Property Hub requires camera access to allow you to take photos directly from your phone while posting your property. This makes the process quick and convenient, ensuring you can showcase your property effectively
+                          Albion Property Hub requires camera access to allow
+                          you to take photos directly from your phone while
+                          posting your property. This makes the process quick
+                          and convenient, ensuring you can showcase your
+                          property effectively
                         </Text>
                       </View>
                     </View>
@@ -522,31 +528,49 @@ const OTPScreen = ({ route, AppState }) => {
                         }}>
                         Albion want to access your location
                       </Text>
-                      <View style={{ width: '95%', alignItems: 'flex-start' }}>
+                      <View style={{width: '95%', alignItems: 'flex-start'}}>
                         <Text
                           style={{
                             textAlign: 'justify',
                             fontSize: 13,
                             color: '#666',
-                            fontFamily: Poppins.Regular, lineHeight: 20
+                            fontFamily: Poppins.Regular,
+                            lineHeight: 20,
                           }}>
-                          Our app automatically accesses your location via GPS to deliver nearby properties tailored to your area. You don't need to provide it manually, making it effortless to find properties in your desired location.
+                          Our app automatically accesses your location via GPS
+                          to deliver nearby properties tailored to your area.
+                          You don't need to provide it manually, making it
+                          effortless to find properties in your desired
+                          location.
                         </Text>
                       </View>
                     </View>
                   </View>
                 </View>
 
-
-                <View style={{ flexDirection: 'row', justifyContent: 'space-between', alignItems: 'center', marginTop: 10 }}>
+                <View
+                  style={{
+                    flexDirection: 'row',
+                    justifyContent: 'space-between',
+                    alignItems: 'center',
+                    marginTop: 10,
+                  }}>
                   {/* <TouchableOpacity onPress={() => declineApp(navigation)} style={{ width: '45%', height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: primarycolor, borderRadius: 40, }}>
                     <Text style={{ fontSize: 14, color: 'white' }}>Decline</Text>
                   </TouchableOpacity> */}
-                  <TouchableOpacity onPress={() => VerifyOTP(navigation)} style={{ width: '100%', height: 40, justifyContent: 'center', alignItems: 'center', backgroundColor: primarycolor, borderRadius: 40, }}>
-                    <Text style={{ fontSize: 14, color: 'white' }}>Continue</Text>
+                  <TouchableOpacity
+                    onPress={() => VerifyOTP()}
+                    style={{
+                      width: '100%',
+                      height: 40,
+                      justifyContent: 'center',
+                      alignItems: 'center',
+                      backgroundColor: primarycolor,
+                      borderRadius: 40,
+                    }}>
+                    <Text style={{fontSize: 14, color: 'white'}}>Continue</Text>
                   </TouchableOpacity>
                 </View>
-
               </View>
             </View>
           </Modal>
@@ -557,8 +581,8 @@ const OTPScreen = ({ route, AppState }) => {
               paddingVertical: 20,
             }}>
             <Image
-              source={{ uri: Media.otp }}
-              style={{ width: 200, height: 200, resizeMode: 'contain' }}
+              source={{uri: Media.otp}}
+              style={{width: 200, height: 200, resizeMode: 'contain'}}
             />
           </View>
           <View
@@ -614,7 +638,7 @@ const OTPScreen = ({ route, AppState }) => {
               }}
               onPress={() => {
                 // VerifyOTP(navigation);
-                checkPermmissions()
+                checkPermmissions();
               }}
               loading={loading}
             />
@@ -629,7 +653,8 @@ export default OTPScreen;
 const styles = StyleSheet.create({
   otpInputView: {
     marginVertical: 10,
-    alignItems: "center", justifyContent: "center"
+    alignItems: 'center',
+    justifyContent: 'center',
   },
   noReceivecodeView: {
     flexDirection: 'row',

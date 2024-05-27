@@ -1,4 +1,4 @@
-import React, { useEffect, useRef, useState } from 'react';
+import React, {useEffect, useRef, useState} from 'react';
 import {
   StyleSheet,
   TouchableOpacity,
@@ -12,7 +12,7 @@ import {
   Alert,
   Keyboard,
 } from 'react-native';
-import { Text, View } from 'react-native';
+import {Text, View} from 'react-native';
 import Color from '../../../Config/Color';
 import StepIndicator from 'react-native-step-indicator';
 import FeIcon from 'react-native-vector-icons/Feather';
@@ -25,33 +25,33 @@ import OIcon from 'react-native-vector-icons/Octicons';
 import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
-import { useDispatch, useSelector } from 'react-redux';
+import {useDispatch, useSelector} from 'react-redux';
 import {
   setFilterLocation,
   setPostPropertyLocation,
   setUserData,
 } from '../../../Redux';
-import { Dropdown } from 'react-native-element-dropdown';
-import { Button, Divider } from 'react-native-elements';
+import {Dropdown} from 'react-native-element-dropdown';
+import {Button, Divider} from 'react-native-elements';
 import LocationBottomModal, {
   PostPropertyLocationBottomModal,
 } from '../../../Components/LocationBottomModal';
-import { Poppins } from '../../../Global/FontFamily';
+import {Poppins} from '../../../Global/FontFamily';
 import common_fn from '../../../Config/common_fn';
 import fetchData from '../../../Config/fetchData';
 import PlanPurchase, {
   AgentPlanPurchase,
 } from '../../../Components/PlanPurchase';
-import { BackHandler } from 'react-native';
-import { useNavigation, useRoute } from '@react-navigation/native';
-import { Modal } from 'react-native';
+import {BackHandler} from 'react-native';
+import {useNavigation, useRoute} from '@react-navigation/native';
+import {Modal} from 'react-native';
 import MapContainer from '../../../Components/MapContainer';
 import RBSheet from 'react-native-raw-bottom-sheet';
-import { Iconviewcomponent } from '../../../Components/Icontag';
+import {Iconviewcomponent} from '../../../Components/Icontag';
 import AsyncStorage from '@react-native-async-storage/async-storage';
-import { profileCompletion } from '../../../Utils/utils';
+import {profileCompletion} from '../../../Utils/utils';
 
-const { width } = Dimensions.get('screen');
+const {width} = Dimensions.get('screen');
 
 const customStyles = {
   stepIndicatorSize: 25,
@@ -137,7 +137,7 @@ const PostData = ({
   const dispatch = useDispatch();
   const [cardHeight, setCardHeight] = useState(undefined);
   const [pgPresentVisible, setPgpresentVisible] = useState(false);
-  const [location, setLocation] = useState({ latitude: 0, longitude: 0 });
+  const [location, setLocation] = useState({latitude: 0, longitude: 0});
   const [address, setAddress] = useState('');
 
   const handleLocationChange = async () => {
@@ -148,8 +148,8 @@ const PostData = ({
       );
       const data = await response.json();
       if (data.length > 0) {
-        const { lat, lon, display_name } = data[0];
-        setLocation({ latitude: parseFloat(lat), longitude: parseFloat(lon) });
+        const {lat, lon, display_name} = data[0];
+        setLocation({latitude: parseFloat(lat), longitude: parseFloat(lon)});
         setAddress(display_name);
       } else {
         setAddress('Location not found');
@@ -184,9 +184,9 @@ const PostData = ({
   switch (selectType) {
     case 'Sell':
       return (
-        <View style={{ marginVertical: 10 }}>
+        <View style={{marginVertical: 10}}>
           <View style={{}}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -196,12 +196,12 @@ const PostData = ({
                 Select Real Estate
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
 
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {propertyKind.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -271,8 +271,8 @@ const PostData = ({
             </Text>
           </View>
 
-          <View style={{ marginVertical: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{marginVertical: 10}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -282,7 +282,7 @@ const PostData = ({
                 Property Type
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -353,7 +353,8 @@ const PostData = ({
                               ? Color.primary
                               : Color.black,
                           fontFamily: Poppins.Medium,
-                          marginHorizontal: 5, paddingVertical: 10
+                          marginHorizontal: 5,
+                          paddingVertical: 10,
                         }}>
                         {item.title}
                       </Text>
@@ -433,11 +434,12 @@ const PostData = ({
                           fontSize: 14,
                           color:
                             step1SelectedItem?.commercialPropType?.id ==
-                              item?.id
+                            item?.id
                               ? Color.primary
                               : Color.black,
                           fontFamily: Poppins.Medium,
-                          marginHorizontal: 5, paddingVertical: 5
+                          marginHorizontal: 5,
+                          paddingVertical: 5,
                         }}>
                         {item.title}
                       </Text>
@@ -468,7 +470,7 @@ const PostData = ({
             </Text>
           </View>
           <View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -478,7 +480,7 @@ const PostData = ({
                 Property Location
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -486,7 +488,8 @@ const PostData = ({
               style={{
                 fontSize: 12,
                 color: Color.cloudyGrey,
-                fontFamily: Poppins.Regular, paddingVertical: 5
+                fontFamily: Poppins.Regular,
+                paddingVertical: 5,
               }}>
               (City, Name of Project/Society)
             </Text>
@@ -501,7 +504,7 @@ const PostData = ({
             style={{
               marginTop: 20,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -511,7 +514,7 @@ const PostData = ({
                 Property Name
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -568,7 +571,7 @@ const PostData = ({
               marginVertical: 10,
               marginTop: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -578,7 +581,7 @@ const PostData = ({
                 Address
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -642,7 +645,7 @@ const PostData = ({
                 fontWeight: 'bold',
               }}>
               Property Description{' '}
-              <Text style={{ fontSize: 14, color: Color.lightgrey }}>
+              <Text style={{fontSize: 14, color: Color.lightgrey}}>
                 (Optional)
               </Text>
             </Text>
@@ -695,9 +698,9 @@ const PostData = ({
       );
     case 'Rent/Lease':
       return (
-        <View style={{ marginVertical: 10 }}>
+        <View style={{marginVertical: 10}}>
           <View style={{}}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -707,7 +710,7 @@ const PostData = ({
                 Select Real Estate
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -719,7 +722,7 @@ const PostData = ({
               }}>
               {rentKindError}
             </Text>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               {propertyKind.map((item, index) => {
                 return (
                   <TouchableOpacity
@@ -780,8 +783,8 @@ const PostData = ({
               })}
             </View>
           </View>
-          <View style={{ marginVertical: 10 }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+          <View style={{marginVertical: 10}}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -791,7 +794,7 @@ const PostData = ({
                 Select Property Type
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -871,7 +874,8 @@ const PostData = ({
                               ? Color.primary
                               : Color.black,
                           fontFamily: Poppins.Medium,
-                          marginHorizontal: 5, paddingVertical: 10
+                          marginHorizontal: 5,
+                          paddingVertical: 10,
                         }}>
                         {item.title}
                       </Text>
@@ -908,7 +912,7 @@ const PostData = ({
                       style={{
                         backgroundColor:
                           step1RentSelectedItem?.commercialPropType?.id ==
-                            item?.id
+                          item?.id
                             ? '#8C193F20'
                             : Color.white,
                         // width: width / 3,
@@ -921,7 +925,7 @@ const PostData = ({
                         marginVertical: 10,
                         borderColor:
                           step1RentSelectedItem?.commercialPropType?.id ==
-                            item?.id
+                          item?.id
                             ? Color.primary
                             : Color.lightgrey,
                         borderWidth: 1,
@@ -960,11 +964,12 @@ const PostData = ({
                           fontSize: 14,
                           color:
                             step1RentSelectedItem?.commercialPropType?.id ==
-                              item?.id
+                            item?.id
                               ? Color.primary
                               : Color.black,
                           fontFamily: Poppins.Medium,
-                          marginHorizontal: 5, paddingVertical: 5
+                          marginHorizontal: 5,
+                          paddingVertical: 5,
                         }}>
                         {item.title}
                       </Text>
@@ -987,7 +992,7 @@ const PostData = ({
             )}
           </View>
           <View>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -998,7 +1003,7 @@ const PostData = ({
                 Where is your property located?
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1112,7 +1117,7 @@ const PostData = ({
             style={{
               marginVertical: 20,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1122,7 +1127,7 @@ const PostData = ({
                 Property Name
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1176,7 +1181,7 @@ const PostData = ({
             style={{
               marginVertical: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1186,7 +1191,7 @@ const PostData = ({
                 Address
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1249,7 +1254,7 @@ const PostData = ({
                 fontWeight: 'bold',
               }}>
               Property Description{' '}
-              <Text style={{ fontSize: 14, color: Color.lightgrey }}>
+              <Text style={{fontSize: 14, color: Color.lightgrey}}>
                 (Optional)
               </Text>
             </Text>
@@ -1301,9 +1306,9 @@ const PostData = ({
       );
     case 'PG':
       return (
-        <View style={{ marginVertical: 10 }}>
+        <View style={{marginVertical: 10}}>
           <View style={{}}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1313,7 +1318,7 @@ const PostData = ({
                 PG Location
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1430,7 +1435,7 @@ const PostData = ({
             style={{
               marginVertical: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1440,7 +1445,7 @@ const PostData = ({
                 PG Address
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1482,7 +1487,7 @@ const PostData = ({
             style={{
               marginVertical: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1492,7 +1497,7 @@ const PostData = ({
                 PG Name
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1533,7 +1538,7 @@ const PostData = ({
             style={{
               marginVertical: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1551,7 +1556,7 @@ const PostData = ({
                 (Ex : 2024)
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
@@ -1593,7 +1598,7 @@ const PostData = ({
             style={{
               marginVertical: 10,
             }}>
-            <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+            <View style={{flexDirection: 'row', alignItems: 'center'}}>
               <Text
                 style={{
                   fontSize: 16,
@@ -1603,11 +1608,11 @@ const PostData = ({
                 Present In
               </Text>
               <Text
-                style={{ color: Color.red, marginHorizontal: 5, fontSize: 20 }}>
+                style={{color: Color.red, marginHorizontal: 5, fontSize: 20}}>
                 *
               </Text>
             </View>
-            <View style={{ marginVertical: 10 }}>
+            <View style={{marginVertical: 10}}>
               <TouchableOpacity
                 onPress={() => {
                   setPgpresentVisible(true);
@@ -1647,7 +1652,7 @@ const PostData = ({
                     backgroundColor: Color.transparantBlack,
                   }}>
                   <Pressable
-                    style={{ flex: 1 }}
+                    style={{flex: 1}}
                     onPress={() => {
                       setPgpresentVisible(false);
                     }}
@@ -1690,7 +1695,7 @@ const PostData = ({
                                 });
                                 setPgpresentVisible(false);
                               }}>
-                              <View style={{ alignItems: 'center' }}>
+                              <View style={{alignItems: 'center'}}>
                                 <Text style={styles.ModalDataText}>
                                   {item?.label}
                                 </Text>
@@ -1706,7 +1711,7 @@ const PostData = ({
               </Modal>
             </View>
           </View>
-          <View style={{ marginVertical: 10 }}>
+          <View style={{marginVertical: 10}}>
             <Text
               style={{
                 fontSize: 16,
@@ -1725,7 +1730,7 @@ const PostData = ({
                 keyExtractor={(item, index) => item + index}
                 horizontal
                 showsHorizontalScrollIndicator={false}
-                renderItem={({ item, index }) => {
+                renderItem={({item, index}) => {
                   return (
                     <TouchableOpacity
                       key={index}
@@ -1785,7 +1790,7 @@ const PostData = ({
   }
 };
 
-const PostStep1Screen = ({ }) => {
+const PostStep1Screen = ({}) => {
   const routeName = useRoute();
   const navigation = useNavigation();
   const [selectType, setSelectType] = useState({
@@ -1794,29 +1799,29 @@ const PostStep1Screen = ({ }) => {
     value: 'sell',
   });
   const [postingProperty] = useState([
-    { id: 1, title: 'Sell', value: 'sell' },
-    { id: 2, title: 'Rent/Lease', value: 'rent' },
-    { id: 3, title: 'PG', value: 'pg' },
+    {id: 1, title: 'Sell', value: 'sell'},
+    {id: 2, title: 'Rent/Lease', value: 'rent'},
+    {id: 3, title: 'PG', value: 'pg'},
   ]);
   const [propertyKind] = useState([
-    { id: 1, title: 'Residential', value: 'residential' },
-    { id: 2, title: 'Commercial', value: 'commercial' },
+    {id: 1, title: 'Residential', value: 'residential'},
+    {id: 2, title: 'Commercial', value: 'commercial'},
   ]);
   const [propertyAge] = useState([
-    { id: 1, title: '25-35 Years' },
-    { id: 2, title: '35-45 Years' },
-    { id: 3, title: '45-60 Years' },
+    {id: 1, title: '25-35 Years'},
+    {id: 2, title: '35-45 Years'},
+    {id: 3, title: '45-60 Years'},
   ]);
   const [propertyType] = useState([
-    { id: 1, title: 'Apartment/Flat', value: 'flat' },
-    { id: 2, title: 'House', value: 'house' },
-    { id: 3, title: 'villa', value: 'villa' },
-    { id: 4, title: 'Plot/Land', value: 'plot' },
+    {id: 1, title: 'Apartment/Flat', value: 'flat'},
+    {id: 2, title: 'House', value: 'house'},
+    {id: 3, title: 'villa', value: 'villa'},
+    {id: 4, title: 'Plot/Land', value: 'plot'},
   ]);
   const [commercialPropertyType] = useState([
-    { id: 1, title: 'Office Space', value: 'office' },
-    { id: 2, title: 'Showroom/Shop', value: 'shop' },
-    { id: 3, title: 'Plot/Land', value: 'plot' },
+    {id: 1, title: 'Office Space', value: 'office'},
+    {id: 2, title: 'Showroom/Shop', value: 'shop'},
+    {id: 3, title: 'Plot/Land', value: 'plot'},
   ]);
   const [locationInput, setLocationInput] = useState({});
   const [step1SelectedItem, setStep1SelectedItem] = useState({
@@ -1844,13 +1849,13 @@ const PostStep1Screen = ({ }) => {
     age: {},
   });
   const [Section] = useState([
-    { id: 1, title: 'types', data: ['types'] },
-    { id: 2, title: 'type_Details', data: ['type_Details'] },
+    {id: 1, title: 'types', data: ['types']},
+    {id: 2, title: 'type_Details', data: ['type_Details']},
   ]);
   const [occupation] = useState([
-    { id: 1, label: 'self-employeed', value: 'self-employeed' },
-    { id: 2, label: 'private', value: 'private' },
-    { id: 3, label: 'government', value: 'government' },
+    {id: 1, label: 'self-employeed', value: 'self-employeed'},
+    {id: 2, label: 'private', value: 'private'},
+    {id: 3, label: 'government', value: 'government'},
   ]);
   const propertyLocation = useSelector(
     state => state.PropertyReducer.propertyLocation,
@@ -1862,13 +1867,13 @@ const PostStep1Screen = ({ }) => {
     operational_since: '',
     present_in: {},
   });
-  var { city, landmark } = propertyLocation;
+  var {city, landmark} = propertyLocation;
   const dispatch = useDispatch();
   const [visible, setVisible] = useState(false);
   const [currentStatus, setCurrentStatus] = useState('');
 
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id, username, user_type_id, post_quota, mobile_number, email } =
+  var {user_id, username, user_type_id, post_quota, mobile_number, email} =
     userData;
   const UpdateRBSheet = useRef();
   const [Username, setUsername] = useState(username);
@@ -1909,14 +1914,14 @@ const PostStep1Screen = ({ }) => {
   //PG
 
   const [pgPresentData] = useState([
-    { id: 1, label: 'An Independent Building', value: 'an_independent_building' },
-    { id: 2, label: 'An Independent flat(S)', value: 'an_independent_flat(s)' },
-    { id: 3, label: 'In Society', value: 'in_society' },
+    {id: 1, label: 'An Independent Building', value: 'an_independent_building'},
+    {id: 2, label: 'An Independent flat(S)', value: 'an_independent_flat(s)'},
+    {id: 3, label: 'In Society', value: 'in_society'},
   ]);
   const [listedBy, setListedBy] = useState([
-    { id: 1, title: 'Owner', value: 'owner' },
-    { id: 2, title: 'Agent', value: 'agent' },
-    { id: 3, title: 'Property Manager', value: 'property_manager' },
+    {id: 1, title: 'Owner', value: 'owner'},
+    {id: 2, title: 'Agent', value: 'agent'},
+    {id: 3, title: 'Property Manager', value: 'property_manager'},
   ]);
 
   const checkTextInput = () => {
@@ -2043,17 +2048,17 @@ const PostStep1Screen = ({ }) => {
         step1SelectedItem?.post?.value?.length > 0 &&
         (isSell
           ? step1SelectedItem?.kind?.value?.length > 0 &&
-          (step1SelectedItem?.type?.value?.length > 0 ||
-            step1SelectedItem?.commercialPropType?.value?.length > 0) &&
-          step1SelectedItem?.name?.length > 0 &&
-          step1SelectedItem?.address?.length > 0
+            (step1SelectedItem?.type?.value?.length > 0 ||
+              step1SelectedItem?.commercialPropType?.value?.length > 0) &&
+            step1SelectedItem?.name?.length > 0 &&
+            step1SelectedItem?.address?.length > 0
           : isRent
-            ? step1RentSelectedItem?.kind?.value?.length > 0 &&
+          ? step1RentSelectedItem?.kind?.value?.length > 0 &&
             (step1RentSelectedItem?.type?.value?.length > 0 ||
               step1RentSelectedItem?.commercialPropType?.value?.length > 0) &&
             step1RentSelectedItem?.name?.length > 0 &&
             step1RentSelectedItem?.address?.length > 0
-            : ispg &&
+          : ispg &&
             PgStep1Item?.name?.length > 0 &&
             PgStep1Item?.address?.length > 0 &&
             PgStep1Item?.postedBY?.value?.length > 0 &&
@@ -2247,7 +2252,7 @@ const PostStep1Screen = ({ }) => {
         sections={Section}
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => item + index}
-        renderItem={({ item }) => {
+        renderItem={({item}) => {
           switch (item) {
             case 'types':
               return (
@@ -2297,7 +2302,8 @@ const PostStep1Screen = ({ }) => {
                     <View
                       style={{
                         flexDirection: 'row',
-                        alignItems: 'center', marginTop: 10
+                        alignItems: 'center',
+                        marginTop: 10,
                         // justifyContent: 'space-between',
                       }}>
                       {postingProperty.map((item, index) => {
@@ -2369,7 +2375,8 @@ const PostStep1Screen = ({ }) => {
                                   step1SelectedItem?.post?.id == item?.id
                                     ? Color.primary
                                     : Color.black,
-                                fontFamily: Poppins.Medium, paddingVertical: 5
+                                fontFamily: Poppins.Medium,
+                                paddingVertical: 5,
                               }}>
                               {item.title}
                             </Text>
@@ -2633,7 +2640,7 @@ const PostStep1Screen = ({ }) => {
           </View>
           <Button
             title={'Submit'}
-            buttonStyle={{ backgroundColor: Color.primary }}
+            buttonStyle={{backgroundColor: Color.primary}}
             onPress={() => {
               updateProfile();
             }}
@@ -2741,5 +2748,5 @@ const styles = StyleSheet.create({
     color: Color.black,
     textTransform: 'capitalize',
   },
-  Divider: { height: 1, marginVertical: 10 },
+  Divider: {height: 1, marginVertical: 10},
 });
