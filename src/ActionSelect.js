@@ -91,10 +91,10 @@ const ActionSelect = ({navigation}) => {
               key={index}
               onPress={() => {
                 if (item?.name == 'Property') {
-                  navigation.navigate('TabNavigator');
+                  navigation.replace('TabNavigator');
                   dispatch(setLoginType('properties'));
                 } else {
-                  navigation.navigate('ActionLogin');
+                  navigation.replace('ActionLogin');
                   dispatch(setLoginType('Auction'));
                 }
               }}
