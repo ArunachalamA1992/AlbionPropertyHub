@@ -18,4 +18,6 @@
 -dontwarn com.huawei.hms.ads.identifier.AdvertisingIdClient$Info*
 -dontwarn com.huawei.hms.ads.identifier.AdvertisingIdClient*
 -dontwarn com.tencent.android.tpush.otherpush.OtherPushClient*
+-keep class io.invertase.firebase.** { *; }
+-dontwarn io.invertase.firebase.**
 

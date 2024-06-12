@@ -1477,6 +1477,7 @@ const StatusProperty = ({
         showsVerticalScrollIndicator={false}
         keyExtractor={(item, index) => index.toString()}
         renderItem={({ item, index }) => {
+          // console.log("STATUS =========== : ",JSON.stringify(item));
           if (item[0]?.type == 'Albion Prime') {
             var text = 'Albion Prime';
             var colorText = text.split(' ').map((word, i) => (
@@ -1905,7 +1906,8 @@ const StatusProperty = ({
                           fontFamily: Poppins.SemiBold,
                           marginHorizontal: 5,
                         }}>
-                        {`@ ₹ ${item?.property?.area?.super_area} per ${item?.property?.area?.super_area_unit}`}
+                        {`@ ₹ ${item?.area?.super_area} per ${item?.area?.super_area_unit}`}
+                        {/* {`@ ₹ ${item?.property?.area?.super_area} per ${item?.property?.area?.super_area_unit}`} */}
                       </Text>
                     )}
                   </View>
@@ -1918,7 +1920,7 @@ const StatusProperty = ({
                         textTransform: 'capitalize',
                         marginVertical: 5,
                       }}>
-                      {`${item?.property?.area?.super_area} ${item?.property?.area?.super_area_unit}`}
+                      {`${item?.area?.super_area} ${item?.area?.super_area_unit}`}
                     </Text>
                   )}
                   <View
