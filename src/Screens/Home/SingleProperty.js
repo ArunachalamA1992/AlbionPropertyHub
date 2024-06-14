@@ -1,4 +1,4 @@
-import React, { useState, useRef, useEffect, useCallback } from 'react';
+import React, {useState, useRef, useEffect, useCallback} from 'react';
 import {
   View,
   Text,
@@ -17,7 +17,7 @@ import {
   TextInput,
   Keyboard,
 } from 'react-native';
-import { Media } from '../../Global/Media';
+import {Media} from '../../Global/Media';
 import Color from '../../Config/Color';
 import Icon from 'react-native-vector-icons/Ionicons';
 import Entypo from 'react-native-vector-icons/Entypo';
@@ -28,30 +28,30 @@ import F6Icon from 'react-native-vector-icons/FontAwesome6';
 import MIcon from 'react-native-vector-icons/MaterialIcons';
 import MCIcon from 'react-native-vector-icons/MaterialCommunityIcons';
 import ImageView from '../../Components/imageView';
-import { Button, Divider } from 'react-native-elements';
+import {Button, Divider} from 'react-native-elements';
 import SimilarProperty from './SimilarProperty/SimilarProperty';
 import fetchData from '../../Config/fetchData';
-import { SafeAreaView } from 'react-native';
+import {SafeAreaView} from 'react-native';
 // import {Share} from 'react-native';
-import { Poppins } from '../../Global/FontFamily';
-import { useDispatch, useSelector } from 'react-redux';
+import {Poppins} from '../../Global/FontFamily';
+import {useDispatch, useSelector} from 'react-redux';
 import moment from 'moment';
 import common_fn from '../../Config/common_fn';
 import RNImmediatePhoneCall from 'react-native-immediate-phone-call';
 import RBSheet from 'react-native-raw-bottom-sheet';
 import RNFetchBlob from 'rn-fetch-blob';
-import { ActivityIndicator } from 'react-native-paper';
+import {ActivityIndicator} from 'react-native-paper';
 import Share from 'react-native-share';
-import { useRoute } from '@react-navigation/native';
+import {useRoute} from '@react-navigation/native';
 import axios from 'axios';
-import { PlanPhonePurchase } from '../../Components/PlanPurchase';
-import { Iconviewcomponent } from '../../Components/Icontag';
-import { setUserData } from '../../Redux';
+import {PlanPhonePurchase} from '../../Components/PlanPurchase';
+import {Iconviewcomponent} from '../../Components/Icontag';
+import {setUserData} from '../../Redux';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 
-var { width, height } = Dimensions.get('screen');
+var {width, height} = Dimensions.get('screen');
 
-const AmenitiesIconData = ({ item }) => {
+const AmenitiesIconData = ({item}) => {
   const formattedItem = item.replace(/_/g, '').toLowerCase();
   switch (formattedItem) {
     case 'lift':
@@ -101,12 +101,12 @@ const AmenitiesIconData = ({ item }) => {
     case 'building wi-Fi':
       return (
         <Image
-          source={{ uri: Media.Electricgenerator }}
-          style={{ width: 20, height: 20 }}
+          source={{uri: Media.Electricgenerator}}
+          style={{width: 20, height: 20}}
         />
       );
 
-      // return <MCIcon name="wifi" size={20} color={Color.black} />;
+    // return <MCIcon name="wifi" size={20} color={Color.black} />;
     case 'fitness centre':
       return <MIcon name="fitness-center" size={20} color={Color.black} />;
     case 'spa':
@@ -146,14 +146,14 @@ const AmenitiesIconData = ({ item }) => {
     case 'power backup':
       return (
         <Image
-          source={{ uri: Media.Electricgenerator }}
-          style={{ width: 20, height: 20 }}
+          source={{uri: Media.Electricgenerator}}
+          style={{width: 20, height: 20}}
         />
       );
   }
 };
 
-const FeaturesIconData = ({ title, value }) => {
+const FeaturesIconData = ({title, value}) => {
   switch (title) {
     case 'bedroom':
       return (
@@ -309,23 +309,23 @@ const FeaturesIconData = ({ title, value }) => {
   }
 };
 
-const SinglePropertyScreen = ({ navigation, route }) => {
+const SinglePropertyScreen = ({navigation, route}) => {
   const routeName = useRoute();
   const [p_id] = useState(route.params.p_id);
   const [loginEnable, setLoginEnable] = useState(false);
   console.log(loginEnable);
   const animatedOpacityValue = useRef(new Animated.Value(0)).current;
   const [Amenities] = useState([
-    { id: 1, title: 'lift', image: Media.lift },
-    { id: 2, title: 'Parking', image: Media.parking },
-    { id: 3, title: 'Water', image: Media.water },
-    { id: 4, title: 'Power', image: Media.power },
+    {id: 1, title: 'lift', image: Media.lift},
+    {id: 2, title: 'Parking', image: Media.parking},
+    {id: 3, title: 'Water', image: Media.water},
+    {id: 4, title: 'Power', image: Media.power},
   ]);
   const [features] = useState([
-    { id: 1, title: 'Bedrooms' },
-    { id: 2, title: 'Bathroom' },
-    { id: 3, title: 'Sq.ft' },
-    { id: 4, title: 'Parking' },
+    {id: 1, title: 'Bedrooms'},
+    {id: 2, title: 'Bathroom'},
+    {id: 3, title: 'Sq.ft'},
+    {id: 4, title: 'Parking'},
   ]);
 
   const [preparedLoans] = useState([
@@ -364,15 +364,15 @@ const SinglePropertyScreen = ({ navigation, route }) => {
   const [reportSelected, setReportSelected] = useState({});
   const [reportVisible, setReportVisble] = useState(false);
   const [reportData] = useState([
-    { id: 1, label: 'Fake Property', value: 'Fake Property' },
-    { id: 2, label: 'Suspicious Property', value: 'Suspicious Property' },
-    { id: 3, label: 'Re-Review Property', value: 'Re-Review Property' },
+    {id: 1, label: 'Fake Property', value: 'Fake Property'},
+    {id: 2, label: 'Suspicious Property', value: 'Suspicious Property'},
+    {id: 3, label: 'Re-Review Property', value: 'Re-Review Property'},
   ]);
   const [processingProducts, setProcessingProducts] = useState([]);
   const scrollY = useRef(new Animated.Value(0)).current;
   const [cardheight, setHeight] = useState(undefined);
   const userData = useSelector(state => state.UserReducer.userData);
-  var { user_id, username, mobile_number, email, get_phone_quota } = userData;
+  var {user_id, username, mobile_number, email, get_phone_quota} = userData;
   const [Username, setUsername] = useState(username);
   const [number, setNumber] = useState(mobile_number);
   const [Usermail, setUsermail] = useState(email);
@@ -440,7 +440,10 @@ const SinglePropertyScreen = ({ navigation, route }) => {
 
   const fetchAPI = async () => {
     try {
-      var data = 'p_id=' + p_id + '&user_id=' + user_id;
+      var data = 'p_id=' + p_id;
+      if (user_id != undefined) {
+        data += '&user_id=' + user_id;
+      }
       const product = await fetchData.Properties(data);
       setProductData(product);
     } catch (error) {
@@ -518,11 +521,11 @@ const SinglePropertyScreen = ({ navigation, route }) => {
 
       const apiRequest = isWishList
         ? fetchData.remove_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        })
+            cancelToken: cancelTokenSource.token,
+          })
         : fetchData.add_to_wishlist(data, {
-          cancelToken: cancelTokenSource.token,
-        });
+            cancelToken: cancelTokenSource.token,
+          });
 
       const response = await apiRequest;
 
@@ -534,7 +537,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
         }
         setProductData(product => {
           return product.p_id === id
-            ? { ...product, isWishListed: false }
+            ? {...product, isWishListed: false}
             : product;
         });
       } else if (response?.message === 'Success' && !isWishList) {
@@ -545,7 +548,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
         }
         setProductData(product => {
           return product.p_id === id
-            ? { ...product, isWishListed: true }
+            ? {...product, isWishListed: true}
             : product;
         });
       }
@@ -692,7 +695,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
     }
   };
   return (
-    <SafeAreaView style={{ flex: 1, backgroundColor: Color.white }}>
+    <SafeAreaView style={{flex: 1, backgroundColor: Color.white}}>
       {loading ? (
         <View
           style={{
@@ -701,13 +704,13 @@ const SinglePropertyScreen = ({ navigation, route }) => {
             height: height,
           }}>
           <Image
-            source={{ uri: Media.loader }}
-            style={{ width: 80, height: 80, resizeMode: 'contain' }}
+            source={{uri: Media.loader}}
+            style={{width: 80, height: 80, resizeMode: 'contain'}}
           />
         </View>
       ) : (
         <View style={styles.container}>
-          <View style={{ marginBottom: 10 }}>
+          <View style={{marginBottom: 10}}>
             <ScrollView
               contentContainerStyle={{
                 flexGrow: 1,
@@ -717,7 +720,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
               nestedScrollEnabled={true}
               showsVerticalScrollIndicator={false}
               onScroll={Animated.event(
-                [{ nativeEvent: { contentOffset: { y: scrollY } } }],
+                [{nativeEvent: {contentOffset: {y: scrollY}}}],
                 {
                   useNativeDriver: false,
                 },
@@ -758,7 +761,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                         name="share-outline"
                         size={20}
                         color={Color.black}
-                      // style={styles.icon}
+                        // style={styles.icon}
                       />
                     </TouchableOpacity>
                     <TouchableOpacity
@@ -843,12 +846,12 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                   <ImageView images={ProductData?.images} />
                 ) : (
                   <Image
-                    source={{ uri: Media.noImage }}
-                    style={{ width: '100%', height: 250, resizeMode: 'contain' }}
+                    source={{uri: Media.noImage}}
+                    style={{width: '100%', height: 250, resizeMode: 'contain'}}
                   />
                 )}
               </View>
-              <View style={{ padding: 18 }}>
+              <View style={{padding: 18}}>
                 {/* {user_id === ProductData?.seller_details?.user_id && (
                   <View
                     style={{
@@ -874,9 +877,9 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                   transparent={true}
                   animationType="slide"
                   visible={reportVisible}
-                  onRequestClose={() => { }}>
+                  onRequestClose={() => {}}>
                   <Pressable
-                    style={{ flex: 1, backgroundColor: Color.transparantBlack }}
+                    style={{flex: 1, backgroundColor: Color.transparantBlack}}
                     onPress={() => {
                       setReportVisble(false);
                     }}
@@ -947,7 +950,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                               }}>
                               {item.label}
                             </Text>
-                            <Divider style={{ height: 2, marginVertical: 5 }} />
+                            <Divider style={{height: 2, marginVertical: 5}} />
                           </TouchableOpacity>
                         );
                       })}
@@ -1095,7 +1098,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                       <OIcon
                         name={'location'}
                         size={18}
-                        style={{ color: '#666' }}
+                        style={{color: '#666'}}
                       />
                       <Text
                         style={{
@@ -1129,7 +1132,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                           Property Price
                         </Text>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Text
                             style={{
                               fontSize: 20,
@@ -1141,13 +1144,13 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                             ₹
                             {ProductData?.property_type?.pt_name == 'PG'
                               ? common_fn.getMinToMaxPrice(
-                                ProductData?.room_category,
-                              )
+                                  ProductData?.room_category,
+                                )
                               : ProductData?.expected_price?.length >= 5
-                                ? common_fn.formatNumberWithSuffix(
+                              ? common_fn.formatNumberWithSuffix(
                                   ProductData?.expected_price,
                                 )
-                                : ProductData?.expected_price}
+                              : ProductData?.expected_price}
                           </Text>
                         </View>
                         {ProductData?.property_type?.pt_name != 'PG' && (
@@ -1214,9 +1217,9 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                                       Platform.OS == 'ios' ? 5 : 0,
                                   }}>
                                   {`₹${parseFloat(
-                                  ProductData?.expected_price /
-                                    ProductData?.area?.super_area,
-                                ).toFixed(2)}`}{" "}
+                                    ProductData?.expected_price /
+                                      ProductData?.area?.super_area,
+                                  ).toFixed(2)}`}{' '}
                                   {/* {common_fn.formatNumberWithSuffix(
                                     ProductData?.expected_price /
                                     ProductData?.area?.super_area,
@@ -1279,7 +1282,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                             borderRadius: 50,
                           }}>
                           <Image
-                            source={{ uri: Media.Map }}
+                            source={{uri: Media.Map}}
                             style={{
                               width: '100%',
                               height: '100%',
@@ -1306,7 +1309,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                           </View>
                         </View>
                         <View
-                          style={{ flexDirection: 'row', alignItems: 'center' }}>
+                          style={{flexDirection: 'row', alignItems: 'center'}}>
                           <Text
                             style={{
                               fontSize: 12,
@@ -1512,8 +1515,8 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                     recently
                   </Text>
                   <Image
-                    source={{ uri: Media.finance }}
-                    style={{ width: 20, height: 20 }}
+                    source={{uri: Media.finance}}
+                    style={{width: 20, height: 20}}
                   />
                 </View>
                 {ProductData?.rera_id?.length > 0 && (
@@ -1574,10 +1577,10 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                       {ProductData?.seller_details?.user_type_id == '1'
                         ? 'Buyer'
                         : ProductData?.seller_details?.user_type_id == '2'
-                          ? 'Agent'
-                          : 'Builder'}
+                        ? 'Agent'
+                        : 'Builder'}
                     </Text>
-                    <View style={{ marginVertical: 5 }}>
+                    <View style={{marginVertical: 5}}>
                       <Text
                         style={{
                           textAlign: 'left',
@@ -1712,7 +1715,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                         <MCIcon
                           name={'download'}
                           size={16}
-                          style={{ color: 'white' }}
+                          style={{color: 'white'}}
                         />
                         <Text
                           style={{
@@ -1729,7 +1732,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                 </View>
 
                 {ProductData?.description?.length != null && (
-                  <View style={{ alignItems: 'flex-start', marginVertical: 5 }}>
+                  <View style={{alignItems: 'flex-start', marginVertical: 5}}>
                     <Text
                       style={{
                         color: 'black',
@@ -1749,10 +1752,10 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                       numberOfLines={numLines}>
                       {!discriptiontextShown
                         ? ProductData?.description
-                          .split('\n')
-                          .join('')
-                          .substring(0, 120)
-                          .concat('...')
+                            .split('\n')
+                            .join('')
+                            .substring(0, 120)
+                            .concat('...')
                         : ProductData?.description.split('\n').join('')}{' '}
                       {showMoreButton || numLines > 3 ? (
                         <Text
@@ -1873,7 +1876,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                     </View>
                   ))}
                 {ProductData?.features?.length > 0 && (
-                  <View style={{ alignItems: 'flex-start', marginTop: 25 }}>
+                  <View style={{alignItems: 'flex-start', marginTop: 25}}>
                     <Text
                       style={{
                         width: '100%',
@@ -1889,7 +1892,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                       return (
                         <View
                           key={index}
-                          style={{ width: '100%', alignItems: 'center' }}>
+                          style={{width: '100%', alignItems: 'center'}}>
                           <View
                             style={{
                               flexDirection: 'row',
@@ -1928,7 +1931,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                                   color: Color.black,
                                   // fontFamily: Poppins.Bold,
                                   textAlign: 'right',
-                                  fontWeight: 'bold'
+                                  fontWeight: 'bold',
                                 }}
                                 numberOfLines={1}>
                                 {common_fn.formatText(item.value)}
@@ -1942,7 +1945,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                 )}
                 {ProductData?.rules?.length > 0 &&
                   ProductData?.property_type?.pt_name == 'PG' && (
-                    <View style={{ alignItems: 'flex-start', marginTop: 25 }}>
+                    <View style={{alignItems: 'flex-start', marginTop: 25}}>
                       <Text
                         style={{
                           width: '100%',
@@ -1958,7 +1961,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                         return (
                           <View
                             key={index}
-                            style={{ width: '100%', alignItems: 'center' }}>
+                            style={{width: '100%', alignItems: 'center'}}>
                             <View
                               style={{
                                 flexDirection: 'row',
@@ -2010,7 +2013,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                     alignItems: 'flex-start',
                     marginTop: 15,
                   }}>
-                  <View style={{ flexDirection: 'row', alignItems: 'center' }}>
+                  <View style={{flexDirection: 'row', alignItems: 'center'}}>
                     <Text
                       style={{
                         color: Color.black,
@@ -2051,7 +2054,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                               // justifyContent: 'center',
                             }}>
                             <Image
-                              source={{ uri: item.image }}
+                              source={{uri: item.image}}
                               style={{
                                 width: 300,
                                 height: 150,
@@ -2084,7 +2087,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
               // opacity: headerOpacity,
               padding: 10,
               backgroundColor: Color.white,
-              transform: [{ translateY: taby }],
+              transform: [{translateY: taby}],
             }}>
             <View
               style={{
@@ -2096,7 +2099,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                 padding: 10,
                 marginHorizontal: 10,
               }}>
-              <View style={{ flex: 1, marginHorizontal: 10 }}>
+              <View style={{flex: 1, marginHorizontal: 10}}>
                 <Text
                   style={{
                     fontSize: 16,
@@ -2107,10 +2110,10 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                   {ProductData?.property_type?.pt_name == 'PG'
                     ? common_fn.getMinToMaxPrice(ProductData?.room_category)
                     : ProductData?.expected_price?.length >= 5
-                      ? common_fn.formatNumberWithSuffix(
+                    ? common_fn.formatNumberWithSuffix(
                         ProductData?.expected_price,
                       )
-                      : ProductData?.expected_price}{' '}
+                    : ProductData?.expected_price}{' '}
                   <Text
                     style={{
                       fontSize: 12,
@@ -2129,7 +2132,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                   }}>
                   {ProductData?.property_type?.pt_name == 'PG' ? (
                     <>
-                      <Icon name={'bed'} size={20} style={{ color: '#666' }} />
+                      <Icon name={'bed'} size={20} style={{color: '#666'}} />
                       {ProductData?.room_category?.map(item => {
                         return (
                           <View
@@ -2164,7 +2167,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
                         <F6Icon
                           name={'object-ungroup'}
                           size={20}
-                          style={{ color: Color.black }}
+                          style={{color: Color.black}}
                         />
                         <Text
                           style={{
@@ -2289,7 +2292,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
           </View>
           <Button
             title={'Download Brochure'}
-            buttonStyle={{ backgroundColor: Color.primary }}
+            buttonStyle={{backgroundColor: Color.primary}}
             onPress={() => {
               // common_fn.exportDataToExcel(ProductData);
               downloadPdf();
@@ -2480,7 +2483,7 @@ const SinglePropertyScreen = ({ navigation, route }) => {
           </View>
           <Button
             title={'Submit'}
-            buttonStyle={{ backgroundColor: Color.primary }}
+            buttonStyle={{backgroundColor: Color.primary}}
             onPress={() => {
               updateProfile();
             }}
