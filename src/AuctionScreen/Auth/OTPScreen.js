@@ -20,7 +20,7 @@ import fetchData from '../../Config/fetchData';
 import AsyncStorage from '@react-native-async-storage/async-storage';
 import messaging from '@react-native-firebase/messaging';
 import RNOtpVerify from 'react-native-otp-verify';
-import { useFocusEffect } from '@react-navigation/native';
+import { useFocusEffect, useNavigation } from '@react-navigation/native';
 import { profileCompletion } from '../../Utils/utils';
 import { setActionUserData, setLoginType } from '../../Redux';
 import { useDispatch } from 'react-redux';
@@ -320,7 +320,8 @@ const DismissKeyboard = ({ children }) => (
 //   );
 // };
 
-const AuctionOTPScreen = ({ route, navigation }) => {
+const AuctionOTPScreen = ({ route }) => {
+  const navigation = useNavigation()
   const [number] = useState(route.params.number);
   const inputRef = useRef();
   const [otpCode, setOTPCode] = useState('');
@@ -383,9 +384,8 @@ const AuctionOTPScreen = ({ route, navigation }) => {
     }
   };
 
-  const VerifyOTP = async navigation => {
+  const VerifyOTP = async () => {
     setLoading(true);
-    var { replace } = navigation;
     if (otpCode.length == 4) {
       const VerifyOTP = await fetchData.Auction_VerifyOTP({
         phone_number: number,

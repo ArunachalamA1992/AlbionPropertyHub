@@ -8,6 +8,7 @@ import {
   Linking,
   FlatList,
   Dimensions,
+  BackHandler,
 } from 'react-native';
 import Color from '../../Config/Color';
 import Icon from 'react-native-vector-icons/Ionicons';
@@ -33,6 +34,7 @@ import AuctionItemCard from '../Auctioncomponents/AuctionItemCard';
 import { scr_height } from '../../Utils/Dimensions';
 import AuctionEnableLogin from '../Auctioncomponents/AuctionEnableLogin';
 import { useBottomTabBarHeight } from '@react-navigation/bottom-tabs';
+import { useRoute } from '@react-navigation/native';
 
 const { height, width } = Dimensions.get('screen');
 
@@ -52,6 +54,25 @@ const AutionHomeScreen = ({ navigation }) => {
   const dispatch = useDispatch();
   const [AuctionData, setAuctionData] = useState([]);
   const [TopBanks, setTopBanks] = useState([]);
+  const routeName = useRoute();
+
+  useEffect(() => {
+    const backHandler = BackHandler.addEventListener('hardwareBackPress', handleBackButtonClick);
+    return () => backHandler.remove();
+  }, [routeName.name, navigation]);
+
+
+  function handleBackButtonClick() {
+    if (routeName.name === 'ActionHome') {
+      BackHandler.exitApp();
+      return true;
+    } else {
+      navigation.goBack();
+      return true;
+    }
+  }
+
+
   const getApiData = async () => {
     try {
       //Auctions
